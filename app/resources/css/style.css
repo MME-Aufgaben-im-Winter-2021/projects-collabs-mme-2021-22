@@ -42,3 +42,93 @@ body {
     text-align: center;
     color: var(--jet);
 }
+
+.border {
+    border-style: groove;
+    border-radius: 5px;
+    border-width: 2px;
+}
+
+.tools {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    margin-left: 5vw;
+    margin-right: 5vw;
+
+}
+
+.button {
+    width: 100%;
+    margin: 0 20px;
+}
+
+.screenshot-container {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    grid-gap: 0;
+
+    height: 70vh;
+    margin: 2vh 5vw;
+}
+
+.website-picture {
+    grid-column: 1 / 5;
+    grid-row: 1;
+}
+
+.commentary-section {
+    grid-column: 5;
+    grid-row: 1;
+
+    display: grid;
+    grid-template-rows: repeat(10, 1fr);
+    grid-gap: 0;
+
+    background-color: lightgray;
+
+}
+
+.discussion {
+    grid-row: 1 / 10;
+}
+
+.commentary-section-controls {
+    grid-column: 1;
+    grid-row: 10;
+    display: flex;
+    align-items: flex-start;
+    justify-content: left;
+
+    background-color: red;
+    padding: 5px;
+}
+
+.input-field {
+    width: 95%;
+}
+
+.submit {
+    width: 5%;
+}
+
+.upload_img {
+    margin: 0 5vw;
+    padding: 10px;
+
+    display: grid;
+    grid-template-columns: repeat(10, 1fr);
+    grid-gap: 0;
+}
+
+.input-url {
+    grid-column: 1 / 10;
+    grid-row: 1;
+    width: 100%;
+}
+
+.upload-img-button {
+    grid-column: 10;
+    grid-row: 1;
+}

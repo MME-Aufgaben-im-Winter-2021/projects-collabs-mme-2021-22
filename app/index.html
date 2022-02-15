@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 
 <head>
     <meta charset="utf-8">
@@ -13,40 +13,45 @@
         <h1>MME: Projekte im WS 2021/22</h1>
     </div>
 
-    <div class="tools">
-        <span class="button add" class="icon"><img src=""></span> <!-- add icon -->
+    <div class="tools border">
+        <span class="button add"><img src="" alt="add"></span> <!-- add icon -->
         
-        <span class="button delete" class="icon"><img src=""></span> <!-- delete icon -->
+        <span class="button delete"><img src="" alt="delete"></span> <!-- delete icon -->
 
-        <span class="button save" class="icon"><img src=""></span> <!-- save icon -->
+        <span class="button save"><img src="" alt="save"></span> <!-- save icon -->
 
-        <span class="button add-comment" class="icon"><img src=""></span> <!-- add-comment icon -->
+        <span class="button add-comment"><img src="" alt="add comment"></span> <!-- add-comment icon -->
 
         <!--
             ....
         -->
-    </ul>
-
-    <div class="website_picture">
-        <img src="">
     </div>
 
-    <ul class="commentary_section" >
-        <ul id="0" class="discussion hidden"> <!--all ul in ul hidden except chosen one-->
-            <!-- conversation template gets added here, new ul for each specific comment and answers-->
-        </ul>
-        <!--
-            ...
-        -->
-        <li class="commentary_section_controls">
-            <input type="text" class="input_field" placeholder="Anmerkung">
-            <span class="button submit" class="icon" src=""></span>
-        </li>
-    </ul>
+    <div class="screenshot-container border">
+        <img class="website-picture" src="" alt="screenshot">
 
-    <div class="upload_img">
-        <input type="text" class="input_field" placeholder="URL einfügen.">
-        <span class="button upload_img" class="icon"><img src=""></span> <!-- upload-img icon -->
+        <ul class="commentary-section" >
+            <ul id="0" class="discussion"> <!--all ul in ul hidden except chosen one-->
+                <!-- conversation template gets added here, new ul for each specific comment and answers-->
+            </ul>
+            <!--
+                ...
+            -->
+            <li class="commentary-section-controls">
+                <label>
+                    <input type="text" class="input-url" placeholder="Anmerkung">
+                </label>
+                <span class="button submit" src="">+</span>
+            </li>
+        </ul>
+    </div>
+
+
+    <div class="upload_img border">
+        <label>
+            <input type="text" class="input_field" placeholder="URL einfügen.">
+        </label>
+        <img class="upload-img-button" src="" alt="upload image"> <!-- upload-img icon -->
     </div>
     
 
