@@ -13,7 +13,59 @@
         <h1>MME: Projekte im WS 2021/22</h1>
     </div>
 
+    <div class="tools">
+        <span class="button add" class="icon"><img src=""></span> <!-- add icon -->
+        
+        <span class="button delete" class="icon"><img src=""></span> <!-- delete icon -->
+
+        <span class="button save" class="icon"><img src=""></span> <!-- save icon -->
+
+        <span class="button add-comment" class="icon"><img src=""></span> <!-- add-comment icon -->
+
+        <!--
+            ....
+        -->
+    </ul>
+
+    <div class="website_picture">
+        <img src="">
+    </div>
+
+    <ul class="commentary_section" >
+        <ul id="0" class="discussion hidden"> <!--all ul in ul hidden except chosen one-->
+            <!-- conversation template gets added here, new ul for each specific comment and answers-->
+        </ul>
+        <!--
+            ...
+        -->
+        <input type="text" class="input_field" placeholder="Anmerkung">
+        <span class="button submit" class="icon" src=""></span>
+    </ul>
+
+    <div class="upload_img">
+        <input type="text" class="input_field" placeholder="URL einfügen.">
+        <span class="button upload_img" class="icon"><img src=""></span> <!-- upload-img icon -->
+    </div>
+    
+
+
    <script type="module" src="./src/index.js"></script>
 </body>
+
+<template id = "conversation-field-template">
+    <span class="textfield">
+        <span class="username"></span>
+        <span class="title"></span>
+        <span class="message"></span>
+    </span>
+
+    <!-- Zukunftsmusik
+    <span class="voting system">
+        <span class="icon" class="upvote"><img src=""></span>
+        <span class="icon" class="downvote"><img src=""></span>
+    </span>
+    -->
+    
+</template>
 
 </html>
