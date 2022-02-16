@@ -54,6 +54,8 @@ body {
     border-style: outset;
     border-radius: 5px;
     border-width: 2px;
+
+    border-color: var(--base-dark);
 }
 
 .tools {
