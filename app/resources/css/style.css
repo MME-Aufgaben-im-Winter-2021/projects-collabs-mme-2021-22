@@ -11,6 +11,13 @@
     --canary: #fffd98ff;
     --snow: #f7f2f4ff;
     --jet: #343434ff;
+
+    --base-dark: #277A8C;
+    --base-color: #41cad9;
+    --base-light: #4bf2f2;
+
+    --background-gray: #262626;
+    --background-black: #0d0d0d;
 }
 
 .attachment-full {
@@ -24,7 +31,7 @@
 }
 
 body {
-    background-color: var(--snow);
+    background-color: var(--background-gray);
     font-family: 'Space Grotesk', sans-serif;
     margin: 0;
     padding: 0;
@@ -40,13 +47,15 @@ body {
 
 .ui h1 {
     text-align: center;
-    color: var(--jet);
+    color: var(--snow);
 }
 
 .border {
-    border-style: groove;
+    border-style: outset;
     border-radius: 5px;
     border-width: 2px;
+
+    border-color: var(--base-dark);
 }
 
 .tools {
@@ -56,7 +65,7 @@ body {
     margin: 0 5vw;
     padding: 5px;
 
-    background-color: aquamarine;
+    background-color: var(--base-color);
 }
 
 .screenshot-container {
@@ -64,7 +73,6 @@ body {
     flex-direction: row;
 
     margin: 2vh 5vw;
-    background-color: aquamarine;
 }
 
 .website-picture {
@@ -76,7 +84,7 @@ body {
 .upload-img {
     margin: 0 5vw;
     padding: 10px;
-    background-color: aquamarine;
+    background-color: var(--base-color);
 
     display: flex;
     flex-direction: row;
@@ -90,26 +98,20 @@ body {
 
 .upload-img-button {
     align-self: flex-end;
-
     text-align: center;
-    background-color: lightgray;
-
-    border-style: solid;
-    border-radius: 10px;
-    border-color: lightgray;
 }
 
-.commentary-section {
+.comment-section {
     display: flex;
     flex-direction: row;
     justify-content: flex-start;
 
     margin: 5px 5vw;
     padding: 5px;
-    background-color: aquamarine;
+    background-color: var(--base-color);
 }
 
-.commentary-controls {
+.comment-controls {
     display: flex;
     flex-direction: row;
     justify-content: space-between;
@@ -118,8 +120,8 @@ body {
     margin: 5px;
     padding: 2px;
 
-    background-color: aliceblue;
-    border-color: aliceblue;
+    background-color: var(--base-light);
+    border-color: var(--base-light);
     border-style: solid;
 }
 
@@ -140,7 +142,8 @@ body {
     flex-direction: column;
     justify-content: center;
 
-    background-color: lightgray;
+    background-color: var(--base-dark);
+    color: var(--snow);
     margin: 5px;
 }
 
@@ -160,10 +163,12 @@ body {
 .round-button {
     margin: 0 20px;
     text-align: center;
-    background-color: lightgray;
+    background-color: var(--base-dark);
     width: 100%;
+    font-weight: bold;
+    color: var(--snow);
 
     border-style: solid;
     border-radius: 10px;
-    border-color: lightgray;
+    border-color: var(--base-dark);
 }
