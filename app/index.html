@@ -35,6 +35,10 @@
         <img class="upload-img-button" src="" alt="upload image"> <!-- upload-img icon -->
     </div>
 
+    <div class="ui">
+        <h1>Website Preview</h1>
+    </div>
+
     <div class="screenshot-container border">
         <img class="website-picture border" src="./resources/css/test.png" alt="screenshot">
     </div>
@@ -43,14 +47,14 @@
         <h1>Comments</h1>
     </div>
 
-    <ul class="commentary-section border" >
+    <ul class="comment-section border" >
         <ul id="0" class="discussion"> <!--all ul in ul hidden except chosen one-->
             <!-- conversation template gets added here, new ul for each specific comment and answers-->
         </ul>
         <!--
             ...
         -->
-        <li class="commentary-controls border">
+        <li class="comment-controls border">
             <label>
                 <input type="text" class="input-url" placeholder="Anmerkung">
             </label>
@@ -65,17 +69,18 @@
 </body>
 
 <template id = "comment-field-template">
-        <span class="border text-field">
-            <span class="comment-header username"></span>
-            <span class="comment-header title"></span>
-            <span class="message"></span>
-        </span>
-        <!-- Zukunftsmusik
-        <span class="voting system">
-            <span class="icon" class="upvote"><img src=""></span>
-            <span class="icon" class="downvote"><img src=""></span>
-        </span>
-        -->
+    <span class="border text-field">
+        <span class="comment-header username"></span>
+        <span class="comment-header title"></span>
+        <span class="message"></span>
+    </span>
+    <!-- Zukunftsmusik
+    <span class="voting system">
+        <span class="icon" class="upvote"><img src=""></span>
+        <span class="icon" class="downvote"><img src=""></span>
+    </span>
+    -->
+
 </template>
 
 </html>

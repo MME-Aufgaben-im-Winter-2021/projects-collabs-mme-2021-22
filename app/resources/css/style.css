@@ -99,7 +99,7 @@ body {
     border-color: lightgray;
 }
 
-.commentary-section {
+.comment-section {
     display: flex;
     flex-direction: row;
     justify-content: flex-start;
@@ -109,7 +109,7 @@ body {
     background-color: aquamarine;
 }
 
-.commentary-controls {
+.comment-controls {
     display: flex;
     flex-direction: row;
     justify-content: space-between;

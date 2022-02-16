@@ -2,7 +2,6 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="b79bf254-71fb-43c0-b8f2-0fb9322ce1d0" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/app/resources/css/test.png" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/index.html" beforeDir="false" afterPath="$PROJECT_DIR$/app/index.html" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/resources/css/style.css" beforeDir="false" afterPath="$PROJECT_DIR$/app/resources/css/style.css" afterDir="false" />
@@ -45,7 +44,8 @@
       <option name="presentableId" value="Default" />
       <updated>1644932103047</updated>
       <workItem from="1644932105353" duration="4368000" />
-      <workItem from="1645000914153" duration="5381000" />
+      <workItem from="1645000914153" duration="5743000" />
+      <workItem from="1645008056733" duration="920000" />
     </task>
     <servers />
   </component>
@@ -62,5 +62,6 @@
         </entry>
       </map>
     </option>
+    <option name="oldMeFiltersMigrated" value="true" />
   </component>
 </project>
