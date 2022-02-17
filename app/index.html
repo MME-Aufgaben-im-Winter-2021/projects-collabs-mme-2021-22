@@ -13,73 +13,50 @@
         <h1>Collabs</h1>
     </div>
 
-    <div class="tools border">
-        <span class="round-button add"><img src="" alt="add"></span> <!-- add icon -->
-        
-        <span class="round-button delete"><img src="" alt="delete"></span> <!-- delete icon -->
-
-        <span class="round-button save"><img src="" alt="save"></span> <!-- save icon -->
-
-        <span class="round-button add-comment"><img src="" alt="add comment"></span> <!-- add-comment icon -->
-
-        <!--
-            ....
-        -->
+    <div class="screenshot-container border">
+        <img class="website-picture" src="./resources/css/test.png" alt="screenshot">
+        <div class="comment-section" >
+            <ul id="0" class="comment-section discussion"> <!--all ul in ul hidden except chosen one-->
+                <!-- conversation template gets added here, new ul for each specific comment and answers-->
+            </ul>
+            <!--
+                ...
+            -->
+            <li class="comment-controls border">
+                <label>
+                    <input type="text" class="input-comment" placeholder="Anmerkung">
+                </label>
+                <span class="submit" src="">+</span>
+            </li>
+        </div>
     </div>
-
 
     <div class="upload-img border">
         <label>
-            <input type="text" class="input-field" placeholder="URL einfügen.">
+            <input type="text" class="input-url" placeholder="URL einfügen.">
         </label>
-        <img class="round-button upload-img-button" src="" alt="upload image"> <!-- upload-img icon -->
+        <img class="round-button upload-img-button" src="" alt="upload"> <!-- upload-img icon -->
+        <span class="round-button delete"><img src="" alt="delete"></span> <!-- delete icon -->
+
+        <span class="round-button save"><img src="" alt="save"></span> <!-- save icon -->
     </div>
-
-    <div class="ui">
-        <h1>Website Preview</h1>
-    </div>
-
-    <div class="screenshot-container border">
-        <img class="website-picture border" src="./resources/css/test.png" alt="screenshot">
-    </div>
-
-    <div class="ui">
-        <h1>Comments</h1>
-    </div>
-
-    <ul class="comment-section border" >
-        <ul id="0" class="discussion"> <!--all ul in ul hidden except chosen one-->
-            <!-- conversation template gets added here, new ul for each specific comment and answers-->
-        </ul>
-        <!--
-            ...
-        -->
-        <li class="comment-controls border">
-            <label>
-                <input type="text" class="input-url" placeholder="Anmerkung">
-            </label>
-            <span class="round-button submit" src="">submit</span>
-        </li>
-    </ul>
-
-    
-
 
    <script type="module" src="./src/index.js"></script>
 </body>
 
 <template id = "comment-field-template">
-    <span class="border text-field">
+    <li class="border text-field">
         <span class="comment-header username"></span>
         <span class="comment-header title"></span>
         <span class="message"></span>
-    </span>
-    <!-- Zukunftsmusik
-    <span class="voting system">
-        <span class="icon" class="upvote"><img src=""></span>
-        <span class="icon" class="downvote"><img src=""></span>
-    </span>
-    -->
+        <!-- Zukunftsmusik
+        <span class="voting system">
+            <span class="icon" class="upvote"><img src=""></span>
+            <span class="icon" class="downvote"><img src=""></span>
+        </span>
+        -->
+    </li>
+
 
 </template>
 
