@@ -82,7 +82,7 @@ body {
     display: flex;
     flex-direction: row;
     margin: 2vh 5vw;
-    background-color: var(--base-color);
+    background-color: var(--background-black);
 }
 
 .website-picture {
@@ -98,12 +98,15 @@ body {
 
     display: flex;
     flex-flow: column;
+    height: 350px;
+    background-color: var(--background-gray);
 
     padding: 5px;
-    background-color: var(--base-color);
 }
 
 .discussion {
+    display: flex;
+    flex-direction: column-reverse;
 
     overflow: scroll;
     overflow-x: hidden;
