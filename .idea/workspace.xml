@@ -2,7 +2,9 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="b79bf254-71fb-43c0-b8f2-0fb9322ce1d0" name="Changes" comment="">
+      <change afterPath="$PROJECT_DIR$/app/resources/icons/search_icon.jpg" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/index.html" beforeDir="false" afterPath="$PROJECT_DIR$/app/index.html" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/resources/css/style.css" beforeDir="false" afterPath="$PROJECT_DIR$/app/resources/css/style.css" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -43,6 +45,9 @@
     <key name="CopyFile.RECENT_KEYS">
       <recent name="C:\Users\korbi\OneDrive\Dokumente\GitHub\projects-collabs-mme-2021-22\app\resources\css" />
     </key>
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="C:\Users\korbi\OneDrive\Dokumente\GitHub\projects-collabs-mme-2021-22\app\resources\icons" />
+    </key>
   </component>
   <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
   <component name="TaskManager">
@@ -59,6 +64,7 @@
       <workItem from="1645100646008" duration="9885000" />
       <workItem from="1645117059907" duration="740000" />
       <workItem from="1645138734396" duration="2203000" />
+      <workItem from="1645882361711" duration="11466000" />
     </task>
     <servers />
   </component>
