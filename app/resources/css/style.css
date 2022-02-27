@@ -18,6 +18,8 @@
 
     --background-gray: #262626;
     --background-black: #0d0d0d;
+
+    --element-width: 100%
 }
 
 .attachment-full {
@@ -37,19 +39,7 @@ body {
     padding: 0;
 }
 
-.ui {
-    display: flex;
-    flex-direction: column;
-    width: 90vw;
-    margin: 0 auto;
-    padding: 0;
-}
-
-.ui h1 {
-    text-align: center;
-    color: var(--snow);
-}
-
+/* non-specific attributes */
 .border {
     border-style: outset;
     border-radius: 5px;
@@ -58,117 +48,297 @@ body {
     border-color: var(--base-dark);
 }
 
-.tools {
-    display: flex;
-    justify-content: space-between;
+.round-button {
+    font-weight: bold;
+    text-align: center;
 
-    margin: 0 5vw;
-    padding: 5px;
+    margin: 0 20px;
+    width: 100%;
 
-    background-color: var(--base-color);
+    background-color: var(--base-dark);
+    color: var(--snow);
+
+    border-style: solid;
+    border-radius: 10px;
+    border-color: var(--base-dark);
 }
 
+/* toolbar */
+.toolbar {
+    display: flex;
+    flex-direction: row;
+
+    height: 5vh;
+    margin: 0 0.5%;
+    width: 99%;
+}
+
+.dropdown-menu {
+    text-align: justify;
+    align-self: flex-start;
+
+    display: flex;
+    flex-direction: column;
+    color: var(--snow);
+    margin-block: 4px;
+
+    padding: 2px;
+    height: 4vh;
+    width: 150px;
+}
+
+.dropdown-menu-controls {
+    display: flex;
+    flex-direction: row;
+}
+
+.dropdown-description {
+    align-self: flex-start;
+}
+
+.dropdown-arrow {
+    align-self: flex-end;
+    width: 4vh;
+    height: 4vh;
+    border-radius: 25px;
+}
+
+.dropdown-container {
+    z-index: 9;
+    display: flex;
+    flex-direction: column;
+    background-color: var(--background-gray);
+    padding-left: 4px;
+    width: 250px;
+}
+
+.search-bar {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+
+    width: 250px;
+    height: 5vh;
+    margin-block: 2px;
+}
+
+.input-search-bar {
+    align-self: baseline;
+    float: right;
+    width: 200px;
+    height: 20px;
+}
+
+.search-button {
+    align-self: baseline;
+    width: 25px;
+    height: 25px;
+    border-radius: 25px;
+}
+
+.dropdown-list {
+    align-self: flex-end;
+    height: 200px;
+    width: 100%;
+
+    overflow: scroll;
+    overflow-x: hidden;
+}
+
+/* parent div container for frame list, screenshot, comment list and ui elements*/
+.container {
+    display: flex;
+    flex-direction: column;
+
+    margin: 2vh 5vw;
+    width: 90vw;
+}
+
+/* frame list */
+.frame-list {
+    width: 10vw;
+    height: 100%;
+    padding: 5px;
+
+    overflow: scroll;
+    overflow-x: hidden;
+}
+
+/* website screenshot*/
 .screenshot-container {
     display: flex;
     flex-direction: row;
-
-    margin: 2vh 5vw;
+    width: 100%;
+    /* height is calculated in a way, that the screenshot is roughly drawn in a 16:9 ratio */
+    height: calc(90vw * 0.56 * 0.8);
+    background-color: var(--background-gray);
 }
 
 .website-picture {
+    flex: 5;
     align-self: flex-start;
+
     width: 100%;
     height: 100%;
+    margin: 2px;
 }
 
-.upload-img {
-    margin: 0 5vw;
-    padding: 10px;
-    background-color: var(--base-color);
+/* comments */
+.comment-section {
+    flex: 1;
+    align-self: flex-end;
+
+    display: flex;
+    flex-flow: column;
+
+    padding: 5px;
+    width: 14vw;
+    height: 98%;
+
+    background-color: var(--background-gray);
+}
+
+.discussion {
+    display: flex;
+    flex-direction: column;
+
+    width: 95%;
+    max-height: 100%;
+
+    overflow: scroll;
+    overflow-x: hidden;
+}
+
+.comment-controls {
+    align-self: center;
 
     display: flex;
     flex-direction: row;
-    justify-content: space-between;
+    align-content: center;
+    justify-content: space-around;
+
+    height: 24px;
+    padding: 2px;
+    width: 14vw;
+
+    background-color: var(--base-light);
+    border-color: var(--base-light);
+
+    border-style: solid;
 }
 
-.input-field {
+.input-comment {
+    width: 10vw;
+    height: 20px;
+}
+
+.submit {
+    display: inline-block;
+
+    font-weight: bold;
+    text-align: center;
+    text-decoration: none;
+
+    width: 20px;
+    height: 20px;
+
+    color: var(--snow);
+    background-color: var(--base-dark);
+
+    border-radius: 25px;
+}
+
+/* add screenshot toolbar */
+.upload-img {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+
+    padding: 10px;
+
+    background-color: var(--base-color);
+}
+
+.input-url {
     align-self: flex-start;
-    width: 50vw;
+
+    width: 30vw;
 }
 
 .upload-img-button {
     align-self: flex-end;
+
     text-align: center;
 }
 
-.comment-section {
-    display: flex;
-    flex-direction: row;
-    justify-content: flex-start;
+/* template styles: */
 
-    margin: 5px 5vw;
-    padding: 5px;
-    background-color: var(--base-color);
-}
-
-.comment-controls {
-    display: flex;
-    flex-direction: row;
-    justify-content: space-between;
-
-    height: 25px;
-    margin: 5px;
-    padding: 2px;
-
-    background-color: var(--base-light);
-    border-color: var(--base-light);
-    border-style: solid;
-}
-
-.input-url {
-    flex-grow: 5;
-}
-
-.submit {
-    flex-grow: 2;
-}
-
-.discussion {
-    flex-grow: 5;
-}
-
+/* comment template */
 .text-field {
     display: flex;
     flex-direction: column;
     justify-content: center;
 
+    margin: 5px;
+    width: 90%;
+
     background-color: var(--base-dark);
     color: var(--snow);
-    margin: 5px;
 }
 
 .comment-header {
     font-size: medium;
     font-weight: bold;
+
     padding: 1px;
+    width: 100%;
 
     border-bottom-style: solid;
     border-bottom-width: 1px;
 }
 
 .message {
-    flex-grow: 5;
+    font-size: x-small;
+    word-break: break-all;
+
+    width: border-box;
 }
 
-.round-button {
-    margin: 0 20px;
+/* frame list item template*/
+.frame-list-item {
+    display: flex;
+    flex-direction: column;
+
+    align-self: center;
     text-align: center;
-    background-color: var(--base-dark);
-    width: 100%;
-    font-weight: bold;
     color: var(--snow);
 
-    border-style: solid;
-    border-radius: 10px;
-    border-color: var(--base-dark);
+    width: 100%;
+    margin: 2px;
+}
+
+.frame-img {
+    align-self: center;
+    width: 100%;
+    height: calc(10vw * 0.56);
+}
+
+/* dropdown entry template */
+.dropdown-list-item {
+    padding: 5px;
+    margin: 5px;
+
+    justify-content: center;
+
+    color: var(--snow);
+    background-color: var(--base-dark);
+    border-radius: 5px;
+
+
+}
+
+.project-name {
+    height: 20px;
+    padding: 2px;
+    word-break: break-all;
 }

@@ -9,78 +9,91 @@
 </head>
 
 <body>
-    <div class="ui">
-        <h1>Collabs</h1>
+    <div class="toolbar border">
+        <div class="dropdown-menu">
+            <div class="dropdown-menu-controls">
+                <span class="dropdown-description">Projects</span>
+            </div>
+            <!-- has class hidden by default; remove on click on dropdown arrow -->
+            <div class="dropdown-container border hidden">
+                <div class="search-bar">
+                    <label>
+                        <input class="input-search-bar">
+                    </label>
+                    <!-- search button img retrieved from: https://www.vecteezy.com/vector-art/367249-search-vector-icon -->
+                    <img class="search-button" src="resources/icons/search_icon.jpg">
+                </div>
+                <ul class="dropdown-list">
+
+                <!-- the projects in the database are displayed here -->
+            </ul>
+            </div>
+
+        </div>
     </div>
 
-    <div class="tools border">
-        <span class="round-button add"><img src="" alt="add"></span> <!-- add icon -->
-        
-        <span class="round-button delete"><img src="" alt="delete"></span> <!-- delete icon -->
+    <div class="container border">
+        <div class="screenshot-container">
+            <ul class="frame-list">
+                <!-- different screenshots of the website get added here -->
+            </ul>
+            <img class="website-picture" src="./resources/css/test.png" alt="screenshot">
+            <div class="comment-section" >
+                <ul id="0" class="comment-section discussion"> <!--all ul in ul hidden except chosen one-->
+                    <!-- conversation template gets added here, new li for each specific comment and answers-->
+                </ul>
+                <li class="comment-controls border">
+                    <label>
+                        <input type="text" class="input-comment" placeholder="Anmerkung">
+                    </label>
+                    <span class="submit" src="">+</span>
+                </li>
+            </div>
+        </div>
 
-        <span class="round-button save"><img src="" alt="save"></span> <!-- save icon -->
-
-        <span class="round-button add-comment"><img src="" alt="add comment"></span> <!-- add-comment icon -->
-
-        <!--
-            ....
-        -->
-    </div>
-
-
-    <div class="upload-img border">
-        <label>
-            <input type="text" class="input-field" placeholder="URL einfügen.">
-        </label>
-        <img class="round-button upload-img-button" src="" alt="upload image"> <!-- upload-img icon -->
-    </div>
-
-    <div class="ui">
-        <h1>Website Preview</h1>
-    </div>
-
-    <div class="screenshot-container border">
-        <img class="website-picture border" src="./resources/css/test.png" alt="screenshot">
-    </div>
-
-    <div class="ui">
-        <h1>Comments</h1>
-    </div>
-
-    <ul class="comment-section border" >
-        <ul id="0" class="discussion"> <!--all ul in ul hidden except chosen one-->
-            <!-- conversation template gets added here, new ul for each specific comment and answers-->
-        </ul>
-        <!--
-            ...
-        -->
-        <li class="comment-controls border">
+        <div class="upload-img">
             <label>
-                <input type="text" class="input-url" placeholder="Anmerkung">
+                <input type="text" class="input-url" placeholder="URL einfügen.">
             </label>
-            <span class="round-button submit" src="">submit</span>
-        </li>
-    </ul>
+            <img class="round-button upload-img-button" src="" alt="upload"> <!-- upload-img icon -->
+            <span class="round-button delete"><img src="" alt="delete"></span> <!-- delete icon -->
 
-    
+            <span class="round-button save"><img src="" alt="save"></span> <!-- save icon -->
+        </div>
+    </div>
 
 
    <script type="module" src="./src/index.js"></script>
 </body>
 
+<!-- template for a single comment -->
 <template id = "comment-field-template">
-    <span class="border text-field">
+    <li class="border text-field">
         <span class="comment-header username"></span>
         <span class="comment-header title"></span>
         <span class="message"></span>
-    </span>
-    <!-- Zukunftsmusik
-    <span class="voting system">
-        <span class="icon" class="upvote"><img src=""></span>
-        <span class="icon" class="downvote"><img src=""></span>
-    </span>
-    -->
+        <!-- Zukunftsmusik
+        <span class="voting system">
+            <span class="icon" class="upvote"><img src=""></span>
+            <span class="icon" class="downvote"><img src=""></span>
+        </span>
+        -->
+    </li>
+</template>
 
+<!-- template for a single frame in the list containing the other screenshots of the website -->
+<template id="frame-list-item-template">
+    <li class="frame-list-item border">
+        <span class="frame--description">title</span>
+        <img class="frame-img" src="./resources/css/test.png" alt="alt frame">
+    </li>
+</template>
+
+<!-- template for a project displayed in the dropdown list -->
+<template id="dropdown-list-item-template">
+    <div class="dropdown-list-item">
+        <span class="project-name"></span>
+    </div>
 </template>
 
 </html>
