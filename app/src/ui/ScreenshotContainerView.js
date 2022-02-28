@@ -3,9 +3,9 @@
 import {Event, Observable} from "../utils/Observable.js";
 
 class ScreenshotContainerView extends Observable {
-    constructor() {
+    constructor(container) {
         super();
-        this.imageBody = document.querySelector(".screenshot-container .website-picture");
+        this.body = container.querySelector(".website-picture");
     }
 }
 

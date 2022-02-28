@@ -9,65 +9,11 @@
 </head>
 
 <body>
-    <div class="toolbar border">
-        <div class="dropdown-menu">
-            <div class="dropdown-menu-controls">
-                <span class="dropdown-description">Projects</span>
-            </div>
-            <!-- has class hidden by default; remove on click on dropdown arrow -->
-            <div class="dropdown-container border hidden">
-                <div class="search-bar">
-                    <label>
-                        <input class="input-search-bar">
-                    </label>
-                    <!-- search button img retrieved from: https://www.vecteezy.com/vector-art/367249-search-vector-icon -->
-                    <img class="search-button" src="resources/icons/search_icon.jpg">
-                </div>
-                <ul class="dropdown-list">
-
-                <!-- the projects in the database are displayed here -->
-            </ul>
-            </div>
-
-        </div>
-    </div>
-
-    <div class="container border">
-        <div class="screenshot-container">
-            <ul class="frame-list">
-                <!-- different screenshots of the website get added here -->
-            </ul>
-            <img class="website-picture" src="./resources/css/test.png" alt="screenshot">
-            <div class="comment-section" >
-                <ul id="0" class="comment-section discussion"> <!--all ul in ul hidden except chosen one-->
-                    <!-- conversation template gets added here, new li for each specific comment and answers-->
-                </ul>
-                <li class="comment-controls border">
-                    <label>
-                        <input type="text" class="input-comment" placeholder="Anmerkung">
-                    </label>
-                    <span class="submit" src="">+</span>
-                </li>
-            </div>
-        </div>
-
-        <div class="upload-img">
-            <label>
-                <input type="text" class="input-url" placeholder="URL einfügen.">
-            </label>
-            <img class="round-button upload-img-button" src="" alt="upload"> <!-- upload-img icon -->
-            <span class="round-button delete"><img src="" alt="delete"></span> <!-- delete icon -->
-
-            <span class="round-button save"><img src="" alt="save"></span> <!-- save icon -->
-        </div>
-    </div>
-
-
-   <script type="module" src="./src/index.js"></script>
+    <script type="module" src="./src/index.js"></script>
 </body>
 
 <!-- template for a single comment -->
-<template id = "comment-field-template">
+<template id="comment-field-template">
     <li class="border text-field">
         <span class="comment-header username"></span>
         <span class="comment-header title"></span>
@@ -93,6 +39,67 @@
 <template id="dropdown-list-item-template">
     <div class="dropdown-list-item">
         <span class="project-name"></span>
+    </div>
+</template>
+
+<template id="toolbar-template">
+    <div class="toolbar border">
+        <div class="dropdown-menu">
+            <div class="dropdown-menu-controls">
+                <span class="dropdown-description">Projects</span>
+            </div>
+            <!-- has class hidden by default; remove on click on dropdown arrow -->
+            <div class="dropdown-container border hidden">
+                <div class="search-bar">
+                    <label>
+                        <input class="input-search-bar">
+                    </label>
+                    <!-- search button img retrieved from: https://www.vecteezy.com/vector-art/367249-search-vector-icon -->
+                    <img class="search-button" src="resources/icons/search_icon.jpg">
+                </div>
+                <ul class="dropdown-list">
+                    <!-- the projects in the database are displayed here -->
+                </ul>
+            </div>
+        </div>
+    </div>
+</template>
+
+<template id="container-template">
+    <div class="container border">
+        <div class="screenshot-container">
+            <ul class="frame-list">
+                <!-- different screenshots of the website get added here -->
+            </ul>
+            <img class="website-picture" src="./resources/css/test.png" alt="screenshot">
+            <div class="comment-section">
+                <ul id="0" class="comment-section discussion">
+                    <!--all ul in ul hidden except chosen one-->
+                    <!-- conversation template gets added here, new li for each specific comment and answers-->
+                </ul>
+                <li class="comment-controls border">
+                    <label>
+                        <input type="text" class="input-comment" placeholder="Anmerkung">
+                    </label>
+                    <span class="submit" src="">+</span>
+                </li>
+            </div>
+        </div>
+
+        <div class="upload-img">
+            <label>
+                <input type="text" class="input-url" placeholder="URL einfügen.">
+            </label>
+            <img class="round-button upload-img-button" src="" alt="upload"> <!-- upload-img icon -->
+            <span class="round-button delete"><img src="" alt="delete"></span> <!-- delete icon -->
+            <span class="round-button save"><img src="" alt="save"></span> <!-- save icon -->
+        </div>
+    </div>
+</template>
+
+<template id="login-template">
+    <div class="login">
+        <button class="login-button">login</button>
     </div>
 </template>
 
