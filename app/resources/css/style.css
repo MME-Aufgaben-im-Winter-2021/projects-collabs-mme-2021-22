@@ -39,12 +39,54 @@ body {
     padding: 0;
 }
 
+/* Animation from: https://codepen.io/biancadanforth/pen/BLYvqm */
+
+.show-error-animation {
+    animation: error-animation;
+    animation-duration: .5s;
+    animation-delay: 0.25s;
+}
+
+@keyframes error-animation {
+    0% {
+        transform: translateX(0px);
+        timing-function: ease-in;
+    }
+    37% {
+        transform: translateX(10px);
+        timing-function: ease-out;
+    }
+    55% {
+        transform: translateX(-10px);
+        timing-function: ease-in;
+    }
+    73% {
+        transform: translateX(8px);
+        timing-function: ease-out;
+    }
+    82% {
+        transform: translateX(-8px);
+        timing-function: ease-in;
+    }
+    91% {
+        transform: translateX(4px);
+        timing-function: ease-out;
+    }
+    96% {
+        transform: translateX(-4px);
+        timing-function: ease-in;
+    }
+    100% {
+        transform: translateX(0px);
+        timing-function: ease-in;
+    }
+}
+
 /* non-specific attributes */
 .border {
-    border-style: outset;
+    border-style: solid;
     border-radius: 5px;
-    border-width: 2px;
-
+    border-width: 3px;
     border-color: var(--base-dark);
 }
 
@@ -158,7 +200,7 @@ body {
 .frame-list {
     width: 10vw;
     height: 100%;
-    padding: 5px;
+    padding: 0 15px;
 
     overflow: scroll;
     overflow-x: hidden;
@@ -179,8 +221,7 @@ body {
     align-self: flex-start;
 
     width: 60%;
-    /* height: 100%; */
-    margin: 2px;
+    margin-top: 2%;
 }
 
 /* comments */
@@ -287,7 +328,7 @@ body {
 }
 
 .comment-header {
-    font-size: medium;
+    font-size: large;
     font-weight: bold;
 
     padding: 1px;
@@ -298,7 +339,7 @@ body {
 }
 
 .message {
-    font-size: x-small;
+    font-size: medium;
     word-break: break-all;
 
     width: border-box;
@@ -341,6 +382,42 @@ body {
     height: 20px;
     padding: 2px;
     word-break: break-all;
+}
+
+/* login template styles */
+.login {
+    margin: calc(50vh - 125px) auto;
+
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+
+    height: 125px;
+    width: 200px;
+    padding: 5px;
+
+    color: var(--snow);
+}
+
+.input-user-data {
+    width: 190px;
+}
+
+.description {
+    font-weight: bold;
+}
+
+.login-button {
+    align-self: center;
+    width: 100%;
+
+    border: solid;
+    border-radius: 5px;
+    border-color: var(--base-dark);
+
+    font-weight: bold;
+    color: var(--snow);
+    background-color: var(--base-dark);
 }
 
 /* https://www.w3schools.com/howto/howto_css_custom_scrollbar.asp */

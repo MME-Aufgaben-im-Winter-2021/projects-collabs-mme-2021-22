@@ -23,7 +23,6 @@ class CommentSectionView extends Observable {
     addComment(text) {
         const commentFieldTemplate = createElementFromHTML(document.getElementById("comment-field-template").innerHTML);
         commentFieldTemplate.querySelector(".username").innerHTML = "Max Mustermann";
-        commentFieldTemplate.querySelector(".title").innerHTML = "Titel";
         commentFieldTemplate.querySelector(".message").innerHTML = text;
         this.discussion.appendChild(commentFieldTemplate);
     }

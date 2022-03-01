@@ -10,7 +10,7 @@ class ProjectListItemView extends Observable {
         this.name = name;
         this.body = createElementFromHTML(document.getElementById("dropdown-list-item-template").innerHTML);
         this.body.querySelector(".project-name").innerHTML = this.name;
-        this.body.addEventListener("click", this.onProjectClicked.bind(this))
+        this.body.addEventListener("click", this.onProjectClicked.bind(this));
     }
 
     onProjectClicked() {

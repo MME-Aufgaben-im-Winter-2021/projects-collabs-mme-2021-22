@@ -16,7 +16,6 @@
 <template id="comment-field-template">
     <li class="border text-field">
         <span class="comment-header username"></span>
-        <span class="comment-header title"></span>
         <span class="message"></span>
         <!-- Zukunftsmusik
         <span class="voting system">
@@ -77,12 +76,12 @@
                     <!--all ul in ul hidden except chosen one-->
                     <!-- conversation template gets added here, new li for each specific comment and answers-->
                 </ul>
-                <li class="comment-controls border">
+                <div class="comment-controls border">
                     <label>
                         <input type="text" class="input-comment" placeholder="Anmerkung">
                     </label>
-                    <span class="submit" src="">+</span>
-                </li>
+                    <span class="submit">+</span>
+                </div>
             </div>
         </div>
 
@@ -97,8 +96,17 @@
     </div>
 </template>
 
+<!-- template for login dialog -->
 <template id="login-template">
-    <div class="login">
+    <div class="login border">
+        <label>
+            <span class="input-user-data description">username</span>
+            <input class="username input-user-data" type="text">
+        </label>
+        <label>
+            <span class="input-user-data description">password</span>
+            <input class="password input-user-data" type="password">
+        </label>
         <button class="login-button">login</button>
     </div>
 </template>
