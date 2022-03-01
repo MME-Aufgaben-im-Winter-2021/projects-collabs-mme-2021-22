@@ -20,19 +20,20 @@ class LoginView extends Observable {
     constructor() {
         super();
         this.body = createElementFromHTML(document.querySelector("#login-template").innerHTML);
-        this.body.querySelector(".login-button").addEventListener("click", this.onLoginButtonClicked.bind(this));
+        this.loginButton = this.body.querySelector(".login-button");
+        this.usernameInput = this.body.querySelector(".username.input-user-data");
+        this.passwordInput = this.body.querySelector(".password.input-user-data");
+        this.loginButton.addEventListener("click", this.onPerformLogin.bind(this));
+        this.passwordInput.addEventListener("change", this.onPerformLogin.bind(this));
     }
 
-    onLoginButtonClicked() {
-        let username = this.body.getElementsByClassName("username")[0],
-            password = this.body.getElementsByClassName("password")[0];
-        if (loginSuccessful(username.value, password.value)) {
+    onPerformLogin() {
+        if (loginSuccessful(this.usernameInput.value, this.passwordInput.value)) {
             this.notifyAll(new Event("userLoggedIn"));
         } else {
             // show error animation
             this.body.classList.add("show-error-animation");
-            setTimeout(() => stopAnimation(this.body, password), CONFIG.DURATION_ERROR_ANIMATION_MS);
-
+            setTimeout(() => stopAnimation(this.body, this.passwordInput), CONFIG.DURATION_ERROR_ANIMATION_MS);
         }
     }
 }
