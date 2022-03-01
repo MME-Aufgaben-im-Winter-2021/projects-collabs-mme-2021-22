@@ -8,6 +8,7 @@ import ToolBarView from "./ToolBarView.js";
 import ScreenshotContainerView from "./ScreenshotContainerView.js";
 import CommentSectionView from "./CommentSectionView.js";
 import UploadImgView from "./UploadImgView.js";
+import FrameListView from "./FrameListView.js";
 
 class MainUIHandler extends Observable {
     constructor() {
@@ -35,6 +36,7 @@ class MainUIHandler extends Observable {
         this.commentSectionView.addEventListener("commentEntered", this.handleNewComment.bind(this));
         this.uploadImgView = new UploadImgView(container);
         this.uploadImgView.addEventListener("urlEntered", this.handleUrlEntered.bind(this));
+        this.frameListView = new FrameListView(container);
         siteBody.removeChild(document.querySelector(".login"));
         siteBody.appendChild(this.toolBarView.body);
         siteBody.appendChild(container);
