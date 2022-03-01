@@ -63,8 +63,8 @@ body {
     border-color: var(--base-dark);
 }
 
-/* toolbar */
-.toolbar {
+/* navbar */
+.navbar {
     display: flex;
     flex-direction: row;
 
@@ -248,7 +248,7 @@ body {
     border-radius: 25px;
 }
 
-/* add screenshot toolbar */
+/* add screenshot navbar */
 .upload-img {
     display: flex;
     flex-direction: row;
