@@ -150,28 +150,36 @@ body {
     flex-direction: row;
     width: 100%;
     /* height is calculated in a way, that the screenshot is roughly drawn in a 16:9 ratio */
-    height: calc(90vw * 0.56 * 0.8);
+
 }
 
 .website-picture {
     flex: 5;
     align-self: flex-start;
-
-    width: 60%;
     margin-top: 2%;
+
+    height: calc(80vw * 0.56 * 0.8);
+    width: calc(80vw * 0.8);
+
+}
+
+.screenshot, .canvas {
+    height: calc(80vw * 0.56 * 0.8);
+    width: calc(80vw * 0.8);
+    position: absolute;
 }
 
 /* comments */
 .comment-section {
     flex: 1;
-    align-self: flex-end;
+    align-self: center;
 
     display: flex;
     flex-flow: column;
     justify-content: space-between;
 
     padding: 10px;
-    width: 79vw;
+    width: 78vw;
     height: 30vh;
 
     background-color: var(--background-gray);
@@ -184,10 +192,14 @@ body {
     flex-direction: column;
 
     max-height: 25vh;
-    width: 98%;
+    width: 100%;
+    padding: 2px;
 
     overflow: scroll;
     overflow-x: hidden;
+
+    border-top: solid;
+    border-color: var(--base-dark);
 }
 
 .comment-controls {
@@ -198,7 +210,7 @@ body {
     justify-content: space-between;
 
     padding: 2px;
-    width: 99%;
+    width: 100%;
 
     background-color: var(--base-light);
     border-color: var(--base-light);
@@ -261,8 +273,8 @@ body {
     flex-direction: column;
     justify-content: center;
 
-    margin: 5px;
-    width: 90%;
+    margin-top: 4px;
+    width: 99%;
 
     background-color: var(--base-dark);
     color: var(--snow);
@@ -273,10 +285,8 @@ body {
     font-weight: bold;
 
     padding: 1px;
-    width: 100%;
 
-    border-bottom-style: solid;
-    border-bottom-width: 1px;
+    background-color: var(--background-gray);
 }
 
 .message {

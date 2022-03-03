@@ -9,6 +9,7 @@ import ScreenshotContainerView from "./ScreenshotContainerView.js";
 import CommentSectionView from "./CommentSectionView.js";
 import UploadImgView from "./UploadImgView.js";
 import FrameListView from "./FrameListView.js";
+import CanvasView from "./CanvasView.js";
 
 class MainUIHandler extends Observable {
     constructor() {
@@ -39,6 +40,7 @@ class MainUIHandler extends Observable {
         this.uploadImgView = new UploadImgView(container);
         this.uploadImgView.addEventListener("urlEntered", this.handleUrlEntered.bind(this));
         this.frameListView = new FrameListView(container);
+        this.canvas = new CanvasView(container);
         // siteBody.removeChild(document.querySelector(".login"));
         siteBody.appendChild(this.navBarView.body);
         siteBody.appendChild(container);

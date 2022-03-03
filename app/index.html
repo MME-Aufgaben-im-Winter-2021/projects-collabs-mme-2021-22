@@ -14,7 +14,7 @@
 
     <!-- template for a single comment -->
     <template id="comment-field-template">
-        <li class="border text-field">
+        <div class="border text-field">
             <span class="comment-header username"></span>
             <span class="message"></span>
             <!-- Zukunftsmusik
@@ -23,7 +23,8 @@
                 <span class="icon" class="downvote"><img src=""></span>
             </span>
             -->
-        </li>
+
+        </div>
     </template>
 
     <!-- template for a single frame in the list containing the other screenshots of the website -->
@@ -45,9 +46,9 @@
         <div class="navbar">
             <div class="dropdown-menu">
                 <span class="user-display-name">username</span>
-                <span class="logout-button">Logout</span>
+                <span class="logout-button">logout</span>
                 <button class="dropdown-button">
-                    Projects
+                    projects
                     <i class="fa fa-caret-down"></i>
                 </button>
                 <!-- has class hidden by default; remove on click on dropdown arrow -->
@@ -55,20 +56,13 @@
                     <!-- the projects in the database are displayed here -->
                     <span class="item">test item</span>
                 </ul>
+                <span class="new-project">new project</span>
             </div>
         </div>
     </template>
 
     <template id="container-template">
         <div class="container border">
-            <div class="screenshot-container">
-                <img class="website-picture" src="./resources/css/test.png" alt="screenshot">
-                <ul class="frame-list">
-                    <!-- different screenshots of the website get added here -->
-                </ul>
-
-            </div>
-
             <div class="upload-img">
                 <label>
                     <input type="text" class="input-url" placeholder="insert new url">
@@ -76,6 +70,17 @@
                 <img class="round-button upload-img-button" src="" alt="upload"> <!-- upload-img icon -->
                 <span class="round-button delete"><img src="" alt="delete"></span> <!-- delete icon -->
                 <span class="round-button save"><img src="" alt="save"></span> <!-- save icon -->
+            </div>
+            <div class="screenshot-container">
+                <div class="website-picture">
+                    <img class="screenshot" src="resources/css/test.png" alt="screenshot"/>
+                    <canvas class="canvas"></canvas>
+                </div>
+
+                <ul class="frame-list">
+                    <!-- different screenshots of the website get added here -->
+                </ul>
+
             </div>
             <div class="comment-section">
                 <ul id="0" class="comment-section discussion">
