@@ -6,7 +6,7 @@ import createElementFromHTML from "../utils/Utilities.js";
 import CONFIG from "../utils/Config.js";
 
 function loginSuccessful(username, password) {
-    // TODO: add method to verify user information by accessing the database
+    // TODO: delete/"adjust" later
     return username === "username" && password === "password";
 }
 

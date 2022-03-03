@@ -13,8 +13,10 @@ import FrameListView from "./FrameListView.js";
 class MainUIHandler extends Observable {
     constructor() {
         super();
+        // this.buildUIAfterLogin();
     }
 
+    // commented out the login procedure for easier debugging
     displayLoginWindow() {
         this.loginView = new LoginView();
         const siteBody = document.querySelector("body");
@@ -37,7 +39,7 @@ class MainUIHandler extends Observable {
         this.uploadImgView = new UploadImgView(container);
         this.uploadImgView.addEventListener("urlEntered", this.handleUrlEntered.bind(this));
         this.frameListView = new FrameListView(container);
-        siteBody.removeChild(document.querySelector(".login"));
+        // siteBody.removeChild(document.querySelector(".login"));
         siteBody.appendChild(this.navBarView.body);
         siteBody.appendChild(container);
     }

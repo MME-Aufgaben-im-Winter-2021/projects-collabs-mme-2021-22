@@ -12,65 +12,71 @@
     <script type="module" src="./src/index.js"></script>
 </body>
 
-<!-- template for a single comment -->
-<template id="comment-field-template">
-    <li class="border text-field">
-        <span class="comment-header username"></span>
-        <span class="message"></span>
-        <!-- Zukunftsmusik
-        <span class="voting system">
-            <span class="icon" class="upvote"><img src=""></span>
-            <span class="icon" class="downvote"><img src=""></span>
-        </span>
-        -->
-    </li>
-</template>
+    <!-- template for a single comment -->
+    <template id="comment-field-template">
+        <li class="border text-field">
+            <span class="comment-header username"></span>
+            <span class="message"></span>
+            <!-- Zukunftsmusik
+            <span class="voting system">
+                <span class="icon" class="upvote"><img src=""></span>
+                <span class="icon" class="downvote"><img src=""></span>
+            </span>
+            -->
+        </li>
+    </template>
 
-<!-- template for a single frame in the list containing the other screenshots of the website -->
-<template id="frame-list-item-template">
-    <li class="frame-list-item border">
-        <span class="frame-description">title</span>
-        <img class="frame-img" src="./resources/css/test.png" alt="alt frame">
-    </li>
-</template>
+    <!-- template for a single frame in the list containing the other screenshots of the website -->
+    <template id="frame-list-item-template">
+        <li class="frame-list-item border">
+            <span class="frame-description">title</span>
+            <img class="frame-img" src="./resources/css/test.png" alt="alt frame">
+        </li>
+    </template>
 
-<!-- template for a project displayed in the dropdown list -->
-<template id="dropdown-list-item-template">
-    <div class="dropdown-list-item">
-        <span class="project-name"></span>
-    </div>
-</template>
+    <!-- template for a project displayed in the dropdown list -->
+    <template id="dropdown-list-item-template">
+        <div class="dropdown-list-item">
+            <span class="project-name"></span>
+        </div>
+    </template>
 
-<template id="navbar-template">
-    <div class="navbar border">
-        <div class="dropdown-menu">
-            <div class="dropdown-menu-controls">
-                <span class="dropdown-description">Projects</span>
-            </div>
-            <!-- has class hidden by default; remove on click on dropdown arrow -->
-            <div class="dropdown-container border hidden">
-                <div class="search-bar">
-                    <label>
-                        <input class="input-search-bar">
-                    </label>
-                    <!-- search button img retrieved from: https://www.vecteezy.com/vector-art/367249-search-vector-icon -->
-                    <img class="search-button" src="resources/icons/search_icon.jpg">
-                </div>
+    <template id="navbar-template">
+        <div class="navbar">
+            <div class="dropdown-menu">
+                <span class="user-display-name">username</span>
+                <span class="logout-button">Logout</span>
+                <button class="dropdown-button">
+                    Projects
+                    <i class="fa fa-caret-down"></i>
+                </button>
+                <!-- has class hidden by default; remove on click on dropdown arrow -->
                 <ul class="dropdown-list">
                     <!-- the projects in the database are displayed here -->
+                    <span class="item">test item</span>
                 </ul>
             </div>
         </div>
-    </div>
-</template>
+    </template>
 
-<template id="container-template">
-    <div class="container border">
-        <div class="screenshot-container">
-            <ul class="frame-list">
-                <!-- different screenshots of the website get added here -->
-            </ul>
-            <img class="website-picture" src="./resources/css/test.png" alt="screenshot">
+    <template id="container-template">
+        <div class="container border">
+            <div class="screenshot-container">
+                <img class="website-picture" src="./resources/css/test.png" alt="screenshot">
+                <ul class="frame-list">
+                    <!-- different screenshots of the website get added here -->
+                </ul>
+
+            </div>
+
+            <div class="upload-img">
+                <label>
+                    <input type="text" class="input-url" placeholder="insert new url">
+                </label>
+                <img class="round-button upload-img-button" src="" alt="upload"> <!-- upload-img icon -->
+                <span class="round-button delete"><img src="" alt="delete"></span> <!-- delete icon -->
+                <span class="round-button save"><img src="" alt="save"></span> <!-- save icon -->
+            </div>
             <div class="comment-section">
                 <ul id="0" class="comment-section discussion">
                     <!--all ul in ul hidden except chosen one-->
@@ -78,37 +84,12 @@
                 </ul>
                 <div class="comment-controls border">
                     <label>
-                        <input type="text" class="input-comment" placeholder="Anmerkung">
+                        <input type="text" class="input-comment" placeholder="comment">
                     </label>
-                    <span class="submit">+</span>
+                    <span class="submit">submit</span>
                 </div>
             </div>
         </div>
-
-        <div class="upload-img">
-            <label>
-                <input type="text" class="input-url" placeholder="URL einfügen.">
-            </label>
-            <img class="round-button upload-img-button" src="" alt="upload"> <!-- upload-img icon -->
-            <span class="round-button delete"><img src="" alt="delete"></span> <!-- delete icon -->
-            <span class="round-button save"><img src="" alt="save"></span> <!-- save icon -->
-        </div>
-    </div>
-</template>
-
-<!-- template for login dialog -->
-<template id="login-template">
-    <div class="login border">
-        <label>
-            <span class="input-user-data description">username</span>
-            <input class="username input-user-data" type="text">
-        </label>
-        <label>
-            <span class="input-user-data description">password</span>
-            <input class="password input-user-data" type="password">
-        </label>
-        <button class="login-button">login</button>
-    </div>
-</template>
+    </template>
 
 </html>

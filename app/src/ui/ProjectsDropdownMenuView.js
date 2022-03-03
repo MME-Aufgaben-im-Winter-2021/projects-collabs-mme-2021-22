@@ -6,12 +6,9 @@ import ProjectListItemView from "./ProjectListItemView.js";
 class ProjectsDropdownMenuView extends Observable {
     constructor(toolBarBody) {
         super();
-        this.body = toolBarBody.querySelector(".dropdown-container");
-        this.searchInputElement = this.body.querySelector("input.input-search-bar");
-        this.searchButton = this.body.querySelector(".search-button");
+        this.body = toolBarBody.querySelector(".dropdown-menu");
         this.projectListView = this.body.querySelector(".dropdown-list");
-        this.searchInputElement.addEventListener("change", this.onSearchTermEntered.bind(this));
-        this.searchButton.addEventListener("click", this.onSearchTermEntered.bind(this));
+        this.initDropdownButton();
         this.addProjectToProjectListView();
     }
 
@@ -24,10 +21,17 @@ class ProjectsDropdownMenuView extends Observable {
         }
     }
 
-    onSearchTermEntered() {
-        if (this.searchInputElement.value !== "") { // do not accept empty strings to search   
-            this.searchInputElement.value = "";
-        }
+    initDropdownButton() {
+        const dropdownButton = this.body.getElementsByClassName("dropdown-button")[0];
+        dropdownButton.addEventListener("click", () => {
+            dropdownButton.classList.toggle("active");
+            const content = this.body.getElementsByClassName("dropdown-list")[0];
+            if (content.style.display === "block") {
+                content.style.display = "none";
+            } else {
+                content.style.display = "block";
+            }
+        });
     }
 
     addProjectToProjectListView() {

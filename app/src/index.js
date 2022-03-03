@@ -10,25 +10,25 @@ import CommentSectionView from "./ui/CommentSectionView.js";
 import CONFIG from "./utils/config.js";
 import createElementFromHTML from "./utils/Utilities.js";
 
-var isLoggedIn = false;
+let isLoggedIn = false;
 
 const model = new Model(), // example, could be e.g. Database Handler
     mainUIHandler = new MainUIHandler();
 
 function init() {
-    mainUIHandler.addEventListener("userLoggedIn", onUserLoggedIn);
-    console.log("### Starting MME Project ###");
+    mainUIHandler.buildUIAfterLogin(); // TODO: remove later -> for debugging
+    /* mainUIHandler.addEventListener("userLoggedIn", onUserLoggedIn);
     if (!isLoggedIn) {
         mainUIHandler.displayLoginWindow();
     } else {
         onUserLoggedIn();
     }
+    */
     // toolsView.addEventListener("toolAddButtonClicked", onToolAddButtonClicked);
     // addExampleComment();
 }
 
 function onUserLoggedIn() {
-    console.log("User logged in");
     isLoggedIn = true;
     mainUIHandler.buildUIAfterLogin();
 }

@@ -9,7 +9,7 @@ class NavBarView extends Observable {
     constructor() {
         super();
         this.body = createElementFromHTML(document.querySelector("#navbar-template").innerHTML);
-        this.body.querySelector(".dropdown-description").addEventListener("click", this.onProjectsToolClicked.bind(this));
+        this.body.querySelector(".dropdown-list").addEventListener("click", this.onProjectsToolClicked.bind(this));
         this.projectsDropdownMenuView = new ProjectsDropdownMenuView(this.body);  
     }
 

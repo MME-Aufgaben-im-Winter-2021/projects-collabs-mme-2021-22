@@ -18,6 +18,7 @@
 
     --background-gray: #262626;
     --background-black: #0d0d0d;
+    --background-light: #f5f4f0;
 
     --element-width: 100%
 }
@@ -37,49 +38,6 @@ body {
     font-family: 'Space Grotesk', sans-serif;
     margin: 0;
     padding: 0;
-}
-
-/* Animation from: https://codepen.io/biancadanforth/pen/BLYvqm */
-
-.show-error-animation {
-    animation: error-animation;
-    animation-duration: .5s;
-    animation-delay: 0.25s;
-}
-
-@keyframes error-animation {
-    0% {
-        transform: translateX(0px);
-        timing-function: ease-in;
-    }
-    37% {
-        transform: translateX(10px);
-        timing-function: ease-out;
-    }
-    55% {
-        transform: translateX(-10px);
-        timing-function: ease-in;
-    }
-    73% {
-        transform: translateX(8px);
-        timing-function: ease-out;
-    }
-    82% {
-        transform: translateX(-8px);
-        timing-function: ease-in;
-    }
-    91% {
-        transform: translateX(4px);
-        timing-function: ease-out;
-    }
-    96% {
-        transform: translateX(-4px);
-        timing-function: ease-in;
-    }
-    100% {
-        transform: translateX(0px);
-        timing-function: ease-in;
-    }
 }
 
 /* non-specific attributes */
@@ -105,86 +63,58 @@ body {
     border-color: var(--base-dark);
 }
 
-/* navbar */
-.navbar {
-    display: flex;
-    flex-direction: row;
-
-    height: 5vh;
-    margin: 0 0.5%;
-    width: 99%;
-}
-
+/* navbar with dropdown menu: code from https://www.w3schools.com/howto/howto_js_dropdown_sidenav.asp */
 .dropdown-menu {
-    text-align: justify;
-    align-self: flex-start;
-
     display: flex;
     flex-direction: column;
-    color: var(--snow);
-    margin-block: 4px;
 
-    padding: 2px;
-    height: 4vh;
-    width: 150px;
-}
-
-.dropdown-menu-controls {
-    display: flex;
-    flex-direction: row;
-}
-
-.dropdown-description {
-    align-self: flex-start;
-}
-
-.dropdown-arrow {
-    align-self: flex-end;
-    width: 4vh;
-    height: 4vh;
-    border-radius: 25px;
-}
-
-.dropdown-container {
+    height: 100%;
+    width: 8vw;
+    position: fixed;
     z-index: 9;
-    display: flex;
-    flex-direction: column;
+    top: 0;
+    left: 0;
+
     background-color: var(--background-gray);
-    padding-left: 4px;
-    width: 250px;
+    overflow: hidden;
+    padding: 5px;
+    border-right: solid;
+    border-color: var(--base-dark);
 }
 
-.search-bar {
-    display: flex;
-    flex-direction: row;
-    justify-content: space-between;
-
-    width: 250px;
-    height: 5vh;
-    margin-block: 2px;
+.dropdown-menu span, .dropdown-button, .project-name, .dropdown-list {
+    padding: 6px 8px 6px 16px;
+    text-decoration: none;
+    font-size: 20px;
+    color: #818181;
+    display: block;
+    border: none;
+    background: none;
+    width:100%;
+    text-align: left;
+    cursor: pointer;
+    outline: none;
 }
 
-.input-search-bar {
-    align-self: baseline;
-    float: right;
-    width: 200px;
-    height: 20px;
+.navbar:hover {
+    color: #f1f1f1;
 }
 
-.search-button {
-    align-self: baseline;
-    width: 25px;
-    height: 25px;
-    border-radius: 25px;
+/* Add an active class to the active dropdown button */
+.active {
+    background-color: green;
+    color: white;
 }
 
+/* .dropdown-list is not visible when loading the dropdown menu */
 .dropdown-list {
-    align-self: flex-end;
-    height: 200px;
-    width: 100%;
+    display: none;
+}
 
-    overflow: scroll;
-    overflow-x: hidden;
+/* Optional: Style the caret down icon */
+.fa-caret-down {
+    float: right;
+    padding-right: 8px;
 }
 
 /* parent div container for frame list, screenshot, comment list and ui elements*/
@@ -192,14 +122,13 @@ body {
     display: flex;
     flex-direction: column;
 
-    margin: 2vh 5vw;
+    margin: 2vh 0 2vh 9vw;
     width: 90vw;
 }
 
 /* frame list */
 .frame-list {
     width: 10vw;
-    height: 100%;
     padding: 0 15px;
 
     overflow: scroll;
@@ -207,13 +136,21 @@ body {
 }
 
 /* website screenshot*/
+
+.container {
+    display: flex;
+    flex-direction: column;
+
+    width: 80vw;
+    background-color: var(--background-gray);
+}
+
 .screenshot-container {
     display: flex;
     flex-direction: row;
     width: 100%;
     /* height is calculated in a way, that the screenshot is roughly drawn in a 16:9 ratio */
     height: calc(90vw * 0.56 * 0.8);
-    background-color: var(--background-gray);
 }
 
 .website-picture {
@@ -231,20 +168,23 @@ body {
 
     display: flex;
     flex-flow: column;
+    justify-content: space-between;
 
-    padding: 5px;
-    width: 14vw;
-    height: 98%;
+    padding: 10px;
+    width: 79vw;
+    height: 30vh;
 
     background-color: var(--background-gray);
 }
 
 .discussion {
+    align-self: center;
+
     display: flex;
     flex-direction: column;
 
-    width: 95%;
-    max-height: 100%;
+    max-height: 25vh;
+    width: 98%;
 
     overflow: scroll;
     overflow-x: hidden;
@@ -255,12 +195,10 @@ body {
 
     display: flex;
     flex-direction: row;
-    align-content: center;
-    justify-content: space-around;
+    justify-content: space-between;
 
-    height: 24px;
     padding: 2px;
-    width: 14vw;
+    width: 99%;
 
     background-color: var(--base-light);
     border-color: var(--base-light);
@@ -269,19 +207,24 @@ body {
 }
 
 .input-comment {
-    width: 10vw;
-    height: 20px;
+    align-self: baseline;
+
+    width: 70vw;
+    height: 2em;
+
+    vertical-align: bottom;
 }
 
 .submit {
     display: inline-block;
+    align-self: baseline;
 
     font-weight: bold;
     text-align: center;
-    text-decoration: none;
 
-    width: 20px;
-    height: 20px;
+    height: 2em;
+    width: 7vw;
+    padding: 1px;
 
     color: var(--snow);
     background-color: var(--base-dark);
@@ -311,8 +254,6 @@ body {
 
     text-align: center;
 }
-
-/* template styles: */
 
 /* comment template */
 .text-field {
@@ -382,42 +323,6 @@ body {
     height: 20px;
     padding: 2px;
     word-break: break-all;
-}
-
-/* login template styles */
-.login {
-    margin: calc(50vh - 125px) auto;
-
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-
-    height: 125px;
-    width: 200px;
-    padding: 5px;
-
-    color: var(--snow);
-}
-
-.input-user-data {
-    width: 190px;
-}
-
-.description {
-    font-weight: bold;
-}
-
-.login-button {
-    align-self: center;
-    width: 100%;
-
-    border: solid;
-    border-radius: 5px;
-    border-color: var(--base-dark);
-
-    font-weight: bold;
-    color: var(--snow);
-    background-color: var(--base-dark);
 }
 
 /* https://www.w3schools.com/howto/howto_css_custom_scrollbar.asp */
