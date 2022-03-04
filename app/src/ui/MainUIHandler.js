@@ -40,7 +40,8 @@ class MainUIHandler extends Observable {
         this.uploadImgView = new UploadImgView(container);
         this.uploadImgView.addEventListener("urlEntered", this.handleUrlEntered.bind(this));
         this.frameListView = new FrameListView(container);
-        this.canvas = new CanvasView(container);
+        this.canvasView = new CanvasView(container);
+        this.canvasView.canvas.addEventListener("click", this.createVisualLinkToNote.bind(this));
         // siteBody.removeChild(document.querySelector(".login"));
         siteBody.appendChild(this.navBarView.body);
         siteBody.appendChild(container);
@@ -61,6 +62,21 @@ class MainUIHandler extends Observable {
 
     addComment(text) {
         this.commentSectionView.addComment(text);
+    }
+
+    createVisualLinkToNote(event){
+        let context = this.canvasView.context,
+         canvas = this.canvasView.canvas,
+         bound = canvas.getBoundingClientRect(),
+         x = event.clientX - bound.left - canvas.offsetLeft,
+         y = event.clientY - bound.top - canvas.offsetTop;
+        context.beginPath();
+        context.fillStyle = "blue";
+        context.rect(x,y, 5, 5);
+        console.log(event.pageX + " "+ event.pageY);
+        context.stroke();
+        context.fill();
+        console.log("click");
     }
 }
 
