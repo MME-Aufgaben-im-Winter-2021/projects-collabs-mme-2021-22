@@ -2,6 +2,7 @@
 
 import { Event, Observable } from "../utils/Observable.js";
 import createElementFromHTML from "../utils/Utilities.js";
+import Comment from "./Comment.js";
 
 class CommentSectionView extends Observable {
     constructor(container) {
@@ -11,6 +12,7 @@ class CommentSectionView extends Observable {
         this.submitButton = container.querySelector(".comment-controls .submit");
         this.submitButton.addEventListener("click", this.onCommentEntered.bind(this));
         this.commentInputElement.addEventListener("change", this.onCommentEntered.bind(this));
+
     }
 
     onCommentEntered() {
@@ -21,8 +23,10 @@ class CommentSectionView extends Observable {
     }
 
     addComment(text) {
+        let test = new Comment();
+        test.onLoad();
         const commentFieldTemplate = createElementFromHTML(document.getElementById("comment-field-template").innerHTML);
-        commentFieldTemplate.querySelector(".username").innerHTML = "Max Mustermann";
+        commentFieldTemplate.querySelector(".username").innerText = "Max Mustermann";
         commentFieldTemplate.querySelector(".message").innerHTML = text;
         this.discussion.appendChild(commentFieldTemplate);
     }

@@ -5,12 +5,11 @@ import createElementFromHTML from "../utils/Utilities.js";
 import ProjectsDropdownMenuView from "./ProjectsDropdownMenuView.js";
 
 class NavBarView extends Observable {
-    // TODO: Dropdown menu
     constructor() {
         super();
         this.body = createElementFromHTML(document.querySelector("#navbar-template").innerHTML);
-        this.body.querySelector(".dropdown-list").addEventListener("click", this.onProjectsToolClicked.bind(this));
-        this.projectsDropdownMenuView = new ProjectsDropdownMenuView(this.body);  
+        // this.body.querySelector(".dropdown-list").addEventListener("click", this.onProjectsToolClicked.bind(this));
+        this.projectsDropdownMenuView = new ProjectsDropdownMenuView(this.body);
     }
 
     onProjectsToolClicked() {
