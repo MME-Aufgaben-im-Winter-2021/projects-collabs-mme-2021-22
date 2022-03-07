@@ -1,19 +1,118 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>MME: Projekte im WS 2021/22</title>
+    <title>Collabs</title>
     <link rel="stylesheet" href="./resources/css/style.css">
 </head>
 
 <body>
-    <div class="ui">
-        <h1>MME: Projekte im WS 2021/22</h1>
-    </div>
-
-   <script type="module" src="./src/index.js"></script>
+    <script type="module" src="./src/index.js"></script>
 </body>
+
+<!-- template for a single comment -->
+<template id="comment-field-template">
+    <div class="border text-field">
+        <span class="comment-header username"></span>
+        <div class="comment-content">
+            <span class="message"></span>
+            <!-- TODO: set icons -->
+            <div class="user-interactions">
+                <button class="reply"><img src="" alt="↵"></button>
+                <span class="reply-count">0</span>
+                <button class="upvote"><img src="" alt="△"></button>
+                <span class="upvote-count">0</span>
+                <button class="downvote"><img src="" alt="▽"></button>
+                <span class="downvote-count">0</span>
+            </div>
+        </div>
+    </div>
+</template>
+
+<!-- template for a single frame in the list containing the other screenshots of the website -->
+<template id="frame-list-item-template">
+    <li class="frame-list-item border">
+        <span class="frame-description">title</span>
+        <img class="frame-img" src="./resources/css/test.png" alt="alt frame">
+    </li>
+</template>
+
+<!-- template for a project displayed in the dropdown list -->
+<template id="dropdown-list-item-template">
+    <div class="dropdown-list-item">
+        <span class="project-name"></span>
+    </div>
+</template>
+
+<template id="navbar-template">
+    <div class="navbar">
+        <div class="dropdown-menu">
+            <span class="user-display-name">username</span>
+            <span class="logout-button">logout</span>
+            <button class="dropdown-button">
+                projects
+                <i class="fa fa-caret-down"></i>
+            </button>
+            <!-- has class hidden by default; remove on click on dropdown arrow -->
+            <ul class="dropdown-list">
+                <!-- the projects in the database are displayed here -->
+            </ul>
+            <span class="new-project">new project</span>
+        </div>
+    </div>
+</template>
+
+<template id="container-template">
+    <div class="container border">
+        <div class="upload-img">
+            <label>
+                <input type="text" class="input-url" placeholder="insert new url">
+            </label>
+            <img class="round-button upload-img-button" src="" alt="upload"> <!-- upload-img icon -->
+            <span class="round-button delete"><img src="" alt="delete"></span> <!-- delete icon -->
+            <span class="round-button save"><img src="" alt="save"></span> <!-- save icon -->
+        </div>
+        <div class="screenshot-container">
+            <div class="website-picture">
+                <img class="screenshot" src="resources/css/test.png" alt="screenshot" />
+                <canvas class="canvas"></canvas>
+            </div>
+
+            <ul class="frame-list">
+                <!-- different screenshots of the website get added here -->
+            </ul>
+
+        </div>
+        <div class="comment-section">
+            <ul id="0" class="comment-section discussion">
+                <!--all ul in ul hidden except chosen one-->
+                <!-- conversation template gets added here, new li for each specific comment and answers-->
+            </ul>
+            <div class="comment-controls border">
+                <label>
+                    <input type="text" class="input-comment" placeholder="comment">
+                </label>
+                <span class="submit">submit</span>
+            </div>
+        </div>
+    </div>
+</template>
+
+<!-- template for login dialog -->
+<template id="login-template">
+    <div class="login border">
+        <label>
+            <span class="input-user-data description">username</span>
+            <input class="username input-user-data" type="text">
+        </label>
+        <label>
+            <span class="input-user-data description">password</span>
+            <input class="password input-user-data" type="password">
+        </label>
+        <button class="login-button">login</button>
+    </div>
+</template>
 
 </html>
