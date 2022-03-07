@@ -5,17 +5,25 @@ import createElementFromHTML from "../utils/Utilities.js";
 import ProjectsDropdownMenuView from "./ProjectsDropdownMenuView.js";
 
 class NavBarView extends Observable {
-    constructor() {
+
+    constructor(displayName) {
         super();
         this.body = createElementFromHTML(document.querySelector("#navbar-template").innerHTML);
-        // this.body.querySelector(".dropdown-list").addEventListener("click", this.onProjectsToolClicked.bind(this));
+        this.userDisplayName = this.body.querySelector(".user-display-name");
+        this.userDisplayName.innerHTML = displayName;
+        this.logoutButton = this.body.querySelector(".logout-button");
+        this.logoutButton.addEventListener("click", this.onLogoutButtonClicked.bind(this));
         this.projectsDropdownMenuView = new ProjectsDropdownMenuView(this.body);
     }
 
     onProjectsToolClicked() {
         this.notifyAll(new Event("projectsToolClicked"));
-        this.projectsDropdownMenuView.toggle();
     }
+
+    onLogoutButtonClicked() {
+        this.notifyAll(new Event("userLoggedOut"));
+    }
+
 }
 
 export default NavBarView;

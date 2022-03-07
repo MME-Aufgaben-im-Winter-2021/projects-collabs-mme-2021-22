@@ -32,7 +32,7 @@ class CommentSectionView extends Observable {
     addReply(event) {
         if (this.commentInputElement.value.trim() !== "") { // do not accept empty strings as comment
             this.notifyAll(new Event("commentEntered", { commentText: this.commentInputElement.value }));
-            let reply = new Comment(this.discussion, this.commentInputElement.value, event.data.isResponse, event.data.commentColor);
+            let reply = new Comment(this.discussion, this.commentInputElement.value, event.data.commentColor, event.data.isResponse);
             reply.onLoad();
             this.commentInputElement.value = "";
         }

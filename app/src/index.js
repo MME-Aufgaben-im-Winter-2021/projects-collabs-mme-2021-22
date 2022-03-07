@@ -1,36 +1,101 @@
 /* eslint-env browser */
 
-import Model from "./Model.js";
-import ToolsView from "./ui/ToolsView.js";
-import ScreenshotContainerView from "./ui/ScreenshotContainerView.js";
-import UploadImgView from "./ui/UploadImgView.js";
-import LoginView from "./ui/LoginView.js";
 import MainUIHandler from "./ui/MainUIHandler.js";
-import CommentSectionView from "./ui/CommentSectionView.js";
+import DatabaseHandler from "./db/DatabaseHandler.js";
 import CONFIG from "./utils/config.js";
-import createElementFromHTML from "./utils/Utilities.js";
 
-let isLoggedIn = false;
+var isLoggedIn = false;
 
-const model = new Model(), // example, could be e.g. Database Handler
+const databaseHandler = new DatabaseHandler(),
     mainUIHandler = new MainUIHandler();
 
+databaseHandler.addEventListener("userSignInSuccessful", onUserLoggedIn);
+databaseHandler.addEventListener("userSignInFailed", onUserLoginFailed);
+databaseHandler.addEventListener("userSignOutSuccessful", onUserLogoutSuccessful);
+databaseHandler.addEventListener("userSignOutFailed", onUserLogoutFailed);
+mainUIHandler.addEventListener("userLoggedIn", onUserLoggedIn);
+mainUIHandler.addEventListener("userLoggedOut", onUserLoggedOut);
+mainUIHandler.addEventListener("makeNewScreenshot", makeNewScreenshot);
+mainUIHandler.addEventListener("newCommentEntered", saveNewComment);
+
 function init() {
-    mainUIHandler.buildUIAfterLogin(); // TODO: remove later -> for debugging
-    /* mainUIHandler.addEventListener("userLoggedIn", onUserLoggedIn);
+    console.log("### Starting MME Project ###");
     if (!isLoggedIn) {
         mainUIHandler.displayLoginWindow();
     } else {
         onUserLoggedIn();
     }
-    */
-    // toolsView.addEventListener("toolAddButtonClicked", onToolAddButtonClicked);
-    // addExampleComment();
 }
 
-function onUserLoggedIn() {
+function onUserLoggedIn(event) {
+    console.log("User logged in");
+    console.log(event.data.user.displayName);
     isLoggedIn = true;
-    mainUIHandler.buildUIAfterLogin();
+    mainUIHandler.buildUIAfterLogin(event.data.user.displayName);
+}
+
+function onUserLoginFailed(event) {
+    console.log(event.data);
+}
+
+function onUserLoggedOut() {
+    databaseHandler.logout();
+}
+
+function onUserLogoutSuccessful() {
+    isLoggedIn = false;
+    mainUIHandler.buildUIAfterLogout();
+}
+
+function onUserLogoutFailed(event) {
+    console.log(event.data);
+}
+
+function makeNewScreenshot(event) {
+    getScreenshot(event.data.url);
 }
 
 init();
+
+// die URL die der Funktion übergeben werden sollte, ist die URL die aus dem Inputfield ausgelesen wird
+// Funktion ändert die URL der API auf die entsprechende URL ab
+function getApiForUrl(url) {
+    const screenshotURL = CONFIG.SCREENSHOT_API.replace("$API_KEY", CONFIG.API_KEY).replace("$URL", url).replace("$WIDTH", CONFIG.SCREENSHOT_WIDTH).replace("$HEIGHT", CONFIG.SCREENSHOT_HEIGHT);
+    return screenshotURL;
+}
+
+async function getBase64FromUrl(url) {
+    // taken from https://stackoverflow.com/a/64929732
+    const data = await fetch(url),
+        blob = await data.blob();
+    return new Promise((resolve) => {
+        const reader = new FileReader();
+        reader.readAsDataURL(blob);
+        reader.onloadend = () => {
+            const base64data = reader.result;
+            resolve(base64data);
+        };
+    });
+}
+
+// Funktion ruft die URL der API auf und speichert die Daten im Image
+async function getScreenshot(url) {
+    return fetch(getApiForUrl(url))
+        .then(response => response.json())
+        .then(data => {
+            console.log(data.url);
+            getBase64FromUrl(data.url)
+                .then((base64url) => {
+                    console.log("base64url:");
+                    console.log(base64url);
+                    mainUIHandler.changeImage(base64url);
+                });
+        });
+    // .then(data => screenshot = data);
+}
+
+//getScreenshot("https://www.google.de/");
+
+function saveNewComment(event) {
+    databaseHandler.storeNewComment(event.data.commentText);
+}

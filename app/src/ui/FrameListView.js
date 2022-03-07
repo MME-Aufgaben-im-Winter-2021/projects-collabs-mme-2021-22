@@ -8,7 +8,7 @@ class FrameListView extends Observable {
     constructor(container) {
         super();
         this.frameList = container.querySelector("ul.frame-list");
-        this.addFrame();    // TODO: Just for debugging, remove before actual use.
+        this.addFrame(); // TODO: Just for debugging, remove before actual use.
     }
 
     addFrame(id, title, base64Image) {

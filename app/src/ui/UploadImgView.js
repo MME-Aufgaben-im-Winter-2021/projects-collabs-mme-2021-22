@@ -1,7 +1,11 @@
 /* eslint-env browser */
 
 import { Event, Observable } from "../utils/Observable.js";
+import { checkUrlValid } from "../utils/Utilities.js";
+import FrameListElementView from "./FrameListElementView.js";
 
+//only important during the session
+var sessionCounter = 0;
 class UploadImgView extends Observable {
     constructor(container) {
         super();
@@ -21,19 +25,33 @@ class UploadImgView extends Observable {
 
     onURLEntered() {
         console.log("onURLEntered");
-        if (this.urlInputElement.value !== "") { // don't do anything if nothing is entered
-            this.notifyAll(new Event("urlEntered", { url: this.urlInputElement.value }));
-            this.urlInputElement.value = "";
+        // don't do anything if nothing is entered && must be valid URL
+        console.log(checkUrlValid(this.urlInputElement.value.trim()));
+        if (this.urlInputElement.value !== "" && checkUrlValid(this.urlInputElement.value.trim())) {
+            this.notifyAll(new Event("urlEntered", { url: this.urlInputElement.value.trim() }));
+            this.urlInputElement.value = null;
+            console.log("valid URL entered");
         }
     }
 
+    //deletes current Picture in canvas
     onDeleteImgButtonClicked() {
-        console.log("onDeleteImgButtonClicked");
+        // this.notifyAll(new Event("urlEntered", { url: null }));
+        // TODO: implement delete
     }
     
+    //saves image to list
     onSaveImgButtonClicked() {
-        console.log("onSaveImgButtonClicked");
+        this.addScreenshotToList();
+    }
 
+    //creates an element of the given picture
+    addScreenshotToList(){
+        let frameList = document.querySelector(".frame-list"),
+            picture = document.querySelector(".screenshot");
+        const frameListElement = new FrameListElementView(sessionCounter, sessionCounter, picture.src);
+        sessionCounter++;
+        frameList.appendChild(frameListElement.body);
     }
 }
 

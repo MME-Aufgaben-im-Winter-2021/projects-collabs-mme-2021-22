@@ -1,4 +1,4 @@
-import {Event, Observable} from "../utils/Observable.js";
+import { Event, Observable } from "../utils/Observable.js";
 import createElementFromHTML from "../utils/Utilities.js";
 
 let voted = false;
@@ -7,19 +7,19 @@ function setVotingButton(classNameButton, classNameCount, symbolActive, symbolIn
     let button = templateBody.getElementsByClassName(classNameButton)[0],
         buttonCount;
 
-        button.addEventListener("click", () => {
-            // TODO: the voting system has a few flaws, mainly this method -> fix later
-            buttonCount = templateBody.getElementsByClassName(classNameCount)[0].innerText;
-            if (!voted) {
-                templateBody.getElementsByClassName(classNameCount)[0].innerText = parseInt(buttonCount) + 1;
-                button.innerText = symbolActive;
-                voted = !voted;
-            } else {
-                templateBody.getElementsByClassName(classNameCount)[0].innerText = parseInt(buttonCount) - 1;
-                button.innerText = symbolInactive;
-                voted = !voted;
-            }
-        });
+    button.addEventListener("click", () => {
+        // TODO: the voting system has a few flaws, mainly this method -> fix later
+        buttonCount = templateBody.getElementsByClassName(classNameCount)[0].innerText;
+        if (!voted) {
+            templateBody.getElementsByClassName(classNameCount)[0].innerText = parseInt(buttonCount) + 1;
+            button.innerText = symbolActive;
+            voted = !voted;
+        } else {
+            templateBody.getElementsByClassName(classNameCount)[0].innerText = parseInt(buttonCount) - 1;
+            button.innerText = symbolInactive;
+            voted = !voted;
+        }
+    });
 }
 
 function loadCommentTextContent(body, text) {
@@ -27,9 +27,9 @@ function loadCommentTextContent(body, text) {
     body.getElementsByClassName("message")[0].innerText = text;
 }
 
-class Comment extends Observable{
+class Comment extends Observable {
 
-    constructor(discussion, text, isReply = false, color = "#277A8C") {
+    constructor(discussion, text, color = "#277A8C", isReply = false) {
         super();
         this.commentList = discussion;
         this.body = createElementFromHTML(document.getElementById("comment-field-template").innerHTML);
@@ -39,8 +39,7 @@ class Comment extends Observable{
     }
 
     reply() {
-        // TODO: why does this throw an error???
-        this.notifyAll(new Event("onReply", {isResponse: true, commentColor: this.color}));
+        this.notifyAll(new Event("onReply", { isResponse: true, commentColor: this.color }));
     }
 
     onLoad() {
@@ -52,14 +51,14 @@ class Comment extends Observable{
 
     initButtons() {
         this.replyButton = this.body.getElementsByClassName("reply")[0];
-        if(this.isReply) {
+        if (this.isReply) {
             this.body.style.width = "70vw";
             this.body.style.marginLeft = "50px";
-            this.replyButton.classList.toggle("hidden");
+            this.replyButton.classList.add("hidden");
         } else {
-            this.replyButton.addEventListener("click", this.reply);
+            this.replyButton.addEventListener("click", this.reply.bind(this));
         }
-        setVotingButton("upvote", "upvote-count", "▲", "△",this.body);
+        setVotingButton("upvote", "upvote-count", "▲", "△", this.body);
         setVotingButton("downvote", "downvote-count", "▼", "▽", this.body);
     }
 }

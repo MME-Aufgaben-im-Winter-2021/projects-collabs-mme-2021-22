@@ -11,7 +11,6 @@ import UploadImgView from "./UploadImgView.js";
 import FrameListView from "./FrameListView.js";
 import CanvasView from "./CanvasView.js";
 
-
 class MainUIHandler extends Observable {
     constructor() {
         super();
@@ -35,6 +34,7 @@ class MainUIHandler extends Observable {
             container = createElementFromHTML(document.querySelector("#container-template").innerHTML);
         this.navBarView = new NavBarView();
         this.navBarView.addEventListener("projectsToolClicked", this.projectsToolClicked.bind(this));
+        this.navBarView.addEventListener("userLoggedOut", this.performUserLogout.bind(this));
         this.screenshotContainerView = new ScreenshotContainerView(container);
         this.commentSectionView = new CommentSectionView(container);
         this.commentSectionView.addEventListener("commentEntered", this.handleNewComment.bind(this));
@@ -42,8 +42,7 @@ class MainUIHandler extends Observable {
         this.uploadImgView.addEventListener("urlEntered", this.handleUrlEntered.bind(this));
         this.frameListView = new FrameListView(container);
         this.canvasView = new CanvasView(container);
-        this.canvasView.canvas.addEventListener("click", this.createVisualLinkToNote.bind(this));
-        // siteBody.removeChild(document.querySelector(".login"));
+        siteBody.removeChild(document.querySelector(".login"));
         siteBody.appendChild(this.navBarView.body);
         siteBody.appendChild(container);
     }
@@ -59,24 +58,26 @@ class MainUIHandler extends Observable {
 
     handleUrlEntered(event) {
         console.log("new URL entered: " + event.data.url);
+        this.notifyAll(new Event("makeNewScreenshot", { url: event.data.url }));
     }
 
     addComment(text) {
         this.commentSectionView.addComment(text);
     }
 
-    //creates a rect near the position the user wants to note something
-    createVisualLinkToNote(event){
-        let context = this.canvasView.context,
-         canvas = this.canvasView.canvas,
-         bound = canvas.getBoundingClientRect(),
-         x = (event.clientX - bound.left) * (canvas.width / bound.width), 
-         y = (event.clientY - bound.top) * (canvas.height / bound.height) ;
-        context.beginPath();
-        context.fillStyle = "blue";
-        context.rect(x,y, 5, 5);
-        context.stroke();
-        context.fill();
+    performUserLogout() {
+        this.notifyAll(new Event("userLoggedOut"));
+    }
+
+    buildUIAfterLogout() {
+        const siteBody = document.querySelector("body");
+        siteBody.removeChild(document.querySelector(".navbar"));
+        siteBody.removeChild(document.querySelector(".container"));
+        this.displayLoginWindow();
+    }
+
+    changeImage(sourceURL) {
+        this.screenshotContainerView.exchangeImage(sourceURL);
     }
 }
 

@@ -4,16 +4,13 @@ import { Event, Observable } from "../utils/Observable.js";
 import ProjectListItemView from "./ProjectListItemView.js";
 
 class ProjectsDropdownMenuView extends Observable {
+
     constructor(toolBarBody) {
         super();
         this.body = toolBarBody.querySelector(".dropdown-menu");
         this.projectListView = this.body.querySelector(".dropdown-list");
         this.initDropdownButton();
         this.addProjectToProjectListView();
-    }
-
-    toggle() {
-        this.body.classList.toggle("hidden");
     }
 
     initDropdownButton() {
@@ -33,7 +30,6 @@ class ProjectsDropdownMenuView extends Observable {
         for (let i = 0; i < 3; i++) {
             const projectListItemView = new ProjectListItemView();
             projectListItemView.addEventListener("projectSelected", this.onProjectSelected.bind(this));
-
             this.projectListView.appendChild(projectListItemView.body);
         }
     }
