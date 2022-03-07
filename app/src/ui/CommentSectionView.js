@@ -1,7 +1,6 @@
 /* eslint-env browser */
 
 import { Event, Observable } from "../utils/Observable.js";
-import createElementFromHTML from "../utils/Utilities.js";
 import Comment from "./Comment.js";
 
 class CommentSectionView extends Observable {
@@ -16,20 +15,27 @@ class CommentSectionView extends Observable {
     }
 
     onCommentEntered() {
-        if (this.commentInputElement.value !== "") { // do not accept empty strings as comment   
+        if (this.commentInputElement.value.trim() !== "") { // do not accept empty strings as comment
             this.notifyAll(new Event("commentEntered", { commentText: this.commentInputElement.value }));
             this.commentInputElement.value = "";
         }
     }
 
     addComment(text) {
-        let test = new Comment();
+        let test = new Comment(this.discussion, text);
         test.onLoad();
-        const commentFieldTemplate = createElementFromHTML(document.getElementById("comment-field-template").innerHTML);
-        commentFieldTemplate.querySelector(".username").innerText = "Max Mustermann";
-        commentFieldTemplate.querySelector(".message").innerHTML = text;
-        this.discussion.appendChild(commentFieldTemplate);
+        test.addEventListener("onReply", this.addReply.bind(this));
     }
+
+    addReply(event) {
+        if (this.commentInputElement.value.trim() !== "") { // do not accept empty strings as comment
+            this.notifyAll(new Event("commentEntered", { commentText: this.commentInputElement.value }));
+            let reply = new Comment(this.discussion, this.commentInputElement.value, event.data.isResponse, event.data.commentColor);
+            reply.onLoad();
+            this.commentInputElement.value = "";
+        }
+    }
+
 }
 
 export default CommentSectionView;

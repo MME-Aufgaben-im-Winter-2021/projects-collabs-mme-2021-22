@@ -85,7 +85,7 @@ body {
 .dropdown-menu span, .dropdown-button, .dropdown-list {
     padding: 6px 8px 6px 16px;
     text-decoration: none;
-    font-size: 20px;
+    font-size: medium;
     color: #818181;
     display: block;
     border: none;
@@ -156,6 +156,7 @@ body {
 .website-picture {
     flex: 5;
     align-self: flex-start;
+    margin-left: 2%;
     margin-top: 2%;
 
     height: calc(80vw * 0.56 * 0.8);
@@ -298,17 +299,25 @@ body {
     font-size: medium;
     word-break: break-all;
 
-    width: 95%;
+    width: 90%;
 }
 
 .user-interactions {
     display: flex;
     flex-direction: row;
     justify-content: space-between;
+    font-size: medium;
+    text-align: center;
 
-    width: 5%;
+    width: 10%;
     height: 100%;
-    margin: 0 4px;
+    margin: 4px;
+}
+
+.user-interactions button {
+    font-size: medium;
+
+    background-color: var(--base-dark);
 }
 
 .comment-content {
@@ -317,6 +326,11 @@ body {
 
     width: 100%;
     padding: 1px;
+}
+
+.comment-indented {
+    margin-left: 50px;
+    width: 80%;
 }
 
 /* frame list item template*/
