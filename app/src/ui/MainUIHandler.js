@@ -11,6 +11,7 @@ import UploadImgView from "./UploadImgView.js";
 import FrameListView from "./FrameListView.js";
 import CanvasView from "./CanvasView.js";
 
+
 class MainUIHandler extends Observable {
     constructor() {
         super();
@@ -64,19 +65,18 @@ class MainUIHandler extends Observable {
         this.commentSectionView.addComment(text);
     }
 
+    //creates a rect near the position the user wants to note something
     createVisualLinkToNote(event){
         let context = this.canvasView.context,
          canvas = this.canvasView.canvas,
          bound = canvas.getBoundingClientRect(),
-         x = event.clientX - bound.left - canvas.offsetLeft,
-         y = event.clientY - bound.top - canvas.offsetTop;
+         x = (event.clientX - bound.left) * (canvas.width / bound.width), 
+         y = (event.clientY - bound.top) * (canvas.height / bound.height) ;
         context.beginPath();
         context.fillStyle = "blue";
         context.rect(x,y, 5, 5);
-        console.log(event.pageX + " "+ event.pageY);
         context.stroke();
         context.fill();
-        console.log("click");
     }
 }
 
