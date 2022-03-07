@@ -14,11 +14,6 @@ class ProjectsDropdownMenuView extends Observable {
 
     toggle() {
         this.body.classList.toggle("hidden");
-        if(this.body.classList.contains("hidden")) {
-            console.log("Dropdown now hidden");
-        } else {
-            console.log("Dropdown now viewable");
-        }
     }
 
     initDropdownButton() {
@@ -35,14 +30,18 @@ class ProjectsDropdownMenuView extends Observable {
     }
 
     addProjectToProjectListView() {
-        const projectListItemView = new ProjectListItemView();
-        projectListItemView.addEventListener("projectSelected", this.onProjectSelected.bind(this));
-        this.projectListView.appendChild(projectListItemView.body);
+        for (let i = 0; i < 3; i++) {
+            const projectListItemView = new ProjectListItemView();
+            projectListItemView.addEventListener("projectSelected", this.onProjectSelected.bind(this));
+
+            this.projectListView.appendChild(projectListItemView.body);
+        }
     }
 
     onProjectSelected(event) {
         console.log("selected project with id: " + event.data.id);
     }
+
 }
 
 export default ProjectsDropdownMenuView;

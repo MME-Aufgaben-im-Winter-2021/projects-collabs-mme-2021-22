@@ -4,7 +4,7 @@ import { Event, Observable } from "../utils/Observable.js";
 import createElementFromHTML from "../utils/Utilities.js";
 
 class ProjectListItemView extends Observable {
-    constructor(id = 123, name = "Example Project") {
+    constructor(id = 123, name = "Project") {
         super();
         this.id = id;
         this.name = name;

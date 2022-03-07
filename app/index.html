@@ -16,14 +16,18 @@
     <template id="comment-field-template">
         <div class="border text-field">
             <span class="comment-header username"></span>
-            <span class="message"></span>
-            <!-- Zukunftsmusik
-            <span class="voting system">
-                <span class="icon" class="upvote"><img src=""></span>
-                <span class="icon" class="downvote"><img src=""></span>
-            </span>
-            -->
-
+            <div class="comment-content">
+                <span class="message"></span>
+                <!-- TODO: set icons -->
+                <div class="user-interactions">
+                    <button class="reply"><img src="" alt="↵"></button>
+                    <span class="reply-count">0</span>
+                    <button class="upvote"><img src="" alt="△"></button>
+                    <span class="upvote-count">0</span>
+                    <button class="downvote"><img src="" alt="▽"></button>
+                    <span class="downvote-count">0</span>
+                </div>
+            </div>
         </div>
     </template>
 
@@ -54,7 +58,6 @@
                 <!-- has class hidden by default; remove on click on dropdown arrow -->
                 <ul class="dropdown-list">
                     <!-- the projects in the database are displayed here -->
-                    <span class="item">test item</span>
                 </ul>
                 <span class="new-project">new project</span>
             </div>

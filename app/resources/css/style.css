@@ -82,10 +82,10 @@ body {
     border-color: var(--base-dark);
 }
 
-.dropdown-menu span, .dropdown-button, .project-name, .dropdown-list {
+.dropdown-menu span, .dropdown-button, .dropdown-list {
     padding: 6px 8px 6px 16px;
     text-decoration: none;
-    font-size: 20px;
+    font-size: medium;
     color: #818181;
     display: block;
     border: none;
@@ -156,6 +156,7 @@ body {
 .website-picture {
     flex: 5;
     align-self: flex-start;
+    margin-left: 2%;
     margin-top: 2%;
 
     height: calc(80vw * 0.56 * 0.8);
@@ -274,6 +275,7 @@ body {
     justify-content: center;
 
     margin-top: 4px;
+    padding: 2px;
     width: 99%;
 
     background-color: var(--base-dark);
@@ -281,6 +283,10 @@ body {
 }
 
 .comment-header {
+    display: flex;
+    flex-direction: column;
+
+    width: 100%;
     font-size: large;
     font-weight: bold;
 
@@ -293,7 +299,38 @@ body {
     font-size: medium;
     word-break: break-all;
 
-    width: border-box;
+    width: 90%;
+}
+
+.user-interactions {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    font-size: medium;
+    text-align: center;
+
+    width: 10%;
+    height: 100%;
+    margin: 4px;
+}
+
+.user-interactions button {
+    font-size: medium;
+
+    background-color: var(--base-dark);
+}
+
+.comment-content {
+    display: flex;
+    align-items: flex-end;
+
+    width: 100%;
+    padding: 1px;
+}
+
+.comment-indented {
+    margin-left: 50px;
+    width: 80%;
 }
 
 /* frame list item template*/
@@ -313,26 +350,6 @@ body {
     align-self: center;
     width: 100%;
     height: calc(10vw * 0.56);
-}
-
-/* dropdown entry template */
-.dropdown-list-item {
-    padding: 5px;
-    margin: 5px;
-
-    justify-content: center;
-
-    color: var(--snow);
-    background-color: var(--base-dark);
-    border-radius: 5px;
-
-
-}
-
-.project-name {
-    height: 20px;
-    padding: 2px;
-    word-break: break-all;
 }
 
 /* https://www.w3schools.com/howto/howto_css_custom_scrollbar.asp */
