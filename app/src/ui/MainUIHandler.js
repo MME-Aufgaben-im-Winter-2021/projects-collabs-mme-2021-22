@@ -3,13 +3,13 @@
 // import { Event, Observable } from "../utils/Observable.js";
 import {Event, Observable} from "../utils/Observable.js";
 import createElementFromHTML from "../utils/Utilities.js";
-import LoginView from "./LoginView.js";
-import NavBarView from "./NavBarView.js";
-import ScreenshotContainerView from "./ScreenshotContainerView.js";
-import CommentSectionView from "./CommentSectionView.js";
-import UploadImgView from "./UploadImgView.js";
-import FrameListView from "./FrameListView.js";
-import CanvasView from "./CanvasView.js";
+import LoginView from "./Login/LoginView.js";
+import NavBarView from "./NavBar/NavBarView.js";
+import ScreenshotContainerView from "./ScreenshotManagement/ScreenshotContainerView.js";
+import CommentSectionView from "./Comments/CommentSectionView.js";
+import UploadImgView from "./ScreenshotManagement/UploadImgView.js";
+import FrameListView from "./FrameList/FrameListView.js";
+import CanvasView from "./ScreenshotManagement/CanvasView.js";
 
 class MainUIHandler extends Observable {
     constructor() {

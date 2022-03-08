@@ -1,7 +1,7 @@
 /* eslint-env browser */
 
-import { Event, Observable } from "../utils/Observable.js";
-import createElementFromHTML from "../utils/Utilities.js";
+import { Event, Observable } from "../../utils/Observable.js";
+import createElementFromHTML from "../../utils/Utilities.js";
 
 class ProjectListItemView extends Observable {
     constructor(id = 123, name = "Project") {

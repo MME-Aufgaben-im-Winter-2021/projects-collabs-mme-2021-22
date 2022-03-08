@@ -1,8 +1,8 @@
 /* eslint-env browser */
 
-import {Event, Observable} from "../utils/Observable.js";
-import createElementFromHTML from "../utils/Utilities.js";
-import ProjectsDropdownMenuView from "./ProjectsDropdownMenuView.js";
+import {Event, Observable} from "../../utils/Observable.js";
+import createElementFromHTML from "../../utils/Utilities.js";
+import ProjectsDropdownMenuView from "../Projects/ProjectsDropdownMenuView.js";
 
 class NavBarView extends Observable {
 
