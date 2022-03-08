@@ -14,30 +14,26 @@ class CanvasView extends Observable {
         super();
         this.body = container;
         this.canvas = container.getElementsByTagName("canvas")[0];
-        // this.context = this.canvas.getContext("2d");
+        this.context = this.canvas.getContext("2d");
         document.onclick = this.draw;
     }
-    /*
+
     updateCanvasContent(src) {
         let img = this.body.getElementsByClassName("screenshot")[0].src;
         // TODO: save image
         // TODO: replace the canvas with canvas from database
         this.context.rect(0, 0, this.canvas.width, this.canvas.height);
     }
-    */
 
     draw(e) {
         let canv = document.getElementsByTagName("canvas")[0],
             context = canv.getContext("2d"),
             pos = getMousePos(canv, e),
             posx = pos.x,
-            posy = pos.y,
-            radius = 2,
-            startAngle = 0,
-            endAngle = 2;
+            posy = pos.y;
         context.fillStyle = "#41cad9"; // TODO: in config auslagern
         context.beginPath();
-        context.arc(posx, posy, radius, startAngle, endAngle * Math.PI);
+        context.arc(posx, posy, 2, 0, 2 * Math.PI);
         context.fill();
     }
 }

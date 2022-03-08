@@ -3,7 +3,7 @@
 import { Event, Observable } from "../../utils/Observable.js";
 import Comment from "./Comment.js";
 
-// const canvas = document.getElementsByTagName("canvas");
+var canvas = document.getElementsByTagName("canvas");
 
 class CommentSectionView extends Observable {
     constructor(container) {

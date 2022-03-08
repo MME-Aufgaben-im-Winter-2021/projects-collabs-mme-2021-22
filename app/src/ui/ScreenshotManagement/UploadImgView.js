@@ -5,7 +5,7 @@ import { checkUrlValid } from "../../utils/Utilities.js";
 import FrameListElementView from "../FrameList/FrameListElementView.js";
 
 //only important during the session
-let sessionCounter = 0;
+var sessionCounter = 0;
 class UploadImgView extends Observable {
     constructor(container) {
         super();
@@ -24,13 +24,13 @@ class UploadImgView extends Observable {
     }
 
     onURLEntered() {
-        // console.log("onURLEntered");
+        console.log("onURLEntered");
         // don't do anything if nothing is entered && must be valid URL
-        // console.log(checkUrlValid(this.urlInputElement.value.trim()));
+        console.log(checkUrlValid(this.urlInputElement.value.trim()));
         if (this.urlInputElement.value !== "" && checkUrlValid(this.urlInputElement.value.trim())) {
             this.notifyAll(new Event("urlEntered", { url: this.urlInputElement.value.trim() }));
             this.urlInputElement.value = null;
-            // console.log("valid URL entered");
+            console.log("valid URL entered");
         }
     }
 

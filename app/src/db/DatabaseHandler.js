@@ -1,12 +1,12 @@
 /* eslint-env browser */
 
 import { Event, Observable } from "../utils/Observable.js";
-// import CONFIG from "../utils/Config.js";
-// import { initializeApp } from "https://www.gstatic.com/firebasejs/9.6.7/firebase-app.js";
+import CONFIG from "../utils/Config.js";
+import { initializeApp } from "https://www.gstatic.com/firebasejs/9.6.7/firebase-app.js";
 import { getAuth, signInWithPopup, GoogleAuthProvider, signOut } from "https://www.gstatic.com/firebasejs/9.6.7/firebase-auth.js";
 import { getDatabase, ref, set, push, child } from "https://www.gstatic.com/firebasejs/9.6.7/firebase-database.js";
 
-// const app = initializeApp(CONFIG.FIREBASE_CONFIG);
+const app = initializeApp(CONFIG.FIREBASE_CONFIG);
 
 class DatabaseHandler extends Observable {
     constructor() {
@@ -20,24 +20,23 @@ class DatabaseHandler extends Observable {
         signInWithPopup(auth, provider)
             .then((result) => {
                 // This gives you a Google Access Token. You can use it to access the Google API.
-                const // credential = GoogleAuthProvider.credentialFromResult(result),
-                    // token = credential.accessToken,
+                const credential = GoogleAuthProvider.credentialFromResult(result),
+                    token = credential.accessToken,
                     // The signed-in user info.
                     user = result.user;
-                // console.log(user);
+                console.log(user);
                 this.notifyAll(new Event("userSignInSuccessful", { user: user }));
                 // ...
             }).catch((error) => {
                 // Handle Errors here.
                 const errorCode = error.code,
-                    errorMessage = error.message
+                    errorMessage = error.message,
                     // The email of the user's account used.
-                    //  , email = error.email,
+                    email = error.email,
                     // The AuthCredential type that was used.
-                    // credential = GoogleAuthProvider.credentialFromError(error)
-                    ;
-                // console.log(`errorCode: ${errorCode}`);
-                // console.log(`errorMessage: ${errorMessage}`);
+                    credential = GoogleAuthProvider.credentialFromError(error);
+                console.log(`errorCode: ${errorCode}`);
+                console.log(`errorMessage: ${errorMessage}`);
                 this.notifyAll(new Event("userSignInFailed", {
                     errorCode: errorCode,
                     errorMessage: errorMessage,
@@ -49,16 +48,15 @@ class DatabaseHandler extends Observable {
         const auth = getAuth();
         signOut(auth).then(() => {
             // Sign-out successful.
-           // console.log("Sign-out successful.");
+            console.log("Sign-out successful.");
             this.notifyAll(new Event("userSignOutSuccessful"));
         }).catch((error) => {
             // An error happened.
-            // console.log(`Sign-out failed: ${error}`);
+            console.log(`Sign-out failed: ${error}`);
             this.notifyAll(new Event("userSignOutFailed", { error: error }));
         });
     }
 
-    /*
     writeToDatabase() {
         const db = getDatabase();
         set(ref(db, "test/test_id"), {
@@ -67,7 +65,6 @@ class DatabaseHandler extends Observable {
             test5: "test6",
         }).then(() => console.log("success"));
     }
-    */
 
     storeNewComment(commentText) {
         const db = getDatabase(),
@@ -80,7 +77,7 @@ class DatabaseHandler extends Observable {
                 timestamp: new Date().getTime(),
             },
             newPostKey = push(child(ref(db), "comments")).key;
-        // console.log(newPostKey);
+        console.log(newPostKey);
         set(ref(db, "comments/" + newPostKey), commentData)
             .then(() => console.log("success"));
     }
