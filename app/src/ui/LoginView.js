@@ -1,9 +1,9 @@
 /* eslint-env browser */
 
 // import { Event, Observable } from "../utils/Observable.js";
-import {Event, Observable} from "../../utils/Observable.js";
-import createElementFromHTML from "../../utils/Utilities.js";
-import CONFIG from "../../utils/Config.js";
+import {Event, Observable} from "../utils/Observable.js";
+import createElementFromHTML from "../utils/Utilities.js";
+import CONFIG from "../utils/Config.js";
 
 function loginSuccessful(username, password) {
     // TODO: delete/"adjust" later

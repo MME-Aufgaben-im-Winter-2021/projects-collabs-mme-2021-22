@@ -1,8 +1,8 @@
 /* eslint-env browser */
 
-import {Event, Observable} from "../../utils/Observable.js";
-import createElementFromHTML from "../../utils/Utilities.js";
-import ProjectsDropdownMenuView from "../Projects/ProjectsDropdownMenuView.js";
+import {Event, Observable} from "../utils/Observable.js";
+import createElementFromHTML from "../utils/Utilities.js";
+import ProjectsDropdownMenuView from "./ProjectsDropdownMenuView.js";
 
 class NavBarView extends Observable {
 
@@ -16,11 +16,9 @@ class NavBarView extends Observable {
         this.projectsDropdownMenuView = new ProjectsDropdownMenuView(this.body);
     }
 
-    /*
     onProjectsToolClicked() {
         this.notifyAll(new Event("projectsToolClicked"));
     }
-    */
 
     onLogoutButtonClicked() {
         this.notifyAll(new Event("userLoggedOut"));
