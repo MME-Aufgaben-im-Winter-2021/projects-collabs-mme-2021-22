@@ -1,9 +1,9 @@
 /* eslint-env browser */
 
-import { Event, Observable } from "../utils/Observable.js";
+import { Event, Observable } from "../../utils/Observable.js";
 import Comment from "./Comment.js";
 
-var canvas = document.getElementsByTagName("canvas");
+// const canvas = document.getElementsByTagName("canvas");
 
 class CommentSectionView extends Observable {
     constructor(container) {

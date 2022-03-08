@@ -1,6 +1,6 @@
 /* eslint-env browser */
 
-import { Event, Observable } from "../utils/Observable.js";
+import Observable from "../../utils/Observable.js";
 import ProjectListItemView from "./ProjectListItemView.js";
 
 class ProjectsDropdownMenuView extends Observable {
@@ -27,7 +27,8 @@ class ProjectsDropdownMenuView extends Observable {
     }
 
     addProjectToProjectListView() {
-        for (let i = 0; i < 3; i++) {
+        let endIteration = 3;
+        for (let i = 0; i < endIteration; i++) {
             const projectListItemView = new ProjectListItemView();
             projectListItemView.addEventListener("projectSelected", this.onProjectSelected.bind(this));
             this.projectListView.appendChild(projectListItemView.body);
@@ -35,7 +36,9 @@ class ProjectsDropdownMenuView extends Observable {
     }
 
     onProjectSelected(event) {
-        console.log("selected project with id: " + event.data.id);
+        // console.log("selected project with id: " + event.data.id);
+
+        return event.data; // TODO: remove this; i added the return command to get rid of warnings
     }
 
 }
