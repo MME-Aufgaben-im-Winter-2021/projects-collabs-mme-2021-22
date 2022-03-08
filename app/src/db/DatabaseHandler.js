@@ -14,7 +14,6 @@ class DatabaseHandler extends Observable {
     }
 
     performSignInWithPopup() {
-        console.log("performSignInWithPopup");
         const provider = new GoogleAuthProvider(),
             auth = getAuth(this.app);
         signInWithPopup(auth, provider)
@@ -24,10 +23,9 @@ class DatabaseHandler extends Observable {
                     token = credential.accessToken,
                     // The signed-in user info.
                     user = result.user;
-                console.log(token);
-                console.log(user);
+                // console.log(token);
+                // console.log(user);
                 this.notifyAll(new Event("userSignInSuccessful", { user: user }));
-                // ...
             }).catch((error) => {
                 // Handle Errors here.
                 const errorCode = error.code,
@@ -60,7 +58,6 @@ class DatabaseHandler extends Observable {
     }
 
     writeToDatabase() {
-        console.log("writeToDatabase");
         const db = getDatabase(this.app);
         set(ref(db, "test/test_id"), {
             test1: "test2",
@@ -70,7 +67,6 @@ class DatabaseHandler extends Observable {
     }
 
     storeNewComment(commentText, projectID, frameID) {
-        console.log("storeNewComment");
         const db = getDatabase(this.app),
             currentUser = getAuth(this.app).currentUser,
             commentData = { //TODO: add color
@@ -91,7 +87,6 @@ class DatabaseHandler extends Observable {
         // https://firebase.google.com/docs/database/web/read-and-write?authuser=0#read_data_once
         console.log("readData");
         const db = getDatabase(this.app);
-        // get(ref(db, "projects/project_id1/frames/frame_id1/comments/comment_id1/author"))
         get(ref(db, "projects"))
             .then((snapshot) => {
                 if (snapshot.exists()) {
@@ -115,13 +110,18 @@ class DatabaseHandler extends Observable {
         get(ref(db, "projects"))
             .then((snapshot) => {
                 if (snapshot.exists()) {
+                    console.log(snapshot);
                     let result = [];
                     snapshot.forEach((child) => {
                         const projectID = child.key, // logs keys
+                            // https://stackoverflow.com/a/43586692
                             projectName = snapshot.child(`${projectID}/name`).val(); // extracts every project's name
-                        console.log(projectID);
-                        console.log(projectName);
-                        result.push({ name: projectName, id: projectID });
+                        // console.log(projectID);
+                        // console.log(projectName);
+                        result.push({
+                            name: projectName,
+                            id: projectID,
+                        });
                     });
                     this.notifyAll(new Event("projectListReady", result));
                 } else {
@@ -130,6 +130,40 @@ class DatabaseHandler extends Observable {
             }).catch((error) => {
                 console.log(error);
             });
+    }
+
+    loadProjectSnapshot(projectID) {
+        const db = getDatabase(this.app);
+        return new Promise((resolve, reject) => {
+            get(ref(db, `projects/${projectID}`))
+                .then((snapshot) => {
+                    if (snapshot.exists()) {
+                        const projectName = snapshot.child("name").val();
+                        let projectFrames = [];
+                        snapshot.child("frames").forEach((child) => {
+                            const currentFrameID = child.key,
+                                currentFrameTimestamp = snapshot.child(`frames/${currentFrameID}/timestamp`).val(),
+                                currentFrameTitle = snapshot.child(`frames/${currentFrameID}/title`).val(),
+                                currentFrameImageBase64 = snapshot.child(`frames/${currentFrameID}/image_base64`).val();
+                            projectFrames.push({
+                                title: currentFrameTitle,
+                                timestamp: currentFrameTimestamp,
+                                id: currentFrameID,
+                                imageBase64: currentFrameImageBase64,
+                            });
+                        });
+                        resolve({
+                            name: projectName,
+                            frames: projectFrames,
+                        });
+                    } else {
+                        reject(new Error("loading snapshot failed"));
+                    } 
+                }).catch((error) => {
+                    console.error(error);
+                });
+        });
+
     }
 }
 

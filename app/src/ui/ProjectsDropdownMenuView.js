@@ -1,6 +1,6 @@
 /* eslint-env browser */
 
-import Observable from "../utils/Observable.js";
+import { Event, Observable } from "../utils/Observable.js";
 import ProjectListItemView from "./ProjectListItemView.js";
 
 class ProjectsDropdownMenuView extends Observable {
@@ -9,20 +9,17 @@ class ProjectsDropdownMenuView extends Observable {
         super();
         this.body = toolBarBody.querySelector(".dropdown-menu");
         this.projectListView = this.body.querySelector(".dropdown-list");
-        this.initDropdownButton();
+        this.dropdownButton = this.body.querySelector(".dropdown-button");
+        this.dropdownButton.addEventListener("click", this.onDropdownButtonClicked.bind(this));
     }
 
-    initDropdownButton() {
-        const dropdownButton = this.body.getElementsByClassName("dropdown-button")[0];
-        dropdownButton.addEventListener("click", () => {
-            dropdownButton.classList.toggle("active");
-            const content = this.body.getElementsByClassName("dropdown-list")[0];
-            if (content.style.display === "block") {
-                content.style.display = "none";
-            } else {
-                content.style.display = "block";
-            }
-        });
+    onDropdownButtonClicked() { // opens listing of projects
+        this.dropdownButton.classList.toggle("active");
+        if (this.projectListView.style.display === "block") {
+            this.projectListView.style.display = "none";
+        } else {
+            this.projectListView.style.display = "block";
+        }
     }
 
     addProjectToProjectListView(name, id) {
@@ -33,6 +30,7 @@ class ProjectsDropdownMenuView extends Observable {
 
     onProjectSelected(event) {
         console.log("selected project with id: " + event.data.id);
+        this.notifyAll(new Event("projectSelected", { id: event.data.id }));
     }
 
     updateProjectList(projectArray) {

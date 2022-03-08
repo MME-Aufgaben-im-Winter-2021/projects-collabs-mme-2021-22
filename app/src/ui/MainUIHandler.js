@@ -1,7 +1,6 @@
 /* eslint-env browser */
 
-// import { Event, Observable } from "../utils/Observable.js";
-import {Event, Observable} from "../utils/Observable.js";
+import { Event, Observable } from "../utils/Observable.js";
 import createElementFromHTML from "../utils/Utilities.js";
 import LoginView from "./LoginView.js";
 import NavBarView from "./NavBarView.js";
@@ -35,6 +34,7 @@ class MainUIHandler extends Observable {
         this.navBarView = new NavBarView(displayName);
         this.navBarView.addEventListener("projectsToolClicked", this.projectsToolClicked.bind(this));
         this.navBarView.addEventListener("userLoggedOut", this.performUserLogout.bind(this));
+        this.navBarView.addEventListener("projectSelected", this.onProjectSelected.bind(this));
         this.screenshotContainerView = new ScreenshotContainerView(container);
         this.commentSectionView = new CommentSectionView(container);
         this.commentSectionView.addEventListener("commentEntered", this.handleNewComment.bind(this));
@@ -42,6 +42,7 @@ class MainUIHandler extends Observable {
         this.uploadImgView.addEventListener("urlEntered", this.handleUrlEntered.bind(this));
         this.uploadImgView.addEventListener("deleteFrame", this.deleteFrame.bind(this));
         this.frameListView = new FrameListView(container);
+        this.frameListView.addEventListener("frameListElementClicked", this.onFrameListElementClicked.bind(this));
         this.canvasView = new CanvasView(container);
         siteBody.removeChild(document.querySelector(".login"));
         siteBody.appendChild(this.navBarView.body);
@@ -87,11 +88,20 @@ class MainUIHandler extends Observable {
     }
 
     showProject(project) {
-        console.log(project);
+        this.screenshotContainerView.exchangeImage(project.getFirstScreenshot());
+        this.frameListView.updateElements(project.frames);
     }
 
     updateProjectList(projectArray) {
         this.navBarView.updateProjectList(projectArray);
+    }
+
+    onProjectSelected(event) {
+        this.notifyAll(new Event("projectSelected", { id: event.data.id }));
+    }
+
+    onFrameListElementClicked(event) {
+        this.notifyAll(new Event("frameListElementClicked", { id: event.data.id }));
     }
 }
 

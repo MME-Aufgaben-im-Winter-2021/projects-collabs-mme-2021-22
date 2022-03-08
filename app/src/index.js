@@ -5,13 +5,14 @@ import DatabaseHandler from "./db/DatabaseHandler.js";
 import CONFIG from "./utils/Config.js";
 import Project from "./models/Project.js";
 
-var isLoggedIn = false;
+var isLoggedIn = false,
+    currentProject = null;
 
 const databaseHandler = new DatabaseHandler(),
     mainUIHandler = new MainUIHandler(),
     sampleProject = new Project();
 
-// console.log(databaseHandler.generateNewKey("projects"));
+// console.log(databaseHandler.generateNewKey("projects/-MxeWHB80KhRVicH3W4C/frames"));
 
 databaseHandler.addEventListener("userSignInSuccessful", onUserLoggedIn);
 databaseHandler.addEventListener("userSignInFailed", onUserLoginFailed);
@@ -23,6 +24,8 @@ mainUIHandler.addEventListener("userLoggedOut", onUserLoggedOut);
 mainUIHandler.addEventListener("makeNewScreenshot", makeNewScreenshot);
 mainUIHandler.addEventListener("newCommentEntered", saveNewComment);
 mainUIHandler.addEventListener("deleteFrame", deleteFrame);
+mainUIHandler.addEventListener("projectSelected", onProjectSelected);
+mainUIHandler.addEventListener("frameListElementClicked", onFrameListElementClicked);
 
 function init() {
     console.log("### Starting MME Project ###");
@@ -37,7 +40,7 @@ function onUserLoggedIn(event) {
     console.log("User logged in");
     isLoggedIn = true;
     mainUIHandler.buildUIAfterLogin(event.data.user.displayName);
-    mainUIHandler.showProject(sampleProject);
+    // mainUIHandler.showProject(sampleProject);
     mainUIHandler.updateProjectList([{ name: "Foo", id: "-asdasdasd" }, { name: "Bar", id: "-yxcyxcyxcyxc" }]);
     databaseHandler.getProjectList();
 }
@@ -114,4 +117,14 @@ function deleteFrame() {
 
 function onProjectListReady(event) {
     mainUIHandler.updateProjectList(event.data);
+}
+
+async function onProjectSelected(event) {
+    const projectData = await databaseHandler.loadProjectSnapshot(event.data.id);
+    currentProject = new Project(projectData.name, event.data.id, projectData.frames);
+    mainUIHandler.showProject(currentProject);
+}
+
+function onFrameListElementClicked(event) {
+    mainUIHandler.changeImage(currentProject.getScreenshotByID(event.data.id));
 }

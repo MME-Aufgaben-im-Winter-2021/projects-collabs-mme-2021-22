@@ -14,6 +14,7 @@ class NavBarView extends Observable {
         this.logoutButton = this.body.querySelector(".logout-button");
         this.logoutButton.addEventListener("click", this.onLogoutButtonClicked.bind(this));
         this.projectsDropdownMenuView = new ProjectsDropdownMenuView(this.body);
+        this.projectsDropdownMenuView.addEventListener("projectSelected", this.onProjectSelected.bind(this));
     }
 
     onProjectsToolClicked() {
@@ -28,6 +29,9 @@ class NavBarView extends Observable {
         this.projectsDropdownMenuView.updateProjectList(projectArray);
     }
 
+    onProjectSelected(event) {
+        this.notifyAll(new Event("projectSelected", { id: event.data.id }));
+    }
 }
 
 export default NavBarView;
