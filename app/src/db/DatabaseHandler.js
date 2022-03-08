@@ -25,7 +25,7 @@ class DatabaseHandler extends Observable {
                     token = credential.accessToken,
                     // The signed-in user info.
                     user = result.user;
-                    console.log(token);
+                console.log(token);
                 console.log(user);
                 this.notifyAll(new Event("userSignInSuccessful", { user: user }));
                 // ...
@@ -37,7 +37,7 @@ class DatabaseHandler extends Observable {
                     email = error.email,
                     // The AuthCredential type that was used.
                     credential = GoogleAuthProvider.credentialFromError(error);
-                    console.log(email, credential);
+                console.log(email, credential);
                 console.log(`errorCode: ${errorCode}`);
                 console.log(`errorMessage: ${errorMessage}`);
                 this.notifyAll(new Event("userSignInFailed", {
