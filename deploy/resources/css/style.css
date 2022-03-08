@@ -1,0 +1,374 @@
+/* Beispiel für die Einbindung zusätzlicher Schriftarten via Google Fonts */
+@import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;700&display=swap');
+
+
+/* Beispiel für die einfache Einbindung eines Farbschema, generiert auf coolors.co */
+:root {
+    --turquoise-green: #b9e3c6ff;
+    --ocean-green: #59c9a5ff;
+    --ruby: #d81e5bff;
+    --prussian-blue: #23395bff;
+    --canary: #fffd98ff;
+    --snow: #f7f2f4ff;
+    --jet: #343434ff;
+
+    --base-dark: #277A8C;
+    --base-color: #41cad9;
+    --base-light: #4bf2f2;
+
+    --background-gray: #262626;
+    --background-black: #0d0d0d;
+    --background-light: #f5f4f0;
+
+    --element-width: 100%
+}
+
+.attachment-full {
+    position: fixed;
+    top: 0;
+    left: 0;
+}
+
+.hidden {
+    display: none !important;
+}
+
+body {
+    background-color: var(--background-gray);
+    font-family: 'Space Grotesk', sans-serif;
+    margin: 0;
+    padding: 0;
+}
+
+/* non-specific attributes */
+.border {
+    border-style: solid;
+    border-radius: 5px;
+    border-width: 3px;
+    border-color: var(--base-dark);
+}
+
+.round-button {
+    font-weight: bold;
+    text-align: center;
+
+    margin: 0 20px;
+    width: 100%;
+
+    background-color: var(--base-dark);
+    color: var(--snow);
+
+    border-style: solid;
+    border-radius: 10px;
+    border-color: var(--base-dark);
+}
+
+/* navbar with dropdown menu: code from https://www.w3schools.com/howto/howto_js_dropdown_sidenav.asp */
+.dropdown-menu {
+    display: flex;
+    flex-direction: column;
+
+    height: 100%;
+    width: 8vw;
+    position: fixed;
+    z-index: 9;
+    top: 0;
+    left: 0;
+
+    background-color: var(--background-gray);
+    overflow: hidden;
+    padding: 5px;
+    border-right: solid;
+    border-color: var(--base-dark);
+}
+
+.dropdown-menu span, .dropdown-button, .dropdown-list {
+    padding: 6px 8px 6px 16px;
+    text-decoration: none;
+    font-size: medium;
+    color: #818181;
+    display: block;
+    border: none;
+    background: none;
+    width:100%;
+    text-align: left;
+    cursor: pointer;
+    outline: none;
+}
+
+.navbar:hover {
+    color: #f1f1f1;
+}
+
+/* Add an active class to the active dropdown button */
+.active {
+    background-color: green;
+    color: white;
+}
+
+/* .dropdown-list is not visible when loading the dropdown menu */
+.dropdown-list {
+    display: none;
+}
+
+/* Optional: Style the caret down icon */
+.fa-caret-down {
+    float: right;
+    padding-right: 8px;
+}
+
+/* parent div container for frame list, screenshot, comment list and ui elements*/
+.container {
+    display: flex;
+    flex-direction: column;
+
+    margin: 2vh 0 2vh 9vw;
+    width: 90vw;
+}
+
+/* frame list */
+.frame-list {
+    width: 10vw;
+    padding: 0 15px;
+
+    overflow: scroll;
+    overflow-x: hidden;
+}
+
+/* website screenshot*/
+
+.container {
+    display: flex;
+    flex-direction: column;
+
+    width: 80vw;
+    background-color: var(--background-gray);
+}
+
+.screenshot-container {
+    display: flex;
+    flex-direction: row;
+    width: 100%;
+    /* height is calculated in a way, that the screenshot is roughly drawn in a 16:9 ratio */
+
+}
+
+.website-picture {
+    flex: 5;
+    align-self: flex-start;
+    margin-left: 2%;
+    margin-top: 2%;
+
+    height: calc(80vw * 0.56 * 0.8);
+    width: calc(80vw * 0.8);
+
+}
+
+.screenshot, .canvas {
+    height: calc(80vw * 0.56 * 0.8);
+    width: calc(80vw * 0.8);
+    position: absolute;
+}
+
+/* comments */
+.comment-section {
+    flex: 1;
+    align-self: center;
+
+    display: flex;
+    flex-flow: column;
+    justify-content: space-between;
+
+    padding: 10px;
+    width: 78vw;
+    height: 30vh;
+
+    background-color: var(--background-gray);
+}
+
+.discussion {
+    align-self: center;
+
+    display: flex;
+    flex-direction: column;
+
+    max-height: 25vh;
+    width: 100%;
+    padding: 2px;
+
+    overflow: scroll;
+    overflow-x: hidden;
+
+    border-top: solid;
+    border-color: var(--base-dark);
+}
+
+.comment-controls {
+    align-self: center;
+
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+
+    padding: 2px;
+    width: 100%;
+
+    background-color: var(--base-light);
+    border-color: var(--base-light);
+
+    border-style: solid;
+}
+
+.input-comment {
+    align-self: baseline;
+
+    width: 70vw;
+    height: 2em;
+
+    vertical-align: bottom;
+}
+
+.submit {
+    display: inline-block;
+    align-self: baseline;
+
+    font-weight: bold;
+    text-align: center;
+
+    height: 2em;
+    width: 7vw;
+    padding: 1px;
+
+    color: var(--snow);
+    background-color: var(--base-dark);
+
+    border-radius: 25px;
+}
+
+/* add screenshot navbar */
+.upload-img {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+
+    padding: 10px;
+
+    background-color: var(--base-color);
+}
+
+.input-url {
+    align-self: flex-start;
+
+    width: 30vw;
+}
+
+.upload-img-button {
+    align-self: flex-end;
+
+    text-align: center;
+}
+
+/* comment template */
+.text-field {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+
+    margin-top: 4px;
+    padding: 2px;
+    width: 99%;
+
+    background-color: var(--base-dark);
+    color: var(--snow);
+}
+
+.comment-header {
+    display: flex;
+    flex-direction: column;
+
+    width: 100%;
+    font-size: large;
+    font-weight: bold;
+
+    padding: 1px;
+
+    background-color: var(--background-gray);
+}
+
+.message {
+    font-size: medium;
+    word-break: break-all;
+
+    width: 90%;
+}
+
+.user-interactions {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    font-size: medium;
+    text-align: center;
+
+    width: 10%;
+    height: 100%;
+    margin: 4px;
+}
+
+.user-interactions button {
+    font-size: medium;
+
+    background-color: var(--base-dark);
+}
+
+.comment-content {
+    display: flex;
+    align-items: flex-end;
+
+    width: 100%;
+    padding: 1px;
+}
+
+.comment-indented {
+    margin-left: 50px;
+    width: 80%;
+}
+
+/* frame list item template*/
+.frame-list-item {
+    display: flex;
+    flex-direction: column;
+
+    align-self: center;
+    text-align: center;
+    color: var(--snow);
+
+    width: 100%;
+    margin: 2px;
+}
+
+.frame-img {
+    align-self: center;
+    width: 100%;
+    height: calc(10vw * 0.56);
+}
+
+/* https://www.w3schools.com/howto/howto_css_custom_scrollbar.asp */
+/* width */
+::-webkit-scrollbar {
+    width: 10px;
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+    background: var(--base-light);
+}
+
+/* Handle */
+::-webkit-scrollbar-thumb {
+    background: var(--base-color);
+}
+
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+    background: var(--base-dark);
+}
