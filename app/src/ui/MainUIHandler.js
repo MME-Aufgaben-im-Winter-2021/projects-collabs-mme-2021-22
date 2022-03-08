@@ -29,10 +29,10 @@ class MainUIHandler extends Observable {
         this.notifyAll(new Event("userLoggedIn"));
     }
 
-    buildUIAfterLogin(username) {
+    buildUIAfterLogin() {
         const siteBody = document.querySelector("body"),
             container = createElementFromHTML(document.querySelector("#container-template").innerHTML);
-        this.navBarView = new NavBarView(username);
+        this.navBarView = new NavBarView();
         this.navBarView.addEventListener("projectsToolClicked", this.projectsToolClicked.bind(this));
         this.navBarView.addEventListener("userLoggedOut", this.performUserLogout.bind(this));
         this.screenshotContainerView = new ScreenshotContainerView(container);
@@ -48,16 +48,16 @@ class MainUIHandler extends Observable {
     }
 
     projectsToolClicked() {
-        // console.log("projects clicked");
+        console.log("projects clicked");
     }
 
     handleNewComment(event) {
-        // console.log("new comment entered with content: " + event.data.commentText);
+        console.log("new comment entered with content: " + event.data.commentText);
         this.addComment(event.data.commentText);
     }
 
     handleUrlEntered(event) {
-        // console.log("new URL entered: " + event.data.url);
+        console.log("new URL entered: " + event.data.url);
         this.notifyAll(new Event("makeNewScreenshot", { url: event.data.url }));
     }
 

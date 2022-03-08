@@ -1,6 +1,6 @@
 /* eslint-env browser */
 
-import Observable from "../../utils/Observable.js";
+import { Event, Observable } from "../../utils/Observable.js";
 import createElementFromHTML from "../../utils/Utilities.js";
 
 class FrameListElementView extends Observable {
@@ -16,7 +16,7 @@ class FrameListElementView extends Observable {
     }
 
     onImageClicked() {
-        // console.log("onImageClicked");
+        console.log("onImageClicked");
     }
 }
 

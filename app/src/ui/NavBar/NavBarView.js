@@ -16,11 +16,9 @@ class NavBarView extends Observable {
         this.projectsDropdownMenuView = new ProjectsDropdownMenuView(this.body);
     }
 
-    /*
     onProjectsToolClicked() {
         this.notifyAll(new Event("projectsToolClicked"));
     }
-    */
 
     onLogoutButtonClicked() {
         this.notifyAll(new Event("userLoggedOut"));
