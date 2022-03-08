@@ -10,7 +10,6 @@ class ProjectsDropdownMenuView extends Observable {
         this.body = toolBarBody.querySelector(".dropdown-menu");
         this.projectListView = this.body.querySelector(".dropdown-list");
         this.initDropdownButton();
-        this.addProjectToProjectListView();
     }
 
     initDropdownButton() {
@@ -26,18 +25,22 @@ class ProjectsDropdownMenuView extends Observable {
         });
     }
 
-    addProjectToProjectListView() {
-        for (let i = 0; i < 3; i++) {
-            const projectListItemView = new ProjectListItemView();
-            projectListItemView.addEventListener("projectSelected", this.onProjectSelected.bind(this));
-            this.projectListView.appendChild(projectListItemView.body);
-        }
+    addProjectToProjectListView(name, id) {
+        const projectListItemView = new ProjectListItemView(name, id);
+        projectListItemView.addEventListener("projectSelected", this.onProjectSelected.bind(this));
+        this.projectListView.appendChild(projectListItemView.body);
     }
 
     onProjectSelected(event) {
         console.log("selected project with id: " + event.data.id);
     }
 
+    updateProjectList(projectArray) {
+        this.projectListView.innerHTML = ""; // deletes everything from list before updating
+        for (const project of projectArray) {
+            this.addProjectToProjectListView(project.name, project.id);
+        }
+    }
 }
 
 export default ProjectsDropdownMenuView;

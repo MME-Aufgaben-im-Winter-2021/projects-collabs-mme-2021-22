@@ -38,15 +38,16 @@ class UploadImgView extends Observable {
     onDeleteImgButtonClicked() {
         // this.notifyAll(new Event("urlEntered", { url: null }));
         // TODO: implement delete
+        this.notifyAll(new Event("deleteFrame"));
     }
-    
+
     //saves image to list
     onSaveImgButtonClicked() {
         this.addScreenshotToList();
     }
 
     //creates an element of the given picture
-    addScreenshotToList(){
+    addScreenshotToList() {
         let frameList = document.querySelector(".frame-list"),
             picture = document.querySelector(".screenshot");
         const frameListElement = new FrameListElementView(sessionCounter, sessionCounter, picture.src);

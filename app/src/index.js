@@ -3,20 +3,26 @@
 import MainUIHandler from "./ui/MainUIHandler.js";
 import DatabaseHandler from "./db/DatabaseHandler.js";
 import CONFIG from "./utils/Config.js";
+import Project from "./models/Project.js";
 
 var isLoggedIn = false;
 
 const databaseHandler = new DatabaseHandler(),
-    mainUIHandler = new MainUIHandler();
+    mainUIHandler = new MainUIHandler(),
+    sampleProject = new Project();
+
+// console.log(databaseHandler.generateNewKey("projects"));
 
 databaseHandler.addEventListener("userSignInSuccessful", onUserLoggedIn);
 databaseHandler.addEventListener("userSignInFailed", onUserLoginFailed);
 databaseHandler.addEventListener("userSignOutSuccessful", onUserLogoutSuccessful);
 databaseHandler.addEventListener("userSignOutFailed", onUserLogoutFailed);
+databaseHandler.addEventListener("projectListReady", onProjectListReady);
 mainUIHandler.addEventListener("userLoggedIn", onUserLoggedIn);
 mainUIHandler.addEventListener("userLoggedOut", onUserLoggedOut);
 mainUIHandler.addEventListener("makeNewScreenshot", makeNewScreenshot);
 mainUIHandler.addEventListener("newCommentEntered", saveNewComment);
+mainUIHandler.addEventListener("deleteFrame", deleteFrame);
 
 function init() {
     console.log("### Starting MME Project ###");
@@ -29,9 +35,11 @@ function init() {
 
 function onUserLoggedIn(event) {
     console.log("User logged in");
-    console.log(event.data.user.displayName);
     isLoggedIn = true;
     mainUIHandler.buildUIAfterLogin(event.data.user.displayName);
+    mainUIHandler.showProject(sampleProject);
+    mainUIHandler.updateProjectList([{ name: "Foo", id: "-asdasdasd" }, { name: "Bar", id: "-yxcyxcyxcyxc" }]);
+    databaseHandler.getProjectList();
 }
 
 function onUserLoginFailed(event) {
@@ -98,4 +106,12 @@ async function getScreenshot(url) {
 
 function saveNewComment(event) {
     databaseHandler.storeNewComment(event.data.commentText);
+}
+
+function deleteFrame() {
+    console.log("deleteFrame");
+}
+
+function onProjectListReady(event) {
+    mainUIHandler.updateProjectList(event.data);
 }

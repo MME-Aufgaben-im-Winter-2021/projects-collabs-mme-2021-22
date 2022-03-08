@@ -24,6 +24,10 @@ class NavBarView extends Observable {
         this.notifyAll(new Event("userLoggedOut"));
     }
 
+    updateProjectList(projectArray) {
+        this.projectsDropdownMenuView.updateProjectList(projectArray);
+    }
+
 }
 
 export default NavBarView;

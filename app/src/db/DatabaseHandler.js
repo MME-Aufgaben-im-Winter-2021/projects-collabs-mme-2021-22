@@ -6,18 +6,17 @@ import { initializeApp } from "https://www.gstatic.com/firebasejs/9.6.7/firebase
 import { getAuth, signInWithPopup, GoogleAuthProvider, signOut } from "https://www.gstatic.com/firebasejs/9.6.7/firebase-auth.js";
 import { getDatabase, ref, set, push, child, get } from "https://www.gstatic.com/firebasejs/9.6.7/firebase-database.js";
 
-const app = initializeApp(CONFIG.FIREBASE_CONFIG);
-console.log(app);
-
 class DatabaseHandler extends Observable {
     constructor() {
         super();
+        this.app = initializeApp(CONFIG.FIREBASE_CONFIG);
         this.performSignInWithPopup();
     }
 
     performSignInWithPopup() {
+        console.log("performSignInWithPopup");
         const provider = new GoogleAuthProvider(),
-            auth = getAuth();
+            auth = getAuth(this.app);
         signInWithPopup(auth, provider)
             .then((result) => {
                 // This gives you a Google Access Token. You can use it to access the Google API.
@@ -48,7 +47,7 @@ class DatabaseHandler extends Observable {
     }
 
     logout() {
-        const auth = getAuth();
+        const auth = getAuth(this.app);
         signOut(auth).then(() => {
             // Sign-out successful.
             console.log("Sign-out successful.");
@@ -61,7 +60,8 @@ class DatabaseHandler extends Observable {
     }
 
     writeToDatabase() {
-        const db = getDatabase();
+        console.log("writeToDatabase");
+        const db = getDatabase(this.app);
         set(ref(db, "test/test_id"), {
             test1: "test2",
             test3: "test4",
@@ -70,8 +70,9 @@ class DatabaseHandler extends Observable {
     }
 
     storeNewComment(commentText, projectID, frameID) {
-        const db = getDatabase(),
-            currentUser = getAuth().currentUser,
+        console.log("storeNewComment");
+        const db = getDatabase(this.app),
+            currentUser = getAuth(this.app).currentUser,
             commentData = { //TODO: add color
                 author: currentUser.displayName,
                 userID: currentUser.uid,
@@ -87,11 +88,42 @@ class DatabaseHandler extends Observable {
     }
 
     readData() {
-        const db = getDatabase();
-        get(ref(db, "projects/project_id1/frames/frame_id1/comments/comment_id1/author"))
+        // https://firebase.google.com/docs/database/web/read-and-write?authuser=0#read_data_once
+        console.log("readData");
+        const db = getDatabase(this.app);
+        // get(ref(db, "projects/project_id1/frames/frame_id1/comments/comment_id1/author"))
+        get(ref(db, "projects"))
             .then((snapshot) => {
                 if (snapshot.exists()) {
-                    console.log(snapshot.val());
+                    console.log(snapshot);
+                    snapshot.forEach((child) => console.log(child.key)); // logs keys
+                } else {
+                    console.log("No data available");
+                }
+            }).catch((error) => {
+                console.log(error);
+            });
+    }
+
+    generateNewKey(path) {
+        const db = getDatabase(this.app);
+        return push(child(ref(db), path)).key;
+    }
+
+    getProjectList() {
+        const db = getDatabase(this.app);
+        get(ref(db, "projects"))
+            .then((snapshot) => {
+                if (snapshot.exists()) {
+                    let result = [];
+                    snapshot.forEach((child) => {
+                        const projectID = child.key, // logs keys
+                            projectName = snapshot.child(`${projectID}/name`).val(); // extracts every project's name
+                        console.log(projectID);
+                        console.log(projectName);
+                        result.push({ name: projectName, id: projectID });
+                    });
+                    this.notifyAll(new Event("projectListReady", result));
                 } else {
                     console.log("No data available");
                 }

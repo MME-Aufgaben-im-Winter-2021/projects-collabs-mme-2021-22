@@ -29,10 +29,10 @@ class MainUIHandler extends Observable {
         this.notifyAll(new Event("userLoggedIn"));
     }
 
-    buildUIAfterLogin() {
+    buildUIAfterLogin(displayName) {
         const siteBody = document.querySelector("body"),
             container = createElementFromHTML(document.querySelector("#container-template").innerHTML);
-        this.navBarView = new NavBarView();
+        this.navBarView = new NavBarView(displayName);
         this.navBarView.addEventListener("projectsToolClicked", this.projectsToolClicked.bind(this));
         this.navBarView.addEventListener("userLoggedOut", this.performUserLogout.bind(this));
         this.screenshotContainerView = new ScreenshotContainerView(container);
@@ -40,6 +40,7 @@ class MainUIHandler extends Observable {
         this.commentSectionView.addEventListener("commentEntered", this.handleNewComment.bind(this));
         this.uploadImgView = new UploadImgView(container);
         this.uploadImgView.addEventListener("urlEntered", this.handleUrlEntered.bind(this));
+        this.uploadImgView.addEventListener("deleteFrame", this.deleteFrame.bind(this));
         this.frameListView = new FrameListView(container);
         this.canvasView = new CanvasView(container);
         siteBody.removeChild(document.querySelector(".login"));
@@ -79,6 +80,18 @@ class MainUIHandler extends Observable {
 
     changeImage(sourceURL) {
         this.screenshotContainerView.exchangeImage(sourceURL);
+    }
+
+    deleteFrame() {
+        this.notifyAll(new Event("deleteFrame"));
+    }
+
+    showProject(project) {
+        console.log(project);
+    }
+
+    updateProjectList(projectArray) {
+        this.navBarView.updateProjectList(projectArray);
     }
 }
 
