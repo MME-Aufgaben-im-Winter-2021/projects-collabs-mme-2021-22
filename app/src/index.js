@@ -2,7 +2,7 @@
 
 import MainUIHandler from "./ui/MainUIHandler.js";
 import DatabaseHandler from "./db/DatabaseHandler.js";
-import CONFIG from "./utils/config.js";
+import CONFIG from "./utils/Config.js";
 
 var isLoggedIn = false;
 
