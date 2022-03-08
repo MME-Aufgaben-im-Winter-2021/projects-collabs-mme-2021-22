@@ -6,6 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Collabs</title>
     <link rel="stylesheet" href="./resources/css/style.css">
+    <link rel="icon" href="./resources/icons/collabstab.png">
 </head>
 
 <body>
@@ -51,6 +52,7 @@
         <div class="dropdown-menu">
             <span class="user-display-name">username</span>
             <span class="logout-button">logout</span>
+            <span class="home-screen">home screen</span>
             <button class="dropdown-button">
                 projects
                 <i class="fa fa-caret-down"></i>
@@ -64,7 +66,30 @@
     </div>
 </template>
 
-<template id="container-template">
+<!-- template for the home screen -->
+<template id="home-screen-template">
+    <div class="container-home border">
+        <div class="project-key-container border">
+            <input id="enter-project-key" class="enter-project-key" type="text">
+            <label class="enter-project-key-label" for="enter-project-key">enter project key</label>
+        </div>
+        <label class="user-projects-label" for="user-projects">example projects</label>
+        <ul id="user-projects" class="user-projects border">
+            <!-- projects which can be accessed by the user -->
+        </ul>
+    </div>
+</template>
+
+<!-- template for an item of the project list in home screen -->
+<template id="project-list-item-template">
+    <div class="project-list-item-container">
+        <span class="project-title">example title</span>
+        <img class="project-preview-picture" src="./resources/css/test.png" alt="first project frame">
+    </div>
+</template>
+
+<!-- template for project -->
+<template id="project-template">
     <div class="container border">
         <div class="upload-img">
             <label>
@@ -76,7 +101,7 @@
         </div>
         <div class="screenshot-container">
             <div class="website-picture">
-                <img class="screenshot" src="resources/css/test.png" alt="screenshot" />
+                <img class="screenshot" src="" alt="your screenshot will be placed here" />
                 <canvas class="canvas"></canvas>
             </div>
 
@@ -97,21 +122,6 @@
                 <span class="submit">submit</span>
             </div>
         </div>
-    </div>
-</template>
-
-<!-- template for login dialog -->
-<template id="login-template">
-    <div class="login border">
-        <label>
-            <span class="input-user-data description">username</span>
-            <input class="username input-user-data" type="text">
-        </label>
-        <label>
-            <span class="input-user-data description">password</span>
-            <input class="password input-user-data" type="password">
-        </label>
-        <button class="login-button">login</button>
     </div>
 </template>
 

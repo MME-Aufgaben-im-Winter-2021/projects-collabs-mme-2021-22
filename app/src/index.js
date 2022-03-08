@@ -21,7 +21,8 @@ mainUIHandler.addEventListener("newCommentEntered", saveNewComment);
 function init() {
     console.log("### Starting MME Project ###");
     if (!isLoggedIn) {
-        mainUIHandler.displayLoginWindow();
+       // mainUIHandler.displayLoginWindow();
+
     } else {
         onUserLoggedIn();
     }
