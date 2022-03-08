@@ -10,16 +10,16 @@ const databaseHandler = new DatabaseHandler(),
     mainUIHandler = new MainUIHandler();
 
 databaseHandler.addEventListener("userSignInSuccessful", onUserLoggedIn);
-//databaseHandler.addEventListener("userSignInFailed", onUserLoginFailed);
+databaseHandler.addEventListener("userSignInFailed", onUserLoginFailed);
 databaseHandler.addEventListener("userSignOutSuccessful", onUserLogoutSuccessful);
-//databaseHandler.addEventListener("userSignOutFailed", onUserLogoutFailed);
+databaseHandler.addEventListener("userSignOutFailed", onUserLogoutFailed);
 mainUIHandler.addEventListener("userLoggedIn", onUserLoggedIn);
 mainUIHandler.addEventListener("userLoggedOut", onUserLoggedOut);
 mainUIHandler.addEventListener("makeNewScreenshot", makeNewScreenshot);
 mainUIHandler.addEventListener("newCommentEntered", saveNewComment);
 
 function init() {
-    //console.log("### Starting MME Project ###");
+    console.log("### Starting MME Project ###");
     if (!isLoggedIn) {
         mainUIHandler.displayLoginWindow();
     } else {
@@ -28,15 +28,15 @@ function init() {
 }
 
 function onUserLoggedIn(event) {
-    //console.log("User logged in");
-    //console.log(event.data.user.displayName);
+    console.log("User logged in");
+    console.log(event.data.user.displayName);
     isLoggedIn = true;
     mainUIHandler.buildUIAfterLogin(event.data.user.displayName);
 }
 
-/*function onUserLoginFailed(event) {
+function onUserLoginFailed(event) {
     console.log(event.data);
-}*/
+}
 
 function onUserLoggedOut() {
     databaseHandler.logout();
@@ -47,9 +47,9 @@ function onUserLogoutSuccessful() {
     mainUIHandler.buildUIAfterLogout();
 }
 
-/*function onUserLogoutFailed(event) {
+function onUserLogoutFailed(event) {
     console.log(event.data);
-}*/
+}
 
 function makeNewScreenshot(event) {
     getScreenshot(event.data.url);
@@ -83,11 +83,11 @@ async function getScreenshot(url) {
     return fetch(getApiForUrl(url))
         .then(response => response.json())
         .then(data => {
-            //console.log(data.url);
+            console.log(data.url);
             getBase64FromUrl(data.url)
                 .then((base64url) => {
-                    //console.log("base64url:");
-                    //console.log(base64url);
+                    console.log("base64url:");
+                    console.log(base64url);
                     mainUIHandler.changeImage(base64url);
                 });
         });
