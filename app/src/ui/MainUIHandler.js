@@ -54,6 +54,7 @@ class MainUIHandler extends Observable {
     handleNewComment(event) {
         console.log("new comment entered with content: " + event.data.commentText);
         this.addComment(event.data.commentText);
+        this.notifyAll(new Event("newCommentEntered", { commentText: event.data.commentText }));
     }
 
     handleUrlEntered(event) {
