@@ -81,8 +81,8 @@ class DatabaseHandler extends Observable {
             },
             newPostKey = push(child(ref(db), "comments")).key;
         // console.log(newPostKey);
-        set(ref(db, "comments/" + newPostKey), commentData)
-            .then(() => console.log("success"));
+        set(ref(db, "comments/" + newPostKey), commentData);
+            //.then(() => console.log("success"));
     }
 }
 
