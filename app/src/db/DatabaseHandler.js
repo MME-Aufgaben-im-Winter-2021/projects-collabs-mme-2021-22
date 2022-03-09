@@ -188,17 +188,22 @@ class DatabaseHandler extends Observable {
                     if (snapshot.exists()) {
                         let frameComments = [];
                         snapshot.forEach((child) => { // store in array to allow sorting
-                            const currentCommentID = child.key,
-                                currentAuthorID = snapshot.child(`${currentCommentID}/author`).val(),
+                            let currentCommentID = child.key,
+                                currentAuthorID = snapshot.child(`${currentCommentID}/author_id`).val(),
+                                currentAuthorName = snapshot.child(`${currentCommentID}/author`).val(),
                                 currentColor = snapshot.child(`${currentCommentID}/color`).val(),
                                 currentPosX = snapshot.child(`${currentCommentID}/pos_x`).val(),
                                 currentPosY = snapshot.child(`${currentCommentID}/pos_y`).val(),
                                 currentRating = snapshot.child(`${currentCommentID}/rating`).val(),
                                 currentText = snapshot.child(`${currentCommentID}/text`).val(),
                                 currentTimestamp = snapshot.child(`${currentCommentID}/timestamp`).val();
+                                if (currentAuthorName === null) {
+                                    currentAuthorName = "Anonymous";
+                                }
                             frameComments.push({
                                 id: currentCommentID,
                                 authorID: currentAuthorID,
+                                author: currentAuthorName,
                                 color: currentColor,
                                 posX: currentPosX,
                                 posY: currentPosY,

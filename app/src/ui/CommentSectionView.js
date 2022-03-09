@@ -24,8 +24,8 @@ class CommentSectionView extends Observable {
         }
     }
 
-    addComment(text, id, color) {
-        let comment = new Comment(this.discussion, text, id, color);
+    addComment(text, id, color, author) {
+        let comment = new Comment(this.discussion, text, id, color, author);
         comment.onLoad();
         comment.addEventListener("onReply", this.addReply.bind(this));
     }
@@ -42,7 +42,7 @@ class CommentSectionView extends Observable {
     showComments(comments) {
         this.discussion.innerHTML = "";
         for (const comment of comments) {
-            this.addComment(comment.text, comment.id, comment.color);
+            this.addComment(comment.text, comment.id, comment.color, comment.author);
         }
     }
 }
