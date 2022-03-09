@@ -34,8 +34,8 @@ class MainUIHandler extends Observable {
         this.navBarView.addEventListener("userLoggedOut", this.performUserLogout.bind(this));
         this.navBarView.addEventListener("projectSelected", this.onProjectSelected.bind(this));
         this.screenshotContainerView = new ScreenshotContainerView(container);
-        this.commentSectionView = new CommentSectionView(container);
-        this.commentSectionView.addEventListener("commentEntered", this.handleNewComment.bind(this));
+        this.commentSectionView = new CommentSectionView(container, displayName);
+        this.commentSectionView.addEventListener("newCommentEntered", this.onNewCommentEntered.bind(this));
         this.uploadImgView = new UploadImgView(container);
         this.uploadImgView.addEventListener("urlEntered", this.handleUrlEntered.bind(this));
         this.uploadImgView.addEventListener("deleteFrame", this.deleteFrame.bind(this));
@@ -51,9 +51,7 @@ class MainUIHandler extends Observable {
         console.log("projects clicked");
     }
 
-    handleNewComment(event) {
-        console.log("new comment entered with content: " + event.data.commentText);
-        this.addComment(event.data.commentText);
+    onNewCommentEntered(event) {
         this.notifyAll(new Event("newCommentEntered", { commentText: event.data.commentText }));
     }
 
@@ -105,6 +103,10 @@ class MainUIHandler extends Observable {
 
     showComments(comments) {
         this.commentSectionView.showComments(comments);
+    }
+
+    showNewComment(commentData) {
+        this.commentSectionView.addComment(commentData.text, commentData.id, commentData.color, commentData.author);
     }
 }
 

@@ -6,7 +6,10 @@ import CONFIG from "./utils/Config.js";
 import Project from "./models/Project.js";
 
 var isLoggedIn = false,
-    currentProject = null;
+    currentProject = null,
+    currentFrame = {
+        id: null,
+    };
 
 const databaseHandler = new DatabaseHandler(),
     mainUIHandler = new MainUIHandler();
@@ -18,10 +21,11 @@ databaseHandler.addEventListener("userSignInFailed", onUserLoginFailed);
 databaseHandler.addEventListener("userSignOutSuccessful", onUserLogoutSuccessful);
 databaseHandler.addEventListener("userSignOutFailed", onUserLogoutFailed);
 databaseHandler.addEventListener("projectListReady", onProjectListReady);
+databaseHandler.addEventListener("newCommentStored", onNewCommentStored);
 mainUIHandler.addEventListener("userLoggedIn", onUserLoggedIn);
 mainUIHandler.addEventListener("userLoggedOut", onUserLoggedOut);
 mainUIHandler.addEventListener("makeNewScreenshot", makeNewScreenshot);
-mainUIHandler.addEventListener("newCommentEntered", saveNewComment);
+mainUIHandler.addEventListener("newCommentEntered", onNewCommentEntered);
 mainUIHandler.addEventListener("deleteFrame", deleteFrame);
 mainUIHandler.addEventListener("projectSelected", onProjectSelected);
 mainUIHandler.addEventListener("frameListElementClicked", onFrameListElementClicked);
@@ -106,8 +110,8 @@ async function getScreenshot(url) {
 
 //getScreenshot("https://www.google.de/");
 
-function saveNewComment(event) {
-    databaseHandler.storeNewComment(event.data.commentText);
+function onNewCommentEntered(event) {
+    databaseHandler.storeNewComment(event.data.commentText, currentProject.id, currentFrame.id);
 }
 
 function deleteFrame() {
@@ -129,8 +133,13 @@ async function onFrameListElementClicked(event) {
     const comments = await databaseHandler.loadComments(currentProject.id, event.data.id)
         .catch((error) => console.log(error)); // loading comments failed or no comments available
     console.log(comments);
-    // Sort comments by newest timestamp
+    currentFrame.id = event.data.id;
+    // Sort comments by oldest timestamp
     // https://stackoverflow.com/a/7889040
-    comments.sort((a, b) => b.timestamp - a.timestamp);
+    comments.sort((a, b) => a.timestamp - b.timestamp);
     mainUIHandler.showComments(comments);
+}
+
+function onNewCommentStored(event) {
+    mainUIHandler.showNewComment(event.data);
 }

@@ -48,7 +48,10 @@ class Comment extends Observable {
         this.body.style.background = this.color;
         loadCommentTextContent(this.body, this.text, this.author);
         this.initButtons();
-        this.commentList.append(this.body);
+        // this.commentList.append(this.body);
+        // https://stackoverflow.com/a/618198
+        // insert newest comment at the top
+        this.commentList.insertBefore(this.body, this.commentList.firstChild);
     }
 
     initButtons() {

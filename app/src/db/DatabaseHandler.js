@@ -2,6 +2,7 @@
 
 import { Event, Observable } from "../utils/Observable.js";
 import CONFIG from "../utils/Config.js";
+import { generateRandomRGBString } from "../utils/Utilities.js";
 import { initializeApp } from "https://www.gstatic.com/firebasejs/9.6.7/firebase-app.js";
 import { getAuth, signInWithPopup, GoogleAuthProvider, signOut } from "https://www.gstatic.com/firebasejs/9.6.7/firebase-auth.js";
 import { getDatabase, ref, set, push, child, get } from "https://www.gstatic.com/firebasejs/9.6.7/firebase-database.js";
@@ -86,16 +87,15 @@ class DatabaseHandler extends Observable {
             currentUser = getAuth(this.app).currentUser,
             commentData = { //TODO: add color
                 author: currentUser.displayName,
+                color: generateRandomRGBString(),
                 userID: currentUser.uid,
                 text: commentText,
                 rating: 0,
                 timestamp: new Date().getTime(),
             },
-            newCommentKey = push(child(ref(db), "comments")).key;
-        console.log(newCommentKey);
-        // set(ref(db, "comments/" + newPostKey), commentData)
+            newCommentKey = this.generateNewKey(`projects/${projectID}/frames/${frameID}/comments`);
         set(ref(db, `projects/${projectID}/frames/${frameID}/comments/${newCommentKey}`), commentData)
-            .then(() => console.log("new comment stored"));
+            .then(() => this.notifyAll(new Event("newCommentStored", commentData)));
     }
 
     readData() {
@@ -197,9 +197,9 @@ class DatabaseHandler extends Observable {
                                 currentRating = snapshot.child(`${currentCommentID}/rating`).val(),
                                 currentText = snapshot.child(`${currentCommentID}/text`).val(),
                                 currentTimestamp = snapshot.child(`${currentCommentID}/timestamp`).val();
-                                if (currentAuthorName === null) {
-                                    currentAuthorName = "Anonymous";
-                                }
+                            if (currentAuthorName === null) {
+                                currentAuthorName = "Anonymous";
+                            }
                             frameComments.push({
                                 id: currentCommentID,
                                 authorID: currentAuthorID,
