@@ -9,8 +9,7 @@ var isLoggedIn = false,
     currentProject = null;
 
 const databaseHandler = new DatabaseHandler(),
-    mainUIHandler = new MainUIHandler(),
-    sampleProject = new Project();
+    mainUIHandler = new MainUIHandler();
 
 // console.log(databaseHandler.generateNewKey("projects/-MxeWHB80KhRVicH3W4C/frames"));
 
