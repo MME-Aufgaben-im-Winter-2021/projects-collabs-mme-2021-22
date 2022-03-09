@@ -2,8 +2,6 @@
 
 import { Event, Observable } from "../utils/Observable.js";
 import ProjectListItemView from "./ProjectListItemView.js";
-import MainUIHandler from "./MainUIHandler.js";
-
 class ProjectsDropdownMenuView extends Observable {
 
     constructor(toolBarBody) {
