@@ -2,6 +2,7 @@
 
 import { Event, Observable } from "../utils/Observable.js";
 import ProjectListItemView from "./ProjectListItemView.js";
+import MainUIHandler from "./MainUIHandler.js";
 
 class ProjectsDropdownMenuView extends Observable {
 
@@ -11,6 +12,9 @@ class ProjectsDropdownMenuView extends Observable {
         this.projectListView = this.body.querySelector(".dropdown-list");
         this.dropdownButton = this.body.querySelector(".dropdown-button");
         this.dropdownButton.addEventListener("click", this.onDropdownButtonClicked.bind(this));
+        this.newProjectButton = this.body.querySelector(".new-project");
+        this.newProjectButton.addEventListener("click",this.loadNewProject.bind(this));
+        this.displayName = this.body.querySelector(".user-display-name").innerHTML;
     }
 
     onDropdownButtonClicked() { // opens listing of projects
@@ -38,6 +42,10 @@ class ProjectsDropdownMenuView extends Observable {
         for (const project of projectArray) {
             this.addProjectToProjectListView(project.name, project.id);
         }
+    }
+
+    loadNewProject(){
+        window.location.reload();
     }
 }
 
