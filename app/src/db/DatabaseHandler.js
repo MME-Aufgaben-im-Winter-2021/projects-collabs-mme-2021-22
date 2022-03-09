@@ -24,7 +24,8 @@ class DatabaseHandler extends Observable {
                     // The signed-in user info.
                     user = result.user;
                 // console.log(token);
-                // console.log(user);
+                console.log(user);
+                this.checkUserHasProfile(user.uid, user.displayName);
                 this.notifyAll(new Event("userSignInSuccessful", { user: user }));
             }).catch((error) => {
                 // Handle Errors here.
@@ -41,6 +42,20 @@ class DatabaseHandler extends Observable {
                     errorCode: errorCode,
                     errorMessage: errorMessage,
                 }));
+            });
+    }
+
+    checkUserHasProfile(userID, displayName) {
+        const db = getDatabase(this.app);
+        get(ref(db, `users/${userID}`))
+            .then((snapshot) => {
+                if (!snapshot.exists()) {
+                    set(ref(db, `users/${userID}/displayName`), displayName)
+                        .then(() => console.log("user added to database"))
+                        .catch((error) => console.log(error));
+                }
+            }).catch((error) => {
+                console.log(error);
             });
     }
 
@@ -140,7 +155,7 @@ class DatabaseHandler extends Observable {
                     if (snapshot.exists()) {
                         const projectName = snapshot.child("name").val();
                         let projectFrames = [];
-                        snapshot.child("frames").forEach((child) => {
+                        snapshot.child("frames").forEach((child) => { // store in array to allow sorting
                             const currentFrameID = child.key,
                                 currentFrameTimestamp = snapshot.child(`frames/${currentFrameID}/timestamp`).val(),
                                 currentFrameTitle = snapshot.child(`frames/${currentFrameID}/title`).val(),
@@ -157,13 +172,49 @@ class DatabaseHandler extends Observable {
                             frames: projectFrames,
                         });
                     } else {
-                        reject(new Error("loading snapshot failed"));
-                    } 
+                        reject(new Error("loading project failed"));
+                    }
                 }).catch((error) => {
                     console.error(error);
                 });
         });
+    }
 
+    loadComments(projectID, frameID) {
+        const db = getDatabase(this.app);
+        return new Promise((resolve, reject) => {
+            get(ref(db, `projects/${projectID}/frames/${frameID}/comments`))
+                .then((snapshot) => {
+                    if (snapshot.exists()) {
+                        let frameComments = [];
+                        snapshot.forEach((child) => { // store in array to allow sorting
+                            const currentCommentID = child.key,
+                                currentAuthorID = snapshot.child(`${currentCommentID}/author`).val(),
+                                currentColor = snapshot.child(`${currentCommentID}/color`).val(),
+                                currentPosX = snapshot.child(`${currentCommentID}/pos_x`).val(),
+                                currentPosY = snapshot.child(`${currentCommentID}/pos_y`).val(),
+                                currentRating = snapshot.child(`${currentCommentID}/rating`).val(),
+                                currentText = snapshot.child(`${currentCommentID}/text`).val(),
+                                currentTimestamp = snapshot.child(`${currentCommentID}/timestamp`).val();
+                            frameComments.push({
+                                id: currentCommentID,
+                                authorID: currentAuthorID,
+                                color: currentColor,
+                                posX: currentPosX,
+                                posY: currentPosY,
+                                rating: currentRating,
+                                text: currentText,
+                                timestamp: currentTimestamp,
+                            });
+                        });
+                        resolve(frameComments);
+                    } else {
+                        reject(new Error("loading comments failed or no comments available"));
+                    }
+                }).catch((error) => {
+                    console.error(error);
+                });
+        });
     }
 }
 

@@ -29,9 +29,10 @@ function loadCommentTextContent(body, text) {
 
 class Comment extends Observable {
 
-    constructor(discussion, text, color = "#277A8C", isReply = false) {
+    constructor(discussion, text, id, color = "#277A8C", isReply = false) {
         super();
         this.commentList = discussion;
+        this.id = id;
         this.body = createElementFromHTML(document.getElementById("comment-field-template").innerHTML);
         this.text = text;
         this.isReply = isReply;

@@ -124,6 +124,15 @@ async function onProjectSelected(event) {
     mainUIHandler.showProject(currentProject);
 }
 
-function onFrameListElementClicked(event) {
+async function onFrameListElementClicked(event) {
     mainUIHandler.changeImage(currentProject.getScreenshotByID(event.data.id));
+    const comments = await databaseHandler.loadComments(currentProject.id, event.data.id)
+        .catch((error) => console.log(error)); // loading comments failed or no comments available
+    console.log(comments);
+    // Sort comments by newest timestamp
+    // https://stackoverflow.com/a/7889040
+    comments.sort((a, b) => b.timestamp - a.timestamp);
+    comments[0].authorID = "123456"; // debugging
+    console.log(comments[0]); // debugging
+    mainUIHandler.showComments(comments);
 }

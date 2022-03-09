@@ -13,10 +13,8 @@ import CanvasView from "./CanvasView.js";
 class MainUIHandler extends Observable {
     constructor() {
         super();
-        // this.buildUIAfterLogin();
     }
 
-    // commented out the login procedure for easier debugging
     displayLoginWindow() {
         this.loginView = new LoginView();
         const siteBody = document.querySelector("body");
@@ -88,8 +86,9 @@ class MainUIHandler extends Observable {
     }
 
     showProject(project) {
-        this.screenshotContainerView.exchangeImage(project.getFirstScreenshot());
-        this.frameListView.updateElements(project.frames);
+        this.frameListView.updateElements(project.frames); // update frame list
+        this.screenshotContainerView.exchangeImage(project.getFirstScreenshot()); // show first screenshot
+        this.notifyAll(new Event("frameListElementClicked", { id: project.getFirstID() })); // load comments as if first frame was clicked
     }
 
     updateProjectList(projectArray) {
@@ -102,6 +101,10 @@ class MainUIHandler extends Observable {
 
     onFrameListElementClicked(event) {
         this.notifyAll(new Event("frameListElementClicked", { id: event.data.id }));
+    }
+
+    showComments(comments) {
+        this.commentSectionView.showComments(comments);
     }
 }
 
