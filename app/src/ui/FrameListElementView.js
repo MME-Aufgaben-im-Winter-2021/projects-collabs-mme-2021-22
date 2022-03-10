@@ -8,7 +8,7 @@ class FrameListElementView extends Observable {
         this.id = id;
         this.title = title;
         this.body = createElementFromHTML(document.getElementById("frame-list-item-template").innerHTML);
-        this.frameList = document.querySelector("body > div.container.border > div.screenshot-container > ul");
+        this.frameList = document.querySelector(".frame-list");
         this.liCount = this.frameList.querySelectorAll("li").length;
         this.body.querySelector(".frame-description").innerHTML = this.title;
         this.description = this.body.querySelector(".frame-description");
