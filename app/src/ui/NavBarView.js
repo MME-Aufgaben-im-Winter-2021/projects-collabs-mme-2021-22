@@ -33,21 +33,22 @@ class NavBarView extends Observable {
 
     onLoginButtonClicked() {
         // TODO: start user login
+        this.toggleUIVisibility(true);
     }
 
     toggleUIVisibility(makeVisible) {
         if (makeVisible) {
             this.projectsDropdownMenuView.dropdownButton.style.display = "flex";
             this.userDisplayName.style.display = "block";
-            this.loginButton.style.display = "none";
             this.logoutButton.style.display = "block";
             this.newProject.style.display = "block";
+            this.loginButton.style.display = "none";
         } else {
             this.projectsDropdownMenuView.dropdownButton.style.display = "none";
             this.userDisplayName.style.display = "none";
-            this.loginButton.stack.display = "block";
             this.logoutButton.style.display = "none";
             this.newProject.style.display = "none";
+            this.loginButton.style.display = "block";
         }
     }
 
