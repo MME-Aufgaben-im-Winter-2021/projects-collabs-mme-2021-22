@@ -6,6 +6,7 @@ import FrameListElementView from "./FrameListElementView.js";
 
 //only important during the session
 var sessionCounter = 0;
+
 class UploadImgView extends Observable {
     constructor(container) {
         super();

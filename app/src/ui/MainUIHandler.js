@@ -42,7 +42,8 @@ class MainUIHandler extends Observable {
         this.frameListView = new FrameListView(container);
         this.frameListView.addEventListener("frameListElementClicked", this.onFrameListElementClicked.bind(this));
         this.canvasView = new CanvasView(container);
-        siteBody.removeChild(document.querySelector(".login"));
+        if(document.querySelector(".login")){
+            siteBody.removeChild(document.querySelector(".login"));}
         siteBody.appendChild(this.navBarView.body);
         siteBody.appendChild(container);
     }

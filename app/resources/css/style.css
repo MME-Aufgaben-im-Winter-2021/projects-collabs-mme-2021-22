@@ -346,6 +346,27 @@ body {
     margin: 2px;
 }
 
+.header {
+    display: flex;
+}
+
+.frame-description {
+    display: 1;
+    width: 70%;
+    height: calc(10vw * 0.2);
+    border:1px solid blue;
+    background-color: rgb(71, 71, 245);
+}
+
+.delete-button {
+    display: 1;
+    width: 30%;
+    height: calc(10vw * 0.2);
+    border:1px solid red;
+    background-color: rgb(250, 83, 83);
+
+}
+
 .frame-img {
     align-self: center;
     width: 100%;
