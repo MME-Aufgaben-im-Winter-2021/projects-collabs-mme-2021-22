@@ -3,14 +3,13 @@
 import { Event, Observable } from "../utils/Observable.js";
 import Comment from "./Comment.js";
 
-var canvas = document.getElementsByTagName("canvas");
-console.log(canvas);
+let isReply;
 
 class CommentSectionView extends Observable {
     constructor(container) {
         super();
         this.discussion = container.querySelector(".discussion");
-        this.commentInputElement = container.querySelector(".comment-controls .input-comment");
+        this.commentInputElement = container.querySelector(".input-comment");
         this.submitButton = container.querySelector(".comment-controls .submit");
         this.submitButton.addEventListener("click", this.onCommentEntered.bind(this));
         this.commentInputElement.addEventListener("change", this.onCommentEntered.bind(this));
@@ -18,23 +17,25 @@ class CommentSectionView extends Observable {
     }
 
     onCommentEntered() {
-        if (this.commentInputElement.value.trim() !== "") { // do not accept empty strings as comment
-            this.notifyAll(new Event("commentEntered", { commentText: this.commentInputElement.value }));
+        console.log("added comment");
+        if (this.commentInputElement.value !== "") { // do not accept empty strings as comment
+            this.notifyAll(new Event("commentEntered", { commentText: this.commentInputElement.value, isReply: false }));
             this.commentInputElement.value = "";
         }
     }
 
-    addComment(text) {
-        let test = new Comment(this.discussion, text);
-        test.onLoad();
-        test.addEventListener("onReply", this.addReply.bind(this));
+    addComment(text, reply) {
+        let comment = new Comment(this.discussion, text);
+        comment.onLoad(reply);
+        comment.addEventListener("onReply", this.addReply.bind(this));
     }
 
     addReply(event) {
+        console.log("add reply");
         if (this.commentInputElement.value.trim() !== "") { // do not accept empty strings as comment
-            this.notifyAll(new Event("commentEntered", { commentText: this.commentInputElement.value }));
-            let reply = new Comment(this.discussion, this.commentInputElement.value, event.data.commentColor, event.data.isResponse);
-            reply.onLoad();
+            isReply = event.data.isReply;
+            console.log(event.data.isReply);
+            this.onCommentEntered();
             this.commentInputElement.value = "";
         }
     }

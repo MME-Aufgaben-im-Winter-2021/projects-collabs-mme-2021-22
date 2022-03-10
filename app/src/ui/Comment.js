@@ -29,21 +29,24 @@ function loadCommentTextContent(body, text) {
 
 class Comment extends Observable {
 
-    constructor(discussion, text, color = "#277A8C", isReply = false) {
+    constructor(discussion, text, color = "#277A8C") {
         super();
         this.commentList = discussion;
         this.body = createElementFromHTML(document.getElementById("comment-field-template").innerHTML);
         this.text = text;
-        this.isReply = isReply;
         this.color = color;
     }
 
     reply() {
-        this.notifyAll(new Event("onReply", { isResponse: true, commentColor: this.color }));
+        this.notifyAll(new Event("onReply", { commentColor: this.color, isReply: true}));
     }
 
-    onLoad() {
+    onLoad(isReply = false) {
         this.body.style.background = this.color;
+        if (isReply) {
+            this.body.style.width = "90%";
+            this.body.style.alignSelf = "flex-end";
+        }
         loadCommentTextContent(this.body, this.text);
         this.initButtons();
         this.commentList.append(this.body);

@@ -9,14 +9,14 @@ class ProjectsDropdownMenuView extends Observable {
         super();
         this.body = toolBarBody.querySelector(".dropdown-menu");
         this.projectListView = this.body.querySelector(".dropdown-list");
+        this.dropdownButton = this.body.getElementsByClassName("dropdown-button")[0];
         this.initDropdownButton();
         this.addProjectToProjectListView();
     }
 
     initDropdownButton() {
-        const dropdownButton = this.body.getElementsByClassName("dropdown-button")[0];
-        dropdownButton.addEventListener("click", () => {
-            dropdownButton.classList.toggle("active");
+        this.dropdownButton.addEventListener("click", () => {
+            this.dropdownButton.classList.toggle("active");
             const content = this.body.getElementsByClassName("dropdown-list")[0];
             if (content.style.display === "block") {
                 content.style.display = "none";
