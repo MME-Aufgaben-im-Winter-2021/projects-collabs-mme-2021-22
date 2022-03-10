@@ -30,13 +30,10 @@
 }
 
 .hidden {
-    display: none;
+    display: none !important;
 }
 
 body {
-    display: flex;
-    flex-direction: row;
-    justify-content: center;
     background-color: var(--background-gray);
     font-family: 'Space Grotesk', sans-serif;
     margin: 0;
@@ -67,28 +64,7 @@ body {
 }
 
 /* navbar with dropdown menu: code from https://www.w3schools.com/howto/howto_js_dropdown_sidenav.asp */
-.collabs-logo-container {
-    display: flex;
-    flex-direction: row;
-    align-content: center;
-
-    width: 100%;
-    padding: .25em;
-}
-
-.collabs-name {
-    font-weight: bold;
-    width: 50%;
-}
-
-.collabs-logo {
-    width: 50%;
-    margin: .25em .5em;
-}
-
 .dropdown-menu {
-    align-self: flex-start;
-
     display: flex;
     flex-direction: column;
 
@@ -120,12 +96,8 @@ body {
     outline: none;
 }
 
-.dropdown-menu:hover {
+.navbar:hover {
     color: #f1f1f1;
-}
-
-.login-button {
-    display: none;
 }
 
 /* Add an active class to the active dropdown button */
@@ -147,42 +119,33 @@ body {
 
 /* parent div container for frame list, screenshot, comment list and ui elements*/
 .container {
-    align-self: center;
-    align-content: center;
+    display: flex;
+    flex-direction: column;
 
+    margin: 2vh 0 2vh 9vw;
+    width: 90vw;
+}
+
+/* frame list */
+.frame-list {
+    width: 10vw;
+    height: calc(80vw * 0.56 * 0.8);
+    padding: 0 15px;
+
+    overflow: scroll;
+    overflow-x: hidden;
+}
+
+/* website screenshot*/
+
+.container {
     display: flex;
     flex-direction: column;
 
     width: 80vw;
-    margin: 2vh 0;
-
     background-color: var(--background-gray);
 }
 
-/* frame list */
-.frame-list-container {
-    display: flex;
-    flex-direction: row;
-    justify-content: space-between;
-
-    border-top: solid;
-    border-color: var(--base-dark);
-}
-
-.frame-list {
-    display: flex;
-    flex-direction: row;
-    justify-content: flex-start;
-
-    width: 78vw;
-    height: 10em;
-    margin: 1em;
-
-    overflow: scroll;
-    overflow-y: hidden;
-}
-
-/* website screenshot*/
 .screenshot-container {
     display: flex;
     flex-direction: row;
@@ -215,12 +178,11 @@ body {
 
     display: flex;
     flex-flow: column;
+    justify-content: space-between;
 
     padding: 10px;
-
-
-    width: 10vw;
-    height: calc(80vw * 0.56 * 0.8);
+    width: 78vw;
+    height: 30vh;
 
     background-color: var(--background-gray);
 }
@@ -229,13 +191,17 @@ body {
     align-self: center;
 
     display: flex;
+    flex-direction: column;
 
-    max-height: calc((80vw * 0.56 * 0.8) - 2em);
+    max-height: 25vh;
     width: 100%;
     padding: 2px;
 
     overflow: scroll;
     overflow-x: hidden;
+
+    border-top: solid;
+    border-color: var(--base-dark);
 }
 
 .comment-controls {
@@ -257,9 +223,8 @@ body {
 .input-comment {
     align-self: baseline;
 
-    width: 9em;
+    width: 70vw;
     height: 2em;
-    margin-right: 1em;
 
     vertical-align: bottom;
 }
@@ -272,7 +237,7 @@ body {
     text-align: center;
 
     height: 2em;
-    width: 4em;
+    width: 7vw;
     padding: 1px;
 
     color: var(--snow);
@@ -289,8 +254,7 @@ body {
 
     padding: 10px;
 
-    border-bottom: solid;
-    border-color: var(--base-dark);
+    background-color: var(--base-color);
 }
 
 .input-url {
@@ -313,7 +277,7 @@ body {
 
     margin-top: 4px;
     padding: 2px;
-    width: 9.5em;
+    width: 99%;
 
     background-color: var(--base-dark);
     color: var(--snow);
@@ -323,11 +287,10 @@ body {
     display: flex;
     flex-direction: column;
 
-    width: 9em;
-    font-size: medium;
+    width: 100%;
+    font-size: large;
     font-weight: bold;
 
-    margin: 4px;
     padding: 1px;
 
     background-color: var(--background-gray);
@@ -337,8 +300,7 @@ body {
     font-size: medium;
     word-break: break-all;
 
-    width: 9em;
-    margin: 4px;
+    width: 90%;
 }
 
 .user-interactions {
@@ -348,32 +310,20 @@ body {
     font-size: medium;
     text-align: center;
 
-    width: 9em;
+    width: 10%;
     height: 100%;
     margin: 4px;
-
-    color: var(--snow);
-    background-color: var(--background-gray);
 }
 
 .user-interactions button {
     font-size: medium;
-    color: var(--snow);
 
-    margin: .1em;
-
-    background-color: var(--background-gray);
-    border-style: solid;
-    border-color: var(--background-gray);
-
+    background-color: var(--base-dark);
 }
 
-.user-interactions span {
-    margin: .25em;
-}
 .comment-content {
     display: flex;
-    flex-direction: column;
+    align-items: flex-end;
 
     width: 100%;
     padding: 1px;
@@ -386,115 +336,42 @@ body {
 
 /* frame list item template*/
 .frame-list-item {
-    display: block;
+    display: flex;
     flex-direction: column;
 
-    float: left;
     align-self: center;
     text-align: center;
     color: var(--snow);
 
-    width: 10em;
-    height: calc(10em * 0.56 + 2em);
+    width: 100%;
     margin: 2px;
 }
 
+.header {
+    display: flex;
+}
+
+.frame-description {
+    display: 1;
+    width: 70%;
+    height: calc(10vw * 0.2);
+    border:1px solid blue;
+    background-color: rgb(71, 71, 245);
+}
+
+.delete-button {
+    display: 1;
+    width: 30%;
+    height: calc(10vw * 0.2);
+    border:1px solid red;
+    background-color: rgb(250, 83, 83);
+
+}
+
 .frame-img {
-    display: block;
     align-self: center;
-    width: 10em;
-    height: calc(10em * 0.56);
-}
-
-/* home screen template */
-.container-home {
-    align-self: center;
-
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-
-    width: 70vw;
-    height: 90vh;
-    margin: 2vh 0;
-
-
-    color: var(--snow);
-}
-
-.project-key-container {
-    display: flex;
-    flex-direction: column-reverse;
-    justify-content: space-between;
-
-    width: 80%;
-    padding: 2vh 2vw;
-    margin-top: 10vh;
-
-    align-self: center;
-}
-
-.enter-project-key {
-    align-self: center;
-
     width: 100%;
-    margin-top: 2vh;
-}
-
-.container-home label {
-    align-self: center;
-
-    font-size: x-large;
-}
-
-.user-projects {
-    align-self: center;
-
-    width: 50vw;
-    height: 50vh;
-    margin-top: 1vh;
-    margin-bottom: 5vh;
-
-    overflow: scroll;
-    overflow-x: hidden;
-}
-
-/* project list item template */
-.project-list-item-container {
-    display: flex;
-    flex-direction: row;
-    align-content: space-between;
-
-    height: 5em;
-    margin: 1em 2em;
-    padding: 1em;
-
-    font-size: x-large;
-    font-weight: bold;
-    text-align: justify;
-
-    background-color: var(--base-dark);
-    color: var(--snow);
-
-    border: solid;
-    border-color: var(--base-dark);
-
-    border-right: solid;
-    border-right-color: var(--snow);
-}
-
-.project-title {
-    align-content: flex-start;
-
-    width: 80%;
-    height: 7em;
-    padding: 1em;
-}
-
-.project-preview-picture {
-    align-content: center;
-
-    height: 5em;
+    height: calc(10vw * 0.56);
 }
 
 /* https://www.w3schools.com/howto/howto_css_custom_scrollbar.asp */

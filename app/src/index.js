@@ -33,8 +33,7 @@ mainUIHandler.addEventListener("frameListElementClicked", onFrameListElementClic
 function init() {
     console.log("### Starting MME Project ###");
     if (!isLoggedIn) {
-       // mainUIHandler.displayLoginWindow();
-
+        mainUIHandler.displayLoginWindow();
     } else {
         onUserLoggedIn();
     }
