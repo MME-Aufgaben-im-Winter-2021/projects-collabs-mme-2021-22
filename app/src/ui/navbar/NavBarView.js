@@ -13,7 +13,9 @@ class NavBarView extends Observable {
         this.userDisplayName.innerHTML = displayName;
         this.logoutButton = this.body.querySelector(".logout-button");
         this.logoutButton.addEventListener("click", this.onLogoutButtonClicked.bind(this));
+        this.loginButton = this.body.querySelector(".login-button");
         this.newProject = this.body.querySelector(".new-project");
+        this.newProject.addEventListener("click", this.onNewProjectClicked.bind(this));
         this.homeScreenButton = this.body.querySelector(".home-screen");
         this.homeScreenButton.addEventListener("click", this.onHomeScreenClicked.bind(this));
         this.projectsDropdownMenuView = new ProjectsDropdownMenuView(this.body);
@@ -38,6 +40,10 @@ class NavBarView extends Observable {
 
     onProjectSelected(event) {
         this.notifyAll(new Event("projectSelected", { id: event.data.id, displayName: this.userDisplayName.innerText.toString() }));
+    }
+
+    onNewProjectClicked(event) {
+        // TODO: create new project
     }
 
     toggleUIVisibility(makeVisible) {

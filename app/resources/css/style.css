@@ -130,8 +130,8 @@ body {
 
 /* Add an active class to the active dropdown button */
 .active {
-    background-color: green;
-    color: white;
+    color: var(--snow);
+    background-color: var(--base-color);
 }
 
 /* .dropdown-list is not visible when loading the dropdown menu */

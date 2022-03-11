@@ -2,7 +2,6 @@
 
 import { Event, Observable } from "../utils/Observable.js";
 import createElementFromHTML from "../utils/Utilities.js";
-import LoginView from "./LoginView.js";
 import NavBarView from "./navbar/NavBarView.js";
 import ScreenshotContainerView from "./websiteScreenshot/ScreenshotContainerView.js";
 import CommentSectionView from "./commentSection/CommentSectionView.js";
@@ -11,16 +10,15 @@ import FrameListView from "./frameList/FrameListView.js";
 import CanvasView from "./websiteScreenshot/CanvasView.js";
 import HomeScreenView from "./homeScreen/HomeScreenView.js";
 
+var homeScreenVisible = false;
+
 class MainUIHandler extends Observable {
     constructor() {
         super();
     }
 
-    displayLoginWindow() {
-        this.loginView = new LoginView();
-        const siteBody = document.querySelector("body");
-        this.loginView.addEventListener("userLoggedIn", this.onUserLoggedIn.bind(this));
-        siteBody.appendChild(this.loginView.body);
+    buildUIBeforeLogin() {
+        
     }
 
     onUserLoggedIn() {
@@ -34,6 +32,7 @@ class MainUIHandler extends Observable {
         this.navBarView.addEventListener("userLoggedOut", this.performUserLogout.bind(this));
         this.navBarView.addEventListener("projectSelected", this.onProjectSelected.bind(this));
         this.navBarView.addEventListener("homeScreenClicked", this.displayHomeScreen.bind(this));
+        // this.navBarView.toggleUIVisibility(false);
         this.siteBody.appendChild(this.navBarView.body);
         this.displayProject(displayName);
         this.displayHomeScreen();
@@ -64,7 +63,7 @@ class MainUIHandler extends Observable {
         const siteBody = document.querySelector("body");
         siteBody.removeChild(document.querySelector(".navbar"));
         siteBody.removeChild(document.querySelector(".container"));
-        this.displayLoginWindow();
+        this.buildUIBeforeLogin();
     }
 
     changeImage(sourceURL) {
@@ -86,7 +85,7 @@ class MainUIHandler extends Observable {
     }
 
     onProjectSelected(event) {
-        this.displayProject(event.displayName);
+        this.loadProjectData(event.data); // update project view content
         this.notifyAll(new Event("projectSelected", { id: event.data.id }));
     }
 
@@ -103,13 +102,7 @@ class MainUIHandler extends Observable {
     }
 
     displayProject(displayName) {
-        try {
-            this.homeScreenView.body.style.display = "none";
-        } catch (error) {
-            console.log(error);
-        }
         this.container = createElementFromHTML(document.querySelector("#container-template").innerHTML);
-        this.container.style.display = "flex";
         this.screenshotContainerView = new ScreenshotContainerView(this.container);
         this.commentSectionView = new CommentSectionView(this.container, displayName);
         this.commentSectionView.addEventListener("newCommentEntered", this.onNewCommentEntered.bind(this));
@@ -122,11 +115,29 @@ class MainUIHandler extends Observable {
         this.siteBody.appendChild(this.container);
     }
 
-    displayHomeScreen(event) {
-        this.container.style.display = "none";
-        this.homeScreenView = new HomeScreenView();
-        this.homeScreenView.body.style.display = "flex";
-        this.siteBody.appendChild(this.homeScreenView.body);
+    displayHomeScreen() {
+        if (!homeScreenVisible) {
+            this.container.style.display = "none";
+            this.homeScreenView = new HomeScreenView();
+            this.homeScreenView.body.style.display = "flex";
+            // add user data
+            this.siteBody.appendChild(this.homeScreenView.body);
+            homeScreenVisible = true;
+        }
+    }
+
+    loadProjectData(projectData) {
+        homeScreenVisible = false;
+        try {
+            this.homeScreenView.body.style.display = "none";
+            this.container.style.display = "flex";
+        } catch (error) {
+            console.log(error);
+        }
+        this.screenshotContainerView.exchangeImage(projectData.image);
+        this.canvasView.updateCanvasContent(projectData.canvas);
+        this.commentSectionView.showComments(projectData.comments);
+        this.frameListView.updateElements(projectData.frames);
     }
 }
 

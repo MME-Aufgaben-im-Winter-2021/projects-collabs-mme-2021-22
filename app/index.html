@@ -50,7 +50,7 @@
             <input id="enter-project-key" class="enter-project-key" type="text">
             <label class="enter-project-key-label" for="enter-project-key">enter project key</label>
         </div>
-        <label class="user-projects-label" for="user-projects">example projects</label>
+        <label class="user-projects-label" for="user-projects">my projects</label>
         <ul id="user-projects" class="user-projects border">
             <!-- projects which can be accessed by the user -->
         </ul>
@@ -61,7 +61,7 @@
 <template id="project-list-item-template">
     <div class="project-list-item-container">
         <span class="project-title"></span>
-        <img class="project-pewview-picture" src="./resources/css/test.png" alt="preview"/>
+        <img class="project-preview-picture" src="./resources/css/test.png" alt="preview"/>
     </div>
 </template>
 
@@ -130,21 +130,6 @@
                 <!-- different screenshots of the website get added here -->
             </ul>
         </div>
-    </div>
-</template>
-
-<!-- template for login dialog -->
-<template id="login-template">
-    <div class="login border" style="display: none">
-        <label>
-            <span class="input-user-data description">username</span>
-            <input class="username input-user-data" type="text">
-        </label>
-        <label>
-            <span class="input-user-data description">password</span>
-            <input class="password input-user-data" type="password">
-        </label>
-        <button class="login-button">login</button>
     </div>
 </template>
 

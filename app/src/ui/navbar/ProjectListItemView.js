@@ -14,6 +14,7 @@ class ProjectListItemView extends Observable {
     }
 
     onProjectClicked() {
+        // pass project data
         this.notifyAll(new Event("projectSelected", { id: this.id }));
     }
 }
