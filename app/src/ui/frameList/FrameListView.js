@@ -1,6 +1,6 @@
 /* eslint-env browser */
 
-import { Event, Observable } from "../utils/Observable.js";
+import { Event, Observable } from "../../utils/Observable.js";
 import FrameListElementView from "./FrameListElementView.js";
 
 class FrameListView extends Observable {

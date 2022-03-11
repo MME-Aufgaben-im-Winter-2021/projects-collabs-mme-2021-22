@@ -3,12 +3,13 @@
 import { Event, Observable } from "../utils/Observable.js";
 import createElementFromHTML from "../utils/Utilities.js";
 import LoginView from "./LoginView.js";
-import NavBarView from "./NavBarView.js";
-import ScreenshotContainerView from "./ScreenshotContainerView.js";
-import CommentSectionView from "./CommentSectionView.js";
-import UploadImgView from "./UploadImgView.js";
-import FrameListView from "./FrameListView.js";
-import CanvasView from "./CanvasView.js";
+import NavBarView from "./navbar/NavBarView.js";
+import ScreenshotContainerView from "./websiteScreenshot/ScreenshotContainerView.js";
+import CommentSectionView from "./commentSection/CommentSectionView.js";
+import UploadImgView from "./websiteScreenshot/UploadImgView.js";
+import FrameListView from "./frameList/FrameListView.js";
+import CanvasView from "./websiteScreenshot/CanvasView.js";
+import HomeScreenView from "./homeScreen/HomeScreenView.js";
 
 class MainUIHandler extends Observable {
     constructor() {
@@ -27,25 +28,15 @@ class MainUIHandler extends Observable {
     }
 
     buildUIAfterLogin(displayName) {
-        const siteBody = document.querySelector("body"),
-            container = createElementFromHTML(document.querySelector("#container-template").innerHTML);
+        this.siteBody = document.querySelector("body");
         this.navBarView = new NavBarView(displayName);
         this.navBarView.addEventListener("projectsToolClicked", this.projectsToolClicked.bind(this));
         this.navBarView.addEventListener("userLoggedOut", this.performUserLogout.bind(this));
         this.navBarView.addEventListener("projectSelected", this.onProjectSelected.bind(this));
-        this.screenshotContainerView = new ScreenshotContainerView(container);
-        this.commentSectionView = new CommentSectionView(container, displayName);
-        this.commentSectionView.addEventListener("newCommentEntered", this.onNewCommentEntered.bind(this));
-        this.uploadImgView = new UploadImgView(container);
-        this.uploadImgView.addEventListener("urlEntered", this.handleUrlEntered.bind(this));
-        this.uploadImgView.addEventListener("deleteFrame", this.deleteFrame.bind(this));
-        this.frameListView = new FrameListView(container);
-        this.frameListView.addEventListener("frameListElementClicked", this.onFrameListElementClicked.bind(this));
-        this.canvasView = new CanvasView(container);
-        if(document.querySelector(".login")){
-            siteBody.removeChild(document.querySelector(".login"));}
-        siteBody.appendChild(this.navBarView.body);
-        siteBody.appendChild(container);
+        this.navBarView.addEventListener("homeScreenClicked", this.displayHomeScreen.bind(this));
+        this.siteBody.appendChild(this.navBarView.body);
+        this.displayProject(displayName);
+        this.displayHomeScreen();
     }
 
     projectsToolClicked() {
@@ -95,6 +86,7 @@ class MainUIHandler extends Observable {
     }
 
     onProjectSelected(event) {
+        this.displayProject(event.displayName);
         this.notifyAll(new Event("projectSelected", { id: event.data.id }));
     }
 
@@ -108,6 +100,33 @@ class MainUIHandler extends Observable {
 
     showNewComment(commentData) {
         this.commentSectionView.addComment(commentData.text, commentData.id, commentData.color, commentData.author);
+    }
+
+    displayProject(displayName) {
+        try {
+            this.homeScreenView.body.style.display = "none";
+        } catch (error) {
+            console.log(error);
+        }
+        this.container = createElementFromHTML(document.querySelector("#container-template").innerHTML);
+        this.container.style.display = "flex";
+        this.screenshotContainerView = new ScreenshotContainerView(this.container);
+        this.commentSectionView = new CommentSectionView(this.container, displayName);
+        this.commentSectionView.addEventListener("newCommentEntered", this.onNewCommentEntered.bind(this));
+        this.uploadImgView = new UploadImgView(this.container);
+        this.uploadImgView.addEventListener("urlEntered", this.handleUrlEntered.bind(this));
+        this.uploadImgView.addEventListener("deleteFrame", this.deleteFrame.bind(this));
+        this.frameListView = new FrameListView(this.container);
+        this.frameListView.addEventListener("frameListElementClicked", this.onFrameListElementClicked.bind(this));
+        this.canvasView = new CanvasView(this.container);
+        this.siteBody.appendChild(this.container);
+    }
+
+    displayHomeScreen(event) {
+        this.container.style.display = "none";
+        this.homeScreenView = new HomeScreenView();
+        this.homeScreenView.body.style.display = "flex";
+        this.siteBody.appendChild(this.homeScreenView.body);
     }
 }
 

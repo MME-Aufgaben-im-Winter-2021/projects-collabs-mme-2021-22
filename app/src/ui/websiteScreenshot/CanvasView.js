@@ -1,4 +1,4 @@
-import Observable from "../utils/Observable.js";
+import Observable from "../../utils/Observable.js";
 
 // methods to draw circles on click from: https://stackoverflow.com/questions/20516311/drawing-a-circle-in-a-canvas-on-mouseclick
 function getMousePos(canvas, e) {

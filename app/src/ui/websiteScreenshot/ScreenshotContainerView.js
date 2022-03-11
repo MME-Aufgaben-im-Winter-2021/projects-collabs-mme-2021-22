@@ -1,6 +1,6 @@
 /* eslint-env browser */
 
-import Observable from "../utils/Observable.js";
+import Observable from "../../utils/Observable.js";
 
 class ScreenshotContainerView extends Observable {
     constructor(container) {

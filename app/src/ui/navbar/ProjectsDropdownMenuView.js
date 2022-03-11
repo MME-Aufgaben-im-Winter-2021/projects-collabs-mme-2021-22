@@ -1,12 +1,12 @@
 /* eslint-env browser */
 
-import { Event, Observable } from "../utils/Observable.js";
+import { Event, Observable } from "../../utils/Observable.js";
 import ProjectListItemView from "./ProjectListItemView.js";
 class ProjectsDropdownMenuView extends Observable {
 
-    constructor(toolBarBody) {
+    constructor(navBarBody) {
         super();
-        this.body = toolBarBody.querySelector(".dropdown-menu");
+        this.body = navBarBody.querySelector(".dropdown-menu");
         this.projectListView = this.body.querySelector(".dropdown-list");
         this.dropdownButton = this.body.querySelector(".dropdown-button");
         this.dropdownButton.addEventListener("click", this.onDropdownButtonClicked.bind(this));
