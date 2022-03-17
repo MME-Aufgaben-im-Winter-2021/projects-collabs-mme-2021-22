@@ -13,7 +13,8 @@ var bodyHTML = document.querySelector("body"),
     editingBarHTML = document.querySelector("body > div.container.border > div.upload-img"),
     shownImage = document.querySelector("body > div.container.border > div.screenshot-container > img"),
     uploadButton = document.querySelector("body > div.container.border > div.upload-img > img"),
-    commentListSection = document.querySelector("body > div.container.border > div.comment-section > ul.comment-section");
+    commentListSection = document.querySelector("body > div.container.border > div.comment-section > ul.comment-section"),
+    canvas = document.querySelector("body > div.container.border > div.screenshot-container > div > canvas");
 
 class ProjectView extends Observable {
 
@@ -22,6 +23,7 @@ class ProjectView extends Observable {
         this.id = id;
         this.imgList = [];
         this.commentList = [];
+        this.canvasURL = "";
         uploadButton.addEventListener("click", this.uploadProjectToFirebase().bind(this));
     }
 
@@ -31,6 +33,13 @@ class ProjectView extends Observable {
         for (let i = 0; i < imageListHTML.length; i++) {
             this.imgList.push(imageListHTML[i].src);
         }
+    }
+
+    //uploading
+    //takes href of canvas
+    canvasToUrl(){
+        let dataUrl = canvas.toDataURL();
+        this.canvasURL = dataUrl;
     }
 
     //downloading
@@ -62,11 +71,30 @@ class ProjectView extends Observable {
         }
     }
 
+    //uploading
+    saveNewComments(){
+        this.commentList = null;
+        this.commentList = commentListSection.getElementsByClassName("text-field");    
+    }
+
+    //downloading
+    //uses URL of old Canvas to add a img to the new one
+    setupCanvas(){
+        let image = new Image();
+        var ctx = canvas.getContext("2d");
+        image.onload = function(){
+            ctx.drawImage(image,0,0);
+        };
+        image.src = this.canvasURL;
+    }
+
     //uploads images to firebase, comments dont exist yet
     uploadProjectToFirebase(){
         this.addImagesToList();
-
-        //TODO: use hrefs saved in imageList now to upload the project to db
+        this.canvasToUrl();
+        this.saveNewComments();
+        
+        //TODO: use hrefs saved in imageList and canvasURL now to upload the project to db
     }
 
     /* TODO: 
