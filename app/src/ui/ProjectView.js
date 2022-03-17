@@ -4,15 +4,16 @@
 The view a user sees AFTER uploading his project - the evaluation view where different user can commend and help*/
 
 
-/*import { Observable } from "../utils/Observable.js";
+import { Observable } from "../utils/Observable.js";
 import FrameListElementView from "./FrameListElementView.js";
+import Comment from "./Comment.js";
 
-var projectList = [],
-    bodyHTML = document.querySelector("body"),
+var bodyHTML = document.querySelector("body"),
     imageListHTML = document.querySelector("body > div.container.border > div.screenshot-container > ul"),
     editingBarHTML = document.querySelector("body > div.container.border > div.upload-img"),
     shownImage = document.querySelector("body > div.container.border > div.screenshot-container > img"),
-    uploadButton = document.querySelector("body > div.container.border > div.upload-img > img");
+    uploadButton = document.querySelector("body > div.container.border > div.upload-img > img"),
+    commentListSection = document.querySelector("body > div.container.border > div.comment-section > ul.comment-section");
 
 class ProjectView extends Observable {
 
@@ -21,9 +22,10 @@ class ProjectView extends Observable {
         this.id = id;
         this.imgList = [];
         this.commentList = [];
-        uploadButton.addEventListener("click", this.addImagesToList().bind(this));
+        uploadButton.addEventListener("click", this.uploadProjectToFirebase().bind(this));
     }
 
+    //uploading
     //adds Images to List after creating the project
     addImagesToList() {
         for (let i = 0; i < imageListHTML.length; i++) {
@@ -31,6 +33,7 @@ class ProjectView extends Observable {
         }
     }
 
+    //downloading
     //deletes everything only necessary for editing and also existing images from the overview-list
     deleteBody() {
         let list = imageListHTML;
@@ -40,6 +43,7 @@ class ProjectView extends Observable {
         bodyHTML.removeChild(editingBarHTML);
     }
 
+    //downloading
     //sets up all the images if project is opened
     setupImages() {
         shownImage.src = this.imgList[0];
@@ -49,12 +53,25 @@ class ProjectView extends Observable {
         }
     }
 
-    /* TODO: - addComment function
-             - initialize all saved comments of the project
+    //downloading
+    //adds existing comments to comment section
+    addComments(){
+        for (let i = 0; i < this.commentList.length; i++) {
+            let comment = new Comment(this.commentList[i]);
+            commentListSection.appendChild(comment);
+        }
+    }
+
+    //uploads images to firebase, comments dont exist yet
+    uploadProjectToFirebase(){
+        this.addImagesToList();
+
+        //TODO: use hrefs saved in imageList now to upload the project to db
+    }
+
+    /* TODO: 
              - implementation of corresponding necessary Views
     */
-// }
+}
 
-// export default { ProjectView };
-
-// WIP
+export default { ProjectView };
