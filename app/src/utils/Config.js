@@ -15,6 +15,8 @@ const CONFIG = {
     SCREENSHOT_API: "https://api.apiflash.com/v1/urltoimage?access_key=$API_KEY&url=$URL&format=png&width=$WIDTH&height=$HEIGHT&quality=100&response_type=json",
     SCREENSHOT_WIDTH: 1920,
     SCREENSHOT_HEIGHT: 1080,
+    COLOR_LIST: [ "#41cad9", "#4f08d0", "#dea37d", "#de9f50", "#89d367", 
+                "#4d65ae", "#fe18ab", "#ed3606", "#306bce", "#fb2d3b"], 
 };
 
 Object.freeze(CONFIG);

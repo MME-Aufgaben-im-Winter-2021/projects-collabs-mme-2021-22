@@ -5,11 +5,10 @@ import { checkUrlValid } from "../utils/Utilities.js";
 import FrameListElementView from "./FrameListElementView.js";
 
 //only important during the session
-var sessionCounter = 0;
-
 class UploadImgView extends Observable {
     constructor(container) {
         super();
+        this.sessionCounter = 0;
         this.initViews(container);
     }
 
@@ -38,7 +37,6 @@ class UploadImgView extends Observable {
     //deletes current Picture in canvas
     onDeleteImgButtonClicked() {
         // this.notifyAll(new Event("urlEntered", { url: null }));
-        // TODO: implement delete
         this.notifyAll(new Event("deleteFrame"));
     }
 
@@ -49,12 +47,22 @@ class UploadImgView extends Observable {
 
     //creates an element of the given picture
     addScreenshotToList() {
-        let frameList = document.querySelector(".frame-list"),
-            picture = document.querySelector(".screenshot");
-        const frameListElement = new FrameListElementView(sessionCounter, sessionCounter, picture.src);
-        sessionCounter++;
+        this.checkIfCounterHasChanged();
+        let picture = document.querySelector(".screenshot"),
+            frameList = document.querySelector(".frame-list");
+        const frameListElement = new FrameListElementView(this.sessionCounter, this.sessionCounter, picture.src);
+        this.sessionCounter++;
         frameList.appendChild(frameListElement.body);
     }
+
+    checkIfCounterHasChanged(){
+        let frameList = document.querySelector(".frame-list"),
+            items = frameList.getElementsByTagName("li");
+        if (items.length !== null && items.length !== this.sessionCounter){
+            this.sessionCounter = items.length;
+        }
+    }
+
 }
 
 export default UploadImgView;

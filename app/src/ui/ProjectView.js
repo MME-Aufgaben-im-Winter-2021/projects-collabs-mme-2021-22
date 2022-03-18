@@ -12,7 +12,7 @@ var bodyHTML = document.querySelector("body"),
     imageListHTML = document.querySelector("body > div.container.border > div.screenshot-container > ul"),
     editingBarHTML = document.querySelector("body > div.container.border > div.upload-img"),
     shownImage = document.querySelector("body > div.container.border > div.screenshot-container > img"),
-    uploadButton = document.querySelector("body > div.container.border > div.upload-img > img"),
+    commitButton = document.querySelector("body > div.container.border > div.upload-img > span.round-button.commit"),
     commentListSection = document.querySelector("body > div.container.border > div.comment-section > ul.comment-section"),
     canvas = document.querySelector("body > div.container.border > div.screenshot-container > div > canvas");
 
@@ -24,7 +24,7 @@ class ProjectView extends Observable {
         this.imgList = [];
         this.commentList = [];
         this.canvasURL = "";
-        uploadButton.addEventListener("click", this.uploadProjectToFirebase().bind(this));
+        commitButton.addEventListener("click", this.uploadProjectToFirebase().bind(this));
     }
 
     //uploading
@@ -96,10 +96,6 @@ class ProjectView extends Observable {
         
         //TODO: use hrefs saved in imageList and canvasURL now to upload the project to db
     }
-
-    /* TODO: 
-             - implementation of corresponding necessary Views
-    */
 }
 
 export default { ProjectView };

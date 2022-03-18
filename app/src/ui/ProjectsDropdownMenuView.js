@@ -2,11 +2,15 @@
 
 import { Event, Observable } from "../utils/Observable.js";
 import ProjectListItemView from "./ProjectListItemView.js";
+import MainUIHandler from "./MainUIHandler.js";
+
+var elementsToDeleteLength = 2; //navbar + container
 class ProjectsDropdownMenuView extends Observable {
 
     constructor(toolBarBody) {
         super();
         this.body = toolBarBody.querySelector(".dropdown-menu");
+        this.mainUIHandler = new MainUIHandler();
         this.projectListView = this.body.querySelector(".dropdown-list");
         this.dropdownButton = this.body.querySelector(".dropdown-button");
         this.dropdownButton.addEventListener("click", this.onDropdownButtonClicked.bind(this));
@@ -43,7 +47,13 @@ class ProjectsDropdownMenuView extends Observable {
     }
 
     loadNewProject(){
-        window.location.reload();
+        /* TODO: 
+        let body = document.querySelector("body");
+        for (let i = 0; i < elementsToDeleteLength; i++) {
+            body.removeChild(body.lastChild);
+        }
+        this.mainUIHandler.buildUIAfterLogin(this.displayName);*/
+        this.window.location.reload();
     }
 }
 

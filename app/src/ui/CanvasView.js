@@ -1,4 +1,5 @@
 import Observable from "../utils/Observable.js";
+import CONFIG from "../utils/Config.js";
 
 // methods to draw circles on click from: https://stackoverflow.com/questions/20516311/drawing-a-circle-in-a-canvas-on-mouseclick
 function getMousePos(canvas, e) {
@@ -32,7 +33,7 @@ class CanvasView extends Observable {
             pos = getMousePos(canv, e),
             posx = pos.x,
             posy = pos.y;
-        context.fillStyle = "#41cad9"; // TODO: in config auslagern
+        context.fillStyle = CONFIG.COLOR_LIST[Math.floor(Math.random()*CONFIG.COLOR_LIST.length)];
         context.beginPath();
         context.arc(posx, posy, 2, 0, 2 * Math.PI);
         context.fill();
