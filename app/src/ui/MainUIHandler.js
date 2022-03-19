@@ -1,6 +1,7 @@
 /* eslint-env browser */
 
 import { Event, Observable } from "../utils/Observable.js";
+import CONFIG from "../utils/Config.js";
 import createElementFromHTML from "../utils/Utilities.js";
 import LoginView from "./LoginView.js";
 import NavBarView from "./NavBarView.js";
@@ -27,6 +28,10 @@ class MainUIHandler extends Observable {
     }
 
     buildUIAfterLogin(displayName) {
+        if (displayName === null) {
+            // eslint-disable-next-line no-param-reassign
+            displayName = CONFIG.ANONYMOUS_USER_NAME;
+        }
         const siteBody = document.querySelector("body"),
             container = createElementFromHTML(document.querySelector("#container-template").innerHTML);
         this.navBarView = new NavBarView(displayName);

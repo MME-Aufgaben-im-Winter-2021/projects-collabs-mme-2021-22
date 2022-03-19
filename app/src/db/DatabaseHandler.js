@@ -4,7 +4,7 @@ import { Event, Observable } from "../utils/Observable.js";
 import CONFIG from "../utils/Config.js";
 import { generateRandomRGBString } from "../utils/Utilities.js";
 import { initializeApp } from "https://www.gstatic.com/firebasejs/9.6.7/firebase-app.js";
-import { getAuth, signInWithPopup, GoogleAuthProvider, signOut } from "https://www.gstatic.com/firebasejs/9.6.7/firebase-auth.js";
+import { getAuth, signInWithPopup, GoogleAuthProvider, signOut, signInAnonymously } from "https://www.gstatic.com/firebasejs/9.6.7/firebase-auth.js";
 import { getDatabase, ref, set, push, child, get } from "https://www.gstatic.com/firebasejs/9.6.7/firebase-database.js";
 
 class DatabaseHandler extends Observable {
@@ -12,6 +12,22 @@ class DatabaseHandler extends Observable {
         super();
         this.app = initializeApp(CONFIG.FIREBASE_CONFIG);
         this.performSignInWithPopup();
+    }
+
+    loginAnonymously() {
+        let auth = getAuth(this.app);
+        signInAnonymously(auth)
+            .then((result) => {
+                const currentUser = result.user;
+                this.checkUserHasProfile(currentUser.uid, CONFIG.ANONYMOUS_USER_NAME);
+                this.notifyAll(new Event("userSignInSuccessful", { user: currentUser }));
+            })
+            .catch((error) => {
+                const errorCode = error.code,
+                    errorMessage = error.message;
+                console.log(`errorCode: ${errorCode}`);
+                console.log(`errorMessage: ${errorMessage}`);
+            });
     }
 
     performSignInWithPopup() {
@@ -84,15 +100,20 @@ class DatabaseHandler extends Observable {
 
     storeNewComment(commentText, projectID, frameID) {
         const db = getDatabase(this.app),
-            currentUser = getAuth(this.app).currentUser,
-            commentData = { //TODO: add color
-                author: currentUser.displayName,
-                color: generateRandomRGBString(),
-                userID: currentUser.uid,
-                text: commentText,
-                rating: 0,
-                timestamp: new Date().getTime(),
-            },
+            currentUser = getAuth(this.app).currentUser;
+        let currentDisplayName = currentUser.displayName;
+        if (currentDisplayName === null) {
+            currentDisplayName = CONFIG.ANONYMOUS_USER_NAME;
+        }
+        // eslint-disable-next-line one-var
+        const commentData = { //TODO: add color
+            author: currentDisplayName,
+            color: generateRandomRGBString(),
+            userID: currentUser.uid,
+            text: commentText,
+            rating: 0,
+            timestamp: new Date().getTime(),
+        },
             newCommentKey = this.generateNewKey(`projects/${projectID}/frames/${frameID}/comments`);
         set(ref(db, `projects/${projectID}/frames/${frameID}/comments/${newCommentKey}`), commentData)
             .then(() => this.notifyAll(new Event("newCommentStored", commentData)));
@@ -111,7 +132,7 @@ class DatabaseHandler extends Observable {
             //     frameData: newFrameData,
             //     key: newFrameKey,
             //     })))
-            .then(() => this.notifyAll(new Event("newFrameStored", {id: projectID})))
+            .then(() => this.notifyAll(new Event("newFrameStored", { id: projectID })))
             .catch((error) => {
                 console.error(error);
             });
@@ -217,7 +238,7 @@ class DatabaseHandler extends Observable {
                                 currentText = snapshot.child(`${currentCommentID}/text`).val(),
                                 currentTimestamp = snapshot.child(`${currentCommentID}/timestamp`).val();
                             if (currentAuthorName === null) {
-                                currentAuthorName = "Anonymous";
+                                currentAuthorName = CONFIG.ANONYMOUS_USER_NAME;
                             }
                             frameComments.push({
                                 id: currentCommentID,
