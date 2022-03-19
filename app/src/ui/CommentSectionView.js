@@ -43,6 +43,7 @@ class CommentSectionView extends Observable {
 
     showComments(comments) {
         this.discussion.innerHTML = "";
+        if (comments === undefined) {return;} // if no comments availabla, do not show comments
         for (const comment of comments) {
             this.addComment(comment.text, comment.id, comment.color, comment.author);
         }

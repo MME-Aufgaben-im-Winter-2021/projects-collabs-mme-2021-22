@@ -22,6 +22,7 @@ databaseHandler.addEventListener("userSignOutSuccessful", onUserLogoutSuccessful
 databaseHandler.addEventListener("userSignOutFailed", onUserLogoutFailed);
 databaseHandler.addEventListener("projectListReady", onProjectListReady);
 databaseHandler.addEventListener("newCommentStored", onNewCommentStored);
+databaseHandler.addEventListener("newFrameStored", onNewFrameStored);
 mainUIHandler.addEventListener("userLoggedIn", onUserLoggedIn);
 mainUIHandler.addEventListener("userLoggedOut", onUserLoggedOut);
 mainUIHandler.addEventListener("makeNewScreenshot", makeNewScreenshot);
@@ -69,8 +70,6 @@ function makeNewScreenshot(event) {
     getScreenshot(event.data.url);
 }
 
-init();
-
 // die URL die der Funktion übergeben werden sollte, ist die URL die aus dem Inputfield ausgelesen wird
 // Funktion ändert die URL der API auf die entsprechende URL ab
 function getApiForUrl(url) {
@@ -102,7 +101,8 @@ async function getScreenshot(url) {
                 .then((base64url) => {
                     console.log("base64url:");
                     console.log(base64url);
-                    mainUIHandler.changeImage(base64url);
+                    // TODO: implement custom title
+                    addScreenshotToDatabase(base64url, "must implement custom title!");
                 });
         });
     // .then(data => screenshot = data);
@@ -136,10 +136,25 @@ async function onFrameListElementClicked(event) {
     currentFrame.id = event.data.id;
     // Sort comments by oldest timestamp
     // https://stackoverflow.com/a/7889040
-    comments.sort((a, b) => a.timestamp - b.timestamp);
-    mainUIHandler.showComments(comments);
+    if (comments !== undefined) { // handle when there are no comments
+        comments.sort((a, b) => a.timestamp - b.timestamp);
+    }
+    mainUIHandler.showComments(comments); // CommentSectionView will be empty if comments === undefined
 }
 
 function onNewCommentStored(event) {
     mainUIHandler.showNewComment(event.data);
 }
+
+function addScreenshotToDatabase(base64Image, title) {
+    databaseHandler.storeNewScreenshot(currentProject.id, base64Image, title);
+}
+
+function onNewFrameStored(event) {
+    // TODO: reloading the whole poject after adding a new frame to the database is very data hungry.
+    //       should be replaced if necessary and usefull
+    console.log(event);
+    onProjectSelected(event); // event must contain id in event.data.id
+}
+
+init();

@@ -98,6 +98,25 @@ class DatabaseHandler extends Observable {
             .then(() => this.notifyAll(new Event("newCommentStored", commentData)));
     }
 
+    storeNewScreenshot(projectID, frameBase64, frameTitle) {
+        const db = getDatabase(this.app),
+            newFrameKey = this.generateNewKey(`projects/${projectID}/frames`),
+            newFrameData = {
+                image_base64: frameBase64,
+                timestamp: new Date().getTime(),
+                title: frameTitle,
+            };
+        set(ref(db, `projects/${projectID}/frames/${newFrameKey}`), newFrameData)
+            // .then(() => this.notifyAll(new Event("newFrameStored", {
+            //     frameData: newFrameData,
+            //     key: newFrameKey,
+            //     })))
+            .then(() => this.notifyAll(new Event("newFrameStored", {id: projectID})))
+            .catch((error) => {
+                console.error(error);
+            });
+    }
+
     readData() {
         // https://firebase.google.com/docs/database/web/read-and-write?authuser=0#read_data_once
         console.log("readData");
