@@ -21,7 +21,7 @@ class CommentSectionView extends Observable {
         if (this.commentInputElement.value.trim() !== "" && this.commentInputElement.value.trim() !== null) { // do not accept empty strings as comment
             this.notifyAll(new Event("newCommentEntered", { commentText: this.commentInputElement.value }));
             this.commentInputElement.value = "";
-        } else{
+        } else {
             this.window.alert("You did not enter a valid input!");
         }
     }

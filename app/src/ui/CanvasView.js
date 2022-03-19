@@ -33,7 +33,7 @@ class CanvasView extends Observable {
             pos = getMousePos(canv, e),
             posx = pos.x,
             posy = pos.y;
-        context.fillStyle = CONFIG.COLOR_LIST[Math.floor(Math.random()*CONFIG.COLOR_LIST.length)];
+        context.fillStyle = CONFIG.COLOR_LIST[Math.floor(Math.random() * CONFIG.COLOR_LIST.length)];
         context.beginPath();
         context.arc(posx, posy, 2, 0, 2 * Math.PI);
         context.fill();

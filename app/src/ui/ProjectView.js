@@ -1,8 +1,9 @@
 /* eslint-env browser */
 
-/*This will provide a different view of a project.
-The view a user sees AFTER uploading his project - the evaluation view where different user can commend and help*/
-
+/*
+This will provide a different view of a project.
+The view a user sees AFTER uploading his project - the evaluation view where different users can comment and help
+*/
 
 import { Observable } from "../utils/Observable.js";
 import FrameListElementView from "./FrameListElementView.js";
@@ -37,7 +38,7 @@ class ProjectView extends Observable {
 
     //uploading
     //takes href of canvas
-    canvasToUrl(){
+    canvasToUrl() {
         let dataUrl = canvas.toDataURL();
         this.canvasURL = dataUrl;
     }
@@ -64,7 +65,7 @@ class ProjectView extends Observable {
 
     //downloading
     //adds existing comments to comment section
-    addComments(){
+    addComments() {
         for (let i = 0; i < this.commentList.length; i++) {
             let comment = new Comment(this.commentList[i]);
             commentListSection.appendChild(comment);
@@ -72,28 +73,28 @@ class ProjectView extends Observable {
     }
 
     //uploading
-    saveNewComments(){
+    saveNewComments() {
         this.commentList = null;
-        this.commentList = commentListSection.getElementsByClassName("text-field");    
+        this.commentList = commentListSection.getElementsByClassName("text-field");
     }
 
     //downloading
     //uses URL of old Canvas to add a img to the new one
-    setupCanvas(){
+    setupCanvas() {
         let image = new Image();
         var ctx = canvas.getContext("2d");
-        image.onload = function(){
-            ctx.drawImage(image,0,0);
+        image.onload = function () {
+            ctx.drawImage(image, 0, 0);
         };
         image.src = this.canvasURL;
     }
 
     //uploads images to firebase, comments dont exist yet
-    uploadProjectToFirebase(){
+    uploadProjectToFirebase() {
         this.addImagesToList();
         this.canvasToUrl();
         this.saveNewComments();
-        
+
         //TODO: use hrefs saved in imageList and canvasURL now to upload the project to db
     }
 }

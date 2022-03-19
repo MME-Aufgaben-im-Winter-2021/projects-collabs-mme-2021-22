@@ -55,10 +55,10 @@ class UploadImgView extends Observable {
         frameList.appendChild(frameListElement.body);
     }
 
-    checkIfCounterHasChanged(){
+    checkIfCounterHasChanged() {
         let frameList = document.querySelector(".frame-list"),
             items = frameList.getElementsByTagName("li");
-        if (items.length !== null && items.length !== this.sessionCounter){
+        if (items.length !== null && items.length !== this.sessionCounter) {
             this.sessionCounter = items.length;
         }
     }

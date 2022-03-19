@@ -16,7 +16,7 @@ class FrameListView extends Observable {
     }
 
     onFrameListElementClicked(event) {
-        this.notifyAll(new Event("frameListElementClicked", {id: event.data.id}));
+        this.notifyAll(new Event("frameListElementClicked", { id: event.data.id }));
     }
 
     updateElements(frames) {

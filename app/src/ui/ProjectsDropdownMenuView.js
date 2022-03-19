@@ -15,7 +15,7 @@ class ProjectsDropdownMenuView extends Observable {
         this.dropdownButton = this.body.querySelector(".dropdown-button");
         this.dropdownButton.addEventListener("click", this.onDropdownButtonClicked.bind(this));
         this.newProjectButton = this.body.querySelector(".new-project");
-        this.newProjectButton.addEventListener("click",this.loadNewProject.bind(this));
+        this.newProjectButton.addEventListener("click", this.loadNewProject.bind(this));
         this.displayName = this.body.querySelector(".user-display-name").innerHTML;
     }
 
@@ -46,7 +46,7 @@ class ProjectsDropdownMenuView extends Observable {
         }
     }
 
-    loadNewProject(){
+    loadNewProject() {
         /* TODO: 
         let body = document.querySelector("body");
         for (let i = 0; i < elementsToDeleteLength; i++) {
