@@ -23,20 +23,23 @@ databaseHandler.addEventListener("userSignOutFailed", onUserLogoutFailed);
 databaseHandler.addEventListener("projectListReady", onProjectListReady);
 databaseHandler.addEventListener("newCommentStored", onNewCommentStored);
 mainUIHandler.addEventListener("userLoggedIn", onUserLoggedIn);
+mainUIHandler.addEventListener("requestLogin", onRequestLogin);
 mainUIHandler.addEventListener("userLoggedOut", onUserLoggedOut);
 mainUIHandler.addEventListener("makeNewScreenshot", makeNewScreenshot);
 mainUIHandler.addEventListener("newCommentEntered", onNewCommentEntered);
 mainUIHandler.addEventListener("deleteFrame", deleteFrame);
 mainUIHandler.addEventListener("projectSelected", onProjectSelected);
 mainUIHandler.addEventListener("frameListElementClicked", onFrameListElementClicked);
+mainUIHandler.addEventListener("frameListElementClicked", onFrameListElementClicked);
 
 function init() {
-    console.log("### Starting MME Project ###");
-    if (!isLoggedIn) {
-        mainUIHandler.buildUIBeforeLogin();
-    } else {
+    if (isLoggedIn) { 
         onUserLoggedIn();
     }
+}
+
+function onRequestLogin() {
+    databaseHandler.performSignInWithPopup();
 }
 
 function onUserLoggedIn(event) {
@@ -136,7 +139,9 @@ async function onFrameListElementClicked(event) {
     currentFrame.id = event.data.id;
     // Sort comments by oldest timestamp
     // https://stackoverflow.com/a/7889040
-    comments.sort((a, b) => a.timestamp - b.timestamp);
+    if (comments !== undefined) {
+        comments.sort((a, b) => a.timestamp - b.timestamp);
+    }
     mainUIHandler.showComments(comments);
 }
 

@@ -465,18 +465,6 @@ body {
     font-size: x-large;
 }
 
-.user-projects {
-    align-self: center;
-
-    width: 50vw;
-    height: 50vh;
-    margin-top: 1vh;
-    margin-bottom: 5vh;
-
-    overflow: scroll;
-    overflow-x: hidden;
-}
-
 /* project list item template */
 .project-list-item-container {
     display: flex;

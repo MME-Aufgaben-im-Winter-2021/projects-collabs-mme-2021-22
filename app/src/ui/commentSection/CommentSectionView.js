@@ -3,9 +3,6 @@
 import { Event, Observable } from "../../utils/Observable.js";
 import Comment from "./Comment.js";
 
-var canvas = document.getElementsByTagName("canvas");
-console.log(canvas);
-
 class CommentSectionView extends Observable {
     constructor(container) {
         super();
@@ -14,7 +11,6 @@ class CommentSectionView extends Observable {
         this.submitButton = container.querySelector(".comment-controls .submit");
         this.submitButton.addEventListener("click", this.onNewCommentEntered.bind(this));
         this.commentInputElement.addEventListener("change", this.onNewCommentEntered.bind(this));
-
     }
 
     onNewCommentEntered() {
@@ -41,6 +37,7 @@ class CommentSectionView extends Observable {
 
     showComments(comments) {
         this.discussion.innerHTML = "";
+        if (comments === undefined) {return;}
         for (const comment of comments) {
             this.addComment(comment.text, comment.id, comment.color, comment.author);
         }

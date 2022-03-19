@@ -6,14 +6,14 @@ import ProjectsDropdownMenuView from "./ProjectsDropdownMenuView.js";
 
 class NavBarView extends Observable {
 
-    constructor(displayName) {
+    constructor() {
         super();
         this.body = createElementFromHTML(document.querySelector("#navbar-template").innerHTML);
         this.userDisplayName = this.body.querySelector(".user-display-name");
-        this.userDisplayName.innerHTML = displayName;
         this.logoutButton = this.body.querySelector(".logout-button");
         this.logoutButton.addEventListener("click", this.onLogoutButtonClicked.bind(this));
         this.loginButton = this.body.querySelector(".login-button");
+        this.loginButton.addEventListener("click", this.onLoginButtonClicked.bind(this));
         this.newProject = this.body.querySelector(".new-project");
         this.newProject.addEventListener("click", this.onNewProjectClicked.bind(this));
         this.homeScreenButton = this.body.querySelector(".home-screen");
@@ -26,8 +26,8 @@ class NavBarView extends Observable {
         this.notifyAll(new Event("homeScreenClicked"));
     }
 
-    onProjectsToolClicked() {
-        this.notifyAll(new Event("projectsToolClicked"));
+    onLoginButtonClicked() {
+        this.notifyAll(new Event("requestLogin"));
     }
 
     onLogoutButtonClicked() {
@@ -46,21 +46,31 @@ class NavBarView extends Observable {
         // TODO: create new project
     }
 
-    toggleUIVisibility(makeVisible) {
-        if (makeVisible) {
-            this.projectsDropdownMenuView.dropdownButton.style.display = "flex";
-            this.userDisplayName.style.display = "block";
-            this.logoutButton.style.display = "block";
-            this.newProject.style.display = "block";
-            this.loginButton.style.display = "none";
-        } else {
-            this.projectsDropdownMenuView.dropdownButton.style.display = "none";
-            this.userDisplayName.style.display = "none";
-            this.logoutButton.style.display = "none";
-            this.newProject.style.display = "none";
-            this.loginButton.style.display = "block";
-        }
+    displayUserName(userName) {
+        this.userDisplayName.innerHTML = userName;
+
     }
+
+    makeVisible() {
+        this.projectsDropdownMenuView.dropdownButton.style.display = "flex";
+        this.userDisplayName.style.display = "block";
+        this.logoutButton.style.display = "block";
+        this.newProject.style.display = "block";
+        this.loginButton.style.display = "none";
+    }
+
+    makeInvisible() {
+        this.projectsDropdownMenuView.dropdownButton.style.display = "none";
+        this.projectsDropdownMenuView.projectListView.style.display = "none";
+        if (this.projectsDropdownMenuView.dropdownButton.classList.contains("active")) {
+            this.projectsDropdownMenuView.dropdownButton.classList.remove("active");
+        }
+        this.userDisplayName.style.display = "none";
+        this.logoutButton.style.display = "none";
+        this.newProject.style.display = "none";
+        this.loginButton.style.display = "block";
+    }
+
 }
 
 export default NavBarView;

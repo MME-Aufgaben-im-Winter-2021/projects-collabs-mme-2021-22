@@ -15,7 +15,7 @@ class CanvasView extends Observable {
         this.body = container;
         this.canvas = container.getElementsByTagName("canvas")[0];
         this.context = this.canvas.getContext("2d");
-        document.onclick = this.draw;
+        this.body.onclick = this.draw;
     }
 
     updateCanvasContent(src) {
