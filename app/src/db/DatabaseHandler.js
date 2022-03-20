@@ -11,7 +11,6 @@ class DatabaseHandler extends Observable {
     constructor() {
         super();
         this.app = initializeApp(CONFIG.FIREBASE_CONFIG);
-        this.performSignInWithPopup();
     }
 
     loginAnonymously() {

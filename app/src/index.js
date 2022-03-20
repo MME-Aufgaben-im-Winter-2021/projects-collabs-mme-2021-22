@@ -24,20 +24,23 @@ databaseHandler.addEventListener("projectListReady", onProjectListReady);
 databaseHandler.addEventListener("newCommentStored", onNewCommentStored);
 databaseHandler.addEventListener("newFrameStored", onNewFrameStored);
 mainUIHandler.addEventListener("userLoggedIn", onUserLoggedIn);
+mainUIHandler.addEventListener("requestLogin", onRequestLogin);
 mainUIHandler.addEventListener("userLoggedOut", onUserLoggedOut);
 mainUIHandler.addEventListener("makeNewScreenshot", makeNewScreenshot);
 mainUIHandler.addEventListener("newCommentEntered", onNewCommentEntered);
 mainUIHandler.addEventListener("deleteFrame", deleteFrame);
 mainUIHandler.addEventListener("projectSelected", onProjectSelected);
 mainUIHandler.addEventListener("frameListElementClicked", onFrameListElementClicked);
+mainUIHandler.addEventListener("frameListElementClicked", onFrameListElementClicked);
 
 function init() {
-    console.log("### Starting MME Project ###");
-    if (!isLoggedIn) {
-        mainUIHandler.displayLoginWindow();
-    } else {
+    if (isLoggedIn) { 
         onUserLoggedIn();
     }
+}
+
+function onRequestLogin() {
+    databaseHandler.performSignInWithPopup();
 }
 
 function onUserLoggedIn(event) {

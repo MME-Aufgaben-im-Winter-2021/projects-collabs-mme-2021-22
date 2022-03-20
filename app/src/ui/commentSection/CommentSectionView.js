@@ -1,10 +1,7 @@
 /* eslint-env browser */
 
-import { Event, Observable } from "../utils/Observable.js";
+import { Event, Observable } from "../../utils/Observable.js";
 import Comment from "./Comment.js";
-
-var canvas = document.getElementsByTagName("canvas");
-console.log(canvas);
 
 class CommentSectionView extends Observable {
     constructor(container) {
@@ -14,7 +11,6 @@ class CommentSectionView extends Observable {
         this.submitButton = container.querySelector(".comment-controls .submit");
         this.submitButton.addEventListener("click", this.onNewCommentEntered.bind(this));
         this.commentInputElement.addEventListener("change", this.onNewCommentEntered.bind(this));
-
     }
 
     onNewCommentEntered() {

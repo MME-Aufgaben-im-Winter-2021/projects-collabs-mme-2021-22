@@ -1,5 +1,5 @@
-import Observable from "../utils/Observable.js";
-import CONFIG from "../utils/Config.js";
+import Observable from "../../utils/Observable.js";
+import CONFIG from "../../utils/Config.js";
 
 // methods to draw circles on click from: https://stackoverflow.com/questions/20516311/drawing-a-circle-in-a-canvas-on-mouseclick
 function getMousePos(canvas, e) {
@@ -16,7 +16,7 @@ class CanvasView extends Observable {
         this.body = container;
         this.canvas = container.getElementsByTagName("canvas")[0];
         this.context = this.canvas.getContext("2d");
-        document.onclick = this.draw;
+        this.body.onclick = this.draw;
     }
 
     updateCanvasContent(src) {

@@ -1,8 +1,8 @@
 /* eslint-env browser */
 
-import { Event, Observable } from "../utils/Observable.js";
-import { checkUrlValid } from "../utils/Utilities.js";
-import FrameListElementView from "./FrameListElementView.js";
+import { Event, Observable } from "../../utils/Observable.js";
+import { checkUrlValid } from "../../utils/Utilities.js";
+import FrameListElementView from "../frameList/FrameListElementView.js";
 
 //only important during the session
 class UploadImgView extends Observable {
