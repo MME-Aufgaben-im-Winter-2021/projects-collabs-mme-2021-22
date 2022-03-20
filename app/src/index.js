@@ -33,9 +33,10 @@ mainUIHandler.addEventListener("projectSelected", onProjectSelected);
 mainUIHandler.addEventListener("newProjectCreated", onNewProjectCreated);
 mainUIHandler.addEventListener("frameListElementClicked", onFrameListElementClicked);
 mainUIHandler.addEventListener("frameListElementClicked", onFrameListElementClicked);
+mainUIHandler.addEventListener("shareProjectButtonClicked", onShareProjectButtonClicked);
 
 function init() {
-    if (isLoggedIn) { 
+    if (isLoggedIn) {
         onUserLoggedIn();
     }
 }
@@ -164,6 +165,12 @@ function onNewFrameStored(event) {
 function onNewProjectCreated(event) {
     currentProject = new Project(event.data.newProjectName);
     mainUIHandler.showProject(currentProject);
+}
+
+function onShareProjectButtonClicked() {
+    // copy current Project ID to Clipboard
+    // https://www.w3schools.com/howto/howto_js_copy_clipboard.asp
+    navigator.clipboard.writeText(currentProject.id);
 }
 
 init();

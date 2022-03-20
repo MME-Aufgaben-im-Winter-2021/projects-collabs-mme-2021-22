@@ -68,6 +68,7 @@ class MainUIHandler extends Observable {
         this.uploadImgView = new UploadImgView(this.container);
         this.uploadImgView.addEventListener("newUrlAndNameEntered", this.handleNewUrlAndNameEntered.bind(this));
         this.uploadImgView.addEventListener("deleteFrame", this.deleteFrame.bind(this));
+        this.uploadImgView.addEventListener("shareProjectButtonClicked", this.onShareProjectButtonClicked.bind(this));
         this.frameListView = new FrameListView(this.container);
         this.frameListView.addEventListener("frameListElementClicked", this.onFrameListElementClicked.bind(this));
         this.canvasView = new CanvasView(this.container);
@@ -119,6 +120,8 @@ class MainUIHandler extends Observable {
     handleNewUrlAndNameEntered(event) { this.notifyAll(new Event("makeNewScreenshot", event.data)); }
 
     performUserLogout() { this.notifyAll(new Event("userLoggedOut")); }
+
+    onShareProjectButtonClicked() { this.notifyAll(new Event("shareProjectButtonClicked")); }
 
     deleteFrame() { this.notifyAll(new Event("deleteFrame")); }
 

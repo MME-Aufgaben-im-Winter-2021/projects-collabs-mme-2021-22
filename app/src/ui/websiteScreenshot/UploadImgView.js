@@ -18,12 +18,12 @@ class UploadImgView extends Observable {
         this.frameNameInputElement = container.querySelector(".upload-img .input-frame-name");
         this.uploadImgButton = container.querySelector(".upload-img .upload-img-button");
         this.deleteImgButton = container.querySelector(".upload-img .delete");
-        this.saveImgButton = container.querySelector(".upload-img .save");
+        this.shareProjectButton = container.querySelector(".upload-img .share");
         this.urlInputElement.addEventListener("change", this.onURLEntered.bind(this));
         this.frameNameInputElement.addEventListener("change", this.onURLEntered.bind(this));
         this.uploadImgButton.addEventListener("click", this.onURLEntered.bind(this));
         this.deleteImgButton.addEventListener("click", this.onDeleteImgButtonClicked.bind(this));
-        this.saveImgButton.addEventListener("click", this.onSaveImgButtonClicked.bind(this));
+        this.shareProjectButton.addEventListener("click", this.onShareProjectButtonClicked.bind(this));
     }
 
     onURLEntered() {
@@ -50,18 +50,8 @@ class UploadImgView extends Observable {
     }
 
     //saves image to list
-    onSaveImgButtonClicked() {
-        this.addScreenshotToList();
-    }
-
-    //creates an element of the given picture
-    addScreenshotToList() {
-        this.checkIfCounterHasChanged();
-        let picture = document.querySelector(".screenshot"),
-            frameList = document.querySelector(".frame-list");
-        const frameListElement = new FrameListElementView(this.sessionCounter, this.sessionCounter, picture.src);
-        this.sessionCounter++;
-        frameList.appendChild(frameListElement.body);
+    onShareProjectButtonClicked() {
+        this.notifyAll(new Event("shareProjectButtonClicked"));
     }
 
     checkIfCounterHasChanged() {
