@@ -25,11 +25,13 @@ class MainUIHandler extends Observable {
         this.navBarView.addEventListener("homeScreenClicked", this.displayHomeScreen.bind(this));
         this.navBarView.addEventListener("createNewProject", this.displayCreateNewProjectScreen.bind(this));
         this.navBarView.addEventListener("requestLogin", this.requestLogin.bind(this));
+        this.navBarView.addEventListener("anonymousUserLoggedOut", this.onAnonymousUserLoggedOut.bind(this));
         this.navBarView.makeInvisible();
         this.siteBody.appendChild(this.navBarView.body);
 
         // create home screen
         this.homeScreenView = new HomeScreenView();
+        this.homeScreenView.addEventListener("projectKeyEntered", this.onProjectKeyEntered.bind(this));
         this.homeScreenView.body.style.display = "flex";
         this.siteBody.appendChild(this.homeScreenView.body);
 
@@ -41,12 +43,10 @@ class MainUIHandler extends Observable {
     }
 
     buildUIAfterLogin(displayName) {
-        if (displayName === null) {
-            // eslint-disable-next-line no-param-reassign
-            displayName = CONFIG.ANONYMOUS_USER_NAME;
-        }
         this.navBarView.displayUserName(displayName);
-        this.navBarView.makeVisible();
+        if (displayName !== CONFIG.ANONYMOUS_USER_NAME) {
+            this.navBarView.makeVisible();  
+        }
         this.siteBody.appendChild(this.navBarView.body);
         this.displayProject(displayName);
         this.displayHomeScreen();
@@ -69,6 +69,9 @@ class MainUIHandler extends Observable {
         this.uploadImgView.addEventListener("newUrlAndNameEntered", this.handleNewUrlAndNameEntered.bind(this));
         this.uploadImgView.addEventListener("deleteFrame", this.deleteFrame.bind(this));
         this.uploadImgView.addEventListener("shareProjectButtonClicked", this.onShareProjectButtonClicked.bind(this));
+        if (displayName === CONFIG.ANONYMOUS_USER_NAME) {
+            this.uploadImgView.body.style.display = "none";
+        }
         this.frameListView = new FrameListView(this.container);
         this.frameListView.addEventListener("frameListElementClicked", this.onFrameListElementClicked.bind(this));
         this.canvasView = new CanvasView(this.container);
@@ -112,6 +115,9 @@ class MainUIHandler extends Observable {
     showNewComment(commentData) { this.commentSectionView.addComment(commentData.text, commentData.id, commentData.color, commentData.author); }
 
     // functions notifying index.js
+    onProjectKeyEntered(event) {
+        this.notifyAll(new Event("projectKeyEntered", event.data));
+    }
 
     requestLogin() { this.notifyAll(new Event("requestLogin")); }
 
@@ -124,6 +130,8 @@ class MainUIHandler extends Observable {
     onShareProjectButtonClicked() { this.notifyAll(new Event("shareProjectButtonClicked")); }
 
     deleteFrame() { this.notifyAll(new Event("deleteFrame")); }
+    
+    onAnonymousUserLoggedOut() { this.notifyAll(new Event("anonymousUserLoggedOut")); }
 
     onProjectSelected(event) { this.notifyAll(new Event("projectSelected", { id: event.data.id })); }
 

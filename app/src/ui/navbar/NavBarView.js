@@ -1,8 +1,9 @@
 /* eslint-env browser */
 
-import {Event, Observable} from "../../utils/Observable.js";
+import { Event, Observable } from "../../utils/Observable.js";
 import createElementFromHTML from "../../utils/Utilities.js";
 import ProjectsDropdownMenuView from "./ProjectsDropdownMenuView.js";
+import CONFIG from "../../utils/Config.js";
 
 class NavBarView extends Observable {
 
@@ -23,7 +24,12 @@ class NavBarView extends Observable {
     }
 
     onHomeScreenClicked() {
-        this.notifyAll(new Event("homeScreenClicked"));
+        if (this.userName === CONFIG.ANONYMOUS_USER_NAME) {
+            this.loginButton.style.display = "block";
+            this.notifyAll(new Event("anonymousUserLoggedOut"));
+        } else {
+            this.notifyAll(new Event("homeScreenClicked"));
+        }
     }
 
     onLoginButtonClicked() {
@@ -48,8 +54,11 @@ class NavBarView extends Observable {
     }
 
     displayUserName(userName) {
-        this.userDisplayName.innerHTML = userName;
-
+        this.userName = userName;
+        this.userDisplayName.innerHTML = this.userName;
+        if (this.userName === CONFIG.ANONYMOUS_USER_NAME) {
+            this.loginButton.style.display = "none";
+        }
     }
 
     makeVisible() {

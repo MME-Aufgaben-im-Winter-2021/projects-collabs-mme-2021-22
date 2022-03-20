@@ -17,6 +17,7 @@ const databaseHandler = new DatabaseHandler(),
 // console.log(databaseHandler.generateNewKey("projects/-MxeWHB80KhRVicH3W4C/frames"));
 
 databaseHandler.addEventListener("userSignInSuccessful", onUserLoggedIn);
+databaseHandler.addEventListener("anonymousUserSignInSuccessful", onAnonymousUserLoggedIn);
 databaseHandler.addEventListener("userSignInFailed", onUserLoginFailed);
 databaseHandler.addEventListener("userSignOutSuccessful", onUserLogoutSuccessful);
 databaseHandler.addEventListener("userSignOutFailed", onUserLogoutFailed);
@@ -34,6 +35,8 @@ mainUIHandler.addEventListener("newProjectCreated", onNewProjectCreated);
 mainUIHandler.addEventListener("frameListElementClicked", onFrameListElementClicked);
 mainUIHandler.addEventListener("frameListElementClicked", onFrameListElementClicked);
 mainUIHandler.addEventListener("shareProjectButtonClicked", onShareProjectButtonClicked);
+mainUIHandler.addEventListener("projectKeyEntered", onProjectKeyEntered);
+mainUIHandler.addEventListener("anonymousUserLoggedOut", onUserLoggedOut);
 
 function init() {
     if (isLoggedIn) {
@@ -49,9 +52,16 @@ function onUserLoggedIn(event) {
     console.log("User logged in");
     isLoggedIn = true;
     mainUIHandler.buildUIAfterLogin(event.data.user.displayName);
-    // mainUIHandler.showProject(sampleProject);
-    mainUIHandler.updateProjectList([{ name: "Foo", id: "-asdasdasd" }, { name: "Bar", id: "-yxcyxcyxcyxc" }]);
+    mainUIHandler.updateProjectList(CONFIG.PROJECT_LIST_PLACEHOLDER);
     databaseHandler.getProjectList();
+}
+
+function onAnonymousUserLoggedIn(event) {
+    console.log("Anonymous User logged in");
+    mainUIHandler.buildUIAfterLogin(CONFIG.ANONYMOUS_USER_NAME);
+    mainUIHandler.updateProjectList(CONFIG.PROJECT_LIST_PLACEHOLDER);
+    databaseHandler.getProjectList();
+    onProjectSelected(event);
 }
 
 function onUserLoginFailed(event) {
@@ -128,6 +138,7 @@ function onProjectListReady(event) {
 }
 
 async function onProjectSelected(event) {
+    console.log(event);
     const projectData = await databaseHandler.loadProjectSnapshot(event.data.id);
     currentProject = new Project(projectData.name, event.data.id, projectData.frames);
     mainUIHandler.showProject(currentProject);
@@ -171,6 +182,13 @@ function onShareProjectButtonClicked() {
     // copy current Project ID to Clipboard
     // https://www.w3schools.com/howto/howto_js_copy_clipboard.asp
     navigator.clipboard.writeText(currentProject.id);
+}
+
+function onProjectKeyEntered(event) {
+    console.log(databaseHandler.userIsLoggedIn());
+    if (!databaseHandler.userIsLoggedIn()) {
+        databaseHandler.loginAnonymously(event.data.projectKey);
+    }
 }
 
 init();

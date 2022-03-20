@@ -13,13 +13,16 @@ class DatabaseHandler extends Observable {
         this.app = initializeApp(CONFIG.FIREBASE_CONFIG);
     }
 
-    loginAnonymously() {
+    loginAnonymously(projectKey) {
         let auth = getAuth(this.app);
         signInAnonymously(auth)
             .then((result) => {
                 const currentUser = result.user;
                 this.checkUserHasProfile(currentUser.uid, CONFIG.ANONYMOUS_USER_NAME);
-                this.notifyAll(new Event("userSignInSuccessful", { user: currentUser }));
+                this.notifyAll(new Event("anonymousUserSignInSuccessful", { 
+                    user: currentUser,
+                    id: projectKey,
+                }));
             })
             .catch((error) => {
                 const errorCode = error.code,
@@ -270,6 +273,10 @@ class DatabaseHandler extends Observable {
                     console.error(error);
                 });
         });
+    }
+
+    userIsLoggedIn() {
+        return getAuth(this.app).currentUser !== null;
     }
 }
 
