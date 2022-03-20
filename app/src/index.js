@@ -71,7 +71,7 @@ function onUserLogoutFailed(event) {
 }
 
 function makeNewScreenshot(event) {
-    getScreenshot(event.data.url);
+    getScreenshot(event.data.url, event.data.frameName);
 }
 
 // die URL die der Funktion übergeben werden sollte, ist die URL die aus dem Inputfield ausgelesen wird
@@ -96,7 +96,7 @@ async function getBase64FromUrl(url) {
 }
 
 // Funktion ruft die URL der API auf und speichert die Daten im Image
-async function getScreenshot(url) {
+async function getScreenshot(url, frameName) {
     return fetch(getApiForUrl(url))
         .then(response => response.json())
         .then(data => {
@@ -106,7 +106,7 @@ async function getScreenshot(url) {
                     console.log("base64url:");
                     console.log(base64url);
                     // TODO: implement custom title
-                    addScreenshotToDatabase(base64url, "must implement custom title!");
+                    addScreenshotToDatabase(base64url, frameName);
                 });
         });
     // .then(data => screenshot = data);

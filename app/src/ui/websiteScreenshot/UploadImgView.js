@@ -20,6 +20,7 @@ class UploadImgView extends Observable {
         this.deleteImgButton = container.querySelector(".upload-img .delete");
         this.saveImgButton = container.querySelector(".upload-img .save");
         this.urlInputElement.addEventListener("change", this.onURLEntered.bind(this));
+        this.frameNameInputElement.addEventListener("change", this.onURLEntered.bind(this));
         this.uploadImgButton.addEventListener("click", this.onURLEntered.bind(this));
         this.deleteImgButton.addEventListener("click", this.onDeleteImgButtonClicked.bind(this));
         this.saveImgButton.addEventListener("click", this.onSaveImgButtonClicked.bind(this));
@@ -27,11 +28,17 @@ class UploadImgView extends Observable {
 
     onURLEntered() {
         console.log("onURLEntered");
+        this.urlInputElement.value = this.urlInputElement.value.trim();
+        this.frameNameInputElement.value = this.frameNameInputElement.value.trim();
         // don't do anything if nothing is entered && must be valid URL
-        console.log(checkUrlValid(this.urlInputElement.value.trim()));
-        if (this.urlInputElement.value !== "" && checkUrlValid(this.urlInputElement.value.trim())) {
-            this.notifyAll(new Event("urlEntered", { url: this.urlInputElement.value.trim() }));
-            this.urlInputElement.value = null;
+        console.log(checkUrlValid(this.urlInputElement.value));
+        if (this.urlInputElement.value !== "" && this.frameNameInputElement.value !== "" && checkUrlValid(this.urlInputElement.value)) {
+            this.notifyAll(new Event("newUrlAndNameEntered", { 
+                url: this.urlInputElement.value,
+                frameName: this.frameNameInputElement.value,
+            }));
+            this.urlInputElement.value = "";
+            this.frameNameInputElement.value = "";
             console.log("valid URL entered");
         }
     }

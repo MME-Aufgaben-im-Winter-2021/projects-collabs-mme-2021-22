@@ -66,7 +66,7 @@ class MainUIHandler extends Observable {
         this.commentSectionView = new CommentSectionView(this.container, displayName);
         this.commentSectionView.addEventListener("newCommentEntered", this.onNewCommentEntered.bind(this));
         this.uploadImgView = new UploadImgView(this.container);
-        this.uploadImgView.addEventListener("urlEntered", this.handleUrlEntered.bind(this));
+        this.uploadImgView.addEventListener("newUrlAndNameEntered", this.handleNewUrlAndNameEntered.bind(this));
         this.uploadImgView.addEventListener("deleteFrame", this.deleteFrame.bind(this));
         this.frameListView = new FrameListView(this.container);
         this.frameListView.addEventListener("frameListElementClicked", this.onFrameListElementClicked.bind(this));
@@ -103,7 +103,7 @@ class MainUIHandler extends Observable {
     changeImage(sourceURL) { this.screenshotContainerView.exchangeImage(sourceURL); }
 
     updateProjectList(projectArray) { this.navBarView.updateProjectList(projectArray); }
-        
+
     addComment(text) { this.commentSectionView.addComment(text); }
 
     showComments(comments) { this.commentSectionView.showComments(comments); }
@@ -116,7 +116,7 @@ class MainUIHandler extends Observable {
 
     onNewCommentEntered(event) { this.notifyAll(new Event("newCommentEntered", { commentText: event.data.commentText })); }
 
-    handleUrlEntered(event) { this.notifyAll(new Event("makeNewScreenshot", { url: event.data.url })); }
+    handleNewUrlAndNameEntered(event) { this.notifyAll(new Event("makeNewScreenshot", event.data)); }
 
     performUserLogout() { this.notifyAll(new Event("userLoggedOut")); }
 
