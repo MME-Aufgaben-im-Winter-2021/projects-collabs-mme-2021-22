@@ -14,6 +14,8 @@ class UploadImgView extends Observable {
 
     initViews(container) {
         this.urlInputElement = container.querySelector(".upload-img .input-url");
+        // TODO: save Frame name to Database
+        this.frameNameInputElement = container.querySelector(".upload-img .input-frame-name");
         this.uploadImgButton = container.querySelector(".upload-img .upload-img-button");
         this.deleteImgButton = container.querySelector(".upload-img .delete");
         this.saveImgButton = container.querySelector(".upload-img .save");

@@ -42,7 +42,8 @@ class NavBarView extends Observable {
         this.notifyAll(new Event("projectSelected", { id: event.data.id, displayName: this.userDisplayName.innerText.toString() }));
     }
 
-    onNewProjectClicked(event) {
+    onNewProjectClicked() {
+        this.notifyAll(new Event("createNewProject"));
         // TODO: create new project
     }
 

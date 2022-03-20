@@ -118,9 +118,20 @@ class DatabaseHandler extends Observable {
             .then(() => this.notifyAll(new Event("newCommentStored", commentData)));
     }
 
-    storeNewScreenshot(projectID, frameBase64, frameTitle) {
-        const db = getDatabase(this.app),
-            newFrameKey = this.generateNewKey(`projects/${projectID}/frames`),
+    storeNewScreenshot(projectID, frameBase64, frameTitle, projectName) {
+        const db = getDatabase(this.app);
+        // TODO: Update Project list after adding new Project
+        if (projectID === null) { // new project detected!
+            // eslint-disable-next-line no-param-reassign
+            projectID = this.generateNewKey("projects");
+            set(ref(db, `projects/${projectID}/name`), projectName)
+                .then(() => console.log("new name stored"))
+                .catch((error) => {
+                    console.error(error);
+                });
+        }
+        // eslint-disable-next-line one-var
+        const newFrameKey = this.generateNewKey(`projects/${projectID}/frames`),
             newFrameData = {
                 image_base64: frameBase64,
                 timestamp: new Date().getTime(),

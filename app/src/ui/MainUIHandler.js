@@ -10,6 +10,7 @@ import UploadImgView from "./websiteScreenshot/UploadImgView.js";
 import FrameListView from "./frameList/FrameListView.js";
 import CanvasView from "./websiteScreenshot/CanvasView.js";
 import HomeScreenView from "./homeScreen/HomeScreenView.js";
+import NameNewProjectView from "./homeScreen/NameNewProjectView.js";
 
 class MainUIHandler extends Observable {
 
@@ -22,6 +23,7 @@ class MainUIHandler extends Observable {
         this.navBarView.addEventListener("userLoggedOut", this.performUserLogout.bind(this));
         this.navBarView.addEventListener("projectSelected", this.onProjectSelected.bind(this));
         this.navBarView.addEventListener("homeScreenClicked", this.displayHomeScreen.bind(this));
+        this.navBarView.addEventListener("createNewProject", this.displayCreateNewProjectScreen.bind(this));
         this.navBarView.addEventListener("requestLogin", this.requestLogin.bind(this));
         this.navBarView.makeInvisible();
         this.siteBody.appendChild(this.navBarView.body);
@@ -30,6 +32,12 @@ class MainUIHandler extends Observable {
         this.homeScreenView = new HomeScreenView();
         this.homeScreenView.body.style.display = "flex";
         this.siteBody.appendChild(this.homeScreenView.body);
+
+        // create NameNewProjectView
+        this.nameNewProjectView = new NameNewProjectView();
+        this.nameNewProjectView.addEventListener("newProjectNameEntered", this.onNewProjectNameEntered.bind(this));
+        this.siteBody.appendChild(this.nameNewProjectView.body);
+        this.nameNewProjectView.body.style.display = "none";
     }
 
     buildUIAfterLogin(displayName) {
@@ -70,6 +78,7 @@ class MainUIHandler extends Observable {
     showProject(project) {
         this.homeScreenView.body.style.display = "none";
         this.container.style.display = "flex";
+        this.nameNewProjectView.body.style.display = "none";
         this.frameListView.updateElements(project.frames); // update frame list
         this.screenshotContainerView.exchangeImage(project.getFirstScreenshot()); // show first screenshot
         this.notifyAll(new Event("frameListElementClicked", { id: project.getFirstID() })); // load comments as if first frame was clicked
@@ -78,6 +87,17 @@ class MainUIHandler extends Observable {
     displayHomeScreen() {
         this.homeScreenView.body.style.display = "flex";
         this.container.style.display = "none";
+        this.nameNewProjectView.body.style.display = "none";
+    }
+
+    onNewProjectNameEntered(event) {
+        this.notifyAll(new Event("newProjectCreated", { newProjectName: event.data.newProjectName }));
+    }
+
+    displayCreateNewProjectScreen() {
+        this.homeScreenView.body.style.display = "none";
+        this.container.style.display = "none";
+        this.nameNewProjectView.body.style.display = "flex";
     }
 
     changeImage(sourceURL) { this.screenshotContainerView.exchangeImage(sourceURL); }

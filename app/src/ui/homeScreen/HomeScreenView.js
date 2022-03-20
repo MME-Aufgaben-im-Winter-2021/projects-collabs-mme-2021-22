@@ -7,7 +7,6 @@ class HomeScreenView extends Observable{
         super();
         this.body = createElementFromHTML(document.querySelector("#home-screen-template").innerHTML);
         this.inputProjectKey = this.body.querySelector(".enter-project-key");
-
     }
 
     onProjectKeyEntered() {

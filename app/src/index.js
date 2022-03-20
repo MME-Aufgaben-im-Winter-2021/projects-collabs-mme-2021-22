@@ -30,6 +30,7 @@ mainUIHandler.addEventListener("makeNewScreenshot", makeNewScreenshot);
 mainUIHandler.addEventListener("newCommentEntered", onNewCommentEntered);
 mainUIHandler.addEventListener("deleteFrame", deleteFrame);
 mainUIHandler.addEventListener("projectSelected", onProjectSelected);
+mainUIHandler.addEventListener("newProjectCreated", onNewProjectCreated);
 mainUIHandler.addEventListener("frameListElementClicked", onFrameListElementClicked);
 mainUIHandler.addEventListener("frameListElementClicked", onFrameListElementClicked);
 
@@ -150,7 +151,7 @@ function onNewCommentStored(event) {
 }
 
 function addScreenshotToDatabase(base64Image, title) {
-    databaseHandler.storeNewScreenshot(currentProject.id, base64Image, title);
+    databaseHandler.storeNewScreenshot(currentProject.id, base64Image, title, currentProject.name);
 }
 
 function onNewFrameStored(event) {
@@ -160,4 +161,11 @@ function onNewFrameStored(event) {
     onProjectSelected(event); // event must contain id in event.data.id
 }
 
+function onNewProjectCreated(event) {
+    currentProject = new Project(event.data.newProjectName);
+    mainUIHandler.showProject(currentProject);
+}
+
 init();
+
+// console.log(await getBase64FromUrl("http://localhost:5500/app/resources/css/test.png"));

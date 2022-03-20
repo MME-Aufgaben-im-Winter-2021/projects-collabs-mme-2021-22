@@ -53,6 +53,16 @@
     </div>
 </template>
 
+<!-- template for the project screen -->
+<template id="project-screen-template">
+    <div class="container-home border">
+        <div class="project-key-container border">
+            <input id="enter-project-name" class="enter-project-key" type="text">
+            <label class="enter-project-key-label" for="enter-project-key">Enter new Project name</label>
+        </div>
+    </div>
+</template>
+
 <!-- template for a project displayed in the dropdown list -->
 <template id="project-list-item-template">
     <div class="project-list-item-container">
@@ -97,6 +107,9 @@
         <div class="upload-img">
             <label>
                 <input type="text" class="input-url" placeholder="insert new url">
+            </label>
+            <label>
+                <input type="text" class="input-frame-name" placeholder="frame name">
             </label>
             <img class="round-button upload-img-button" src="" alt="upload"> <!-- upload-img icon -->
             <span class="round-button delete"><img src="" alt="delete"></span> <!-- delete icon -->

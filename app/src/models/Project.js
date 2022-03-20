@@ -1,7 +1,8 @@
 /* eslint-env browser */
+import CONFIG from "../utils/Config.js";
 
 class Project {
-    constructor(name, id, frames) {
+    constructor(name, id = null, frames = [{ id: null, imageBase64: CONFIG.EXAMPLE_PICTURE }]) {
         this.name = name;
         this.id = id;
         // this.frames = [{ title: 'Hot Since 82', timestamp: '1651545151', id: '-Mxf3HE-xoyx7FJM-vqB', imageBase64: 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAB4AA…gCIIgCIIgCIIgCMKVwP8HCJ2bjj7RicQAAAAASUVORK5CYII=' }];

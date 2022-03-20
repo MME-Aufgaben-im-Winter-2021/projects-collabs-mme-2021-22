@@ -12,7 +12,7 @@ class ProjectsDropdownMenuView extends Observable {
         this.dropdownButton = this.body.querySelector(".dropdown-button");
         this.dropdownButton.addEventListener("click", this.onDropdownButtonClicked.bind(this));
         this.newProjectButton = this.body.querySelector(".new-project");
-        this.newProjectButton.addEventListener("click", this.loadNewProject.bind(this));
+        //this.newProjectButton.addEventListener("click", this.loadNewProject.bind(this));
         this.displayName = this.body.querySelector(".user-display-name").innerHTML;
     }
 
@@ -32,6 +32,7 @@ class ProjectsDropdownMenuView extends Observable {
     }
 
     onProjectSelected(event) {
+        // TODO: Update Project list after adding new Project
         console.log("selected project with id: " + event.data.id);
         this.notifyAll(new Event("projectSelected", { id: event.data.id }));
     }
@@ -50,7 +51,7 @@ class ProjectsDropdownMenuView extends Observable {
             body.removeChild(body.lastChild);
         }
         this.mainUIHandler.buildUIAfterLogin(this.displayName);*/
-        this.window.location.reload();
+        //this.window.location.reload();
     }
 }
 
