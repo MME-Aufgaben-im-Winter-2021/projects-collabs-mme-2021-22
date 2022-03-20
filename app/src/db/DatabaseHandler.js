@@ -19,7 +19,7 @@ class DatabaseHandler extends Observable {
             .then((result) => {
                 const currentUser = result.user;
                 this.checkUserHasProfile(currentUser.uid, CONFIG.ANONYMOUS_USER_NAME);
-                this.notifyAll(new Event("anonymousUserSignInSuccessful", { 
+                this.notifyAll(new Event("anonymousUserSignInSuccessful", {
                     user: currentUser,
                     id: projectKey,
                 }));

@@ -2,7 +2,6 @@
 
 import { Event, Observable } from "../../utils/Observable.js";
 import { checkUrlValid } from "../../utils/Utilities.js";
-import FrameListElementView from "../frameList/FrameListElementView.js";
 
 //only important during the session
 class UploadImgView extends Observable {
@@ -33,7 +32,7 @@ class UploadImgView extends Observable {
         // don't do anything if nothing is entered && must be valid URL
         console.log(checkUrlValid(this.urlInputElement.value));
         if (this.urlInputElement.value !== "" && this.frameNameInputElement.value !== "" && checkUrlValid(this.urlInputElement.value)) {
-            this.notifyAll(new Event("newUrlAndNameEntered", { 
+            this.notifyAll(new Event("newUrlAndNameEntered", {
                 url: this.urlInputElement.value,
                 frameName: this.frameNameInputElement.value,
             }));

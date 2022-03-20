@@ -2,7 +2,7 @@ import { Event, Observable } from "../../utils/Observable.js";
 import createElementFromHTML from "../../utils/Utilities.js";
 import CONFIG from "../../utils/Config.js";
 
-class HomeScreenView extends Observable{
+class HomeScreenView extends Observable {
 
     constructor() {
         super();
@@ -18,7 +18,7 @@ class HomeScreenView extends Observable{
             // TODO: add shake Animation or whatever
             return;
         }
-        this.notifyAll(new Event("projectKeyEntered", { projectKey: this.projectKeyInputElement.value}));
+        this.notifyAll(new Event("projectKeyEntered", { projectKey: this.projectKeyInputElement.value }));
         this.projectKeyInputElement.value = "";
         // TODO: load project
     }

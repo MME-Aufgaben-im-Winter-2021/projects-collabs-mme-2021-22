@@ -45,7 +45,7 @@ class MainUIHandler extends Observable {
     buildUIAfterLogin(displayName) {
         this.navBarView.displayUserName(displayName);
         if (displayName !== CONFIG.ANONYMOUS_USER_NAME) {
-            this.navBarView.makeVisible();  
+            this.navBarView.makeVisible();
         }
         this.siteBody.appendChild(this.navBarView.body);
         this.displayProject(displayName);
@@ -130,7 +130,7 @@ class MainUIHandler extends Observable {
     onShareProjectButtonClicked() { this.notifyAll(new Event("shareProjectButtonClicked")); }
 
     deleteFrame() { this.notifyAll(new Event("deleteFrame")); }
-    
+
     onAnonymousUserLoggedOut() { this.notifyAll(new Event("anonymousUserLoggedOut")); }
 
     onProjectSelected(event) { this.notifyAll(new Event("projectSelected", { id: event.data.id })); }
