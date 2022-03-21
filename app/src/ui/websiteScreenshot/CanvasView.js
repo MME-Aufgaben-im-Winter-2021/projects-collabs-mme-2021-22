@@ -16,6 +16,8 @@ class CanvasView extends Observable {
         this.body = container;
         this.canvas = container.getElementsByTagName("canvas")[0];
         this.context = this.canvas.getContext("2d");
+        this.x = 0;
+        this.y = 0;
         this.body.onclick = this.draw;
     }
 
@@ -31,12 +33,32 @@ class CanvasView extends Observable {
         let canv = document.getElementsByTagName("canvas")[0],
             context = canv.getContext("2d"),
             pos = getMousePos(canv, e),
-            posx = pos.x,
-            posy = pos.y;
-        context.fillStyle = CONFIG.COLOR_LIST[Math.floor(Math.random() * CONFIG.COLOR_LIST.length)];
-        context.beginPath();
-        context.arc(posx, posy, 2, 0, 2 * Math.PI);
-        context.fill();
+            posX = pos.x,
+            posY = pos.y,
+            randomColor = CONFIG.COLOR_LIST[Math.floor(Math.random() * CONFIG.COLOR_LIST.length)];
+        
+        console.log(posX , posY);
+        console.log(this.x , this.y);
+        if(this.x === -1){ //TODO: implement button in html, check if arc is activated
+            console.log("in arc");
+
+            context.fillStyle = randomColor;
+            context.beginPath();
+            context.arc(posX, posY, 2, 0, 2 * Math.PI);
+            context.fill();
+        } else if((this.x === undefined && this.y === undefined) || (this.x === 0 && this.y === 0)){ //TODO: implement button in html, check if rect is activated
+            console.log("in rect 1");
+
+            this.x = posX;
+            this.y = posY;
+        } else if(this.x !== 0 && this.y !== 0){ //TODO: implement button in html, check if rect is activated
+            console.log("in rect 2");
+            context.lineWidth = "2";
+            context.strokeStyle = randomColor;
+            context.strokeRect(this.x, this.y, posX - this.x , posY - this.y);
+            this.x = 0;
+            this.y = 0;
+        }
     }
 }
 
