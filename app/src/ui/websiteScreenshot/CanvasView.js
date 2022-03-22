@@ -47,15 +47,15 @@ class CanvasView extends Observable {
         if(this.currentTool === undefined){
             this.currentTool = "rect";
         }
-        if(this.currentTool === "arc"){ //TODO: implement button in html, check if arc is activated
+        if(this.currentTool === "arc"){
             context.fillStyle = randomColor;
             context.beginPath();
             context.arc(posX, posY, 2, 0, 2 * Math.PI);
             context.fill();
-        } else if(this.currentTool === "rect" && ((this.x === undefined && this.y === undefined) || (this.x === 0 && this.y === 0))){ //TODO: implement button in html, check if rect is activated
+        } else if(this.currentTool === "rect" && ((this.x === undefined && this.y === undefined) || (this.x === 0 && this.y === 0))){
             this.x = posX;
             this.y = posY;
-        } else if(this.currentTool === "rect" && this.x !== 0 && this.y !== 0){ //TODO: implement button in html, check if rect is activated
+        } else if(this.currentTool === "rect" && this.x !== 0 && this.y !== 0){
             context.lineWidth = "2";
             context.strokeStyle = randomColor;
             context.strokeRect(this.x, this.y, posX - this.x , posY - this.y);
@@ -71,7 +71,6 @@ class CanvasView extends Observable {
 
     changeStatusArc(){
         this.currentTool = "arc";
-        console.log(this.currentTool);
     }
 }
 
