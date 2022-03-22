@@ -11,14 +11,21 @@ function getMousePos(canvas, e) {
 }
 
 class CanvasView extends Observable {
-    constructor(container) {
+    constructor(container, toolbar) {
         super();
         this.body = container;
         this.canvas = container.getElementsByTagName("canvas")[0];
         this.context = this.canvas.getContext("2d");
         this.x = 0;
         this.y = 0;
-        this.body.onclick = this.draw;
+        this.body.addEventListener("click", this.draw.bind(this));
+        this.toolbar = toolbar;
+        this.rectButton = toolbar.querySelector("#rect");
+        this.rectButton.addEventListener("click", this.changeStatusRect.bind(this));
+        this.arcButton = toolbar.querySelector("#arc");
+        this.arcButton.addEventListener("click", this.changeStatusArc.bind(this));
+
+        this.currentTool = "rect";
     }
 
     updateCanvasContent(src) {
@@ -36,29 +43,35 @@ class CanvasView extends Observable {
             posX = pos.x,
             posY = pos.y,
             randomColor = CONFIG.COLOR_LIST[Math.floor(Math.random() * CONFIG.COLOR_LIST.length)];
-        
-        console.log(posX , posY);
-        console.log(this.x , this.y);
-        if(this.x === -1){ //TODO: implement button in html, check if arc is activated
-            console.log("in arc");
-
+        console.log(this.currentTool);
+        if(this.currentTool === undefined){
+            this.currentTool = "rect";
+        }
+        if(this.currentTool === "arc"){ //TODO: implement button in html, check if arc is activated
             context.fillStyle = randomColor;
             context.beginPath();
             context.arc(posX, posY, 2, 0, 2 * Math.PI);
             context.fill();
-        } else if((this.x === undefined && this.y === undefined) || (this.x === 0 && this.y === 0)){ //TODO: implement button in html, check if rect is activated
-            console.log("in rect 1");
-
+        } else if(this.currentTool === "rect" && ((this.x === undefined && this.y === undefined) || (this.x === 0 && this.y === 0))){ //TODO: implement button in html, check if rect is activated
             this.x = posX;
             this.y = posY;
-        } else if(this.x !== 0 && this.y !== 0){ //TODO: implement button in html, check if rect is activated
-            console.log("in rect 2");
+        } else if(this.currentTool === "rect" && this.x !== 0 && this.y !== 0){ //TODO: implement button in html, check if rect is activated
             context.lineWidth = "2";
             context.strokeStyle = randomColor;
             context.strokeRect(this.x, this.y, posX - this.x , posY - this.y);
             this.x = 0;
             this.y = 0;
         }
+        //TODO: give color code to auto activated comment
+    }
+
+    changeStatusRect(){
+        this.currentTool = "rect";
+    }
+
+    changeStatusArc(){
+        this.currentTool = "arc";
+        console.log(this.currentTool);
     }
 }
 

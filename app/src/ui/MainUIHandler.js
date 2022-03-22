@@ -62,9 +62,11 @@ class MainUIHandler extends Observable {
         this.uploadImgView.addEventListener("deleteFrame", this.deleteFrame.bind(this));
         this.frameListView = new FrameListView(this.container);
         this.frameListView.addEventListener("frameListElementClicked", this.onFrameListElementClicked.bind(this));
-        this.canvasView = new CanvasView(this.container);
+        this.toolbar = createElementFromHTML(document.querySelector("#toolbar-template").innerHTML);
+        this.canvasView = new CanvasView(this.container, this.toolbar);
         this.container.style.display = "none";
         this.siteBody.appendChild(this.container);
+        this.siteBody.appendChild(this.toolbar);
     }
 
     showProject(project) {
