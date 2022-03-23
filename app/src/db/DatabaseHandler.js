@@ -42,7 +42,7 @@ class DatabaseHandler extends Observable {
                     token = credential.accessToken,
                     // The signed-in user info.
                     user = result.user;
-                // console.log(token);
+                console.log(token);
                 console.log(user);
                 this.checkUserHasProfile(user.uid, user.displayName);
                 this.notifyAll(new Event("userSignInSuccessful", { user: user }));
