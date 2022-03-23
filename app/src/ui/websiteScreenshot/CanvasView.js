@@ -11,12 +11,21 @@ function getMousePos(canvas, e) {
 }
 
 class CanvasView extends Observable {
-    constructor(container) {
+    constructor(container, toolbar) {
         super();
         this.body = container;
         this.canvas = container.getElementsByTagName("canvas")[0];
         this.context = this.canvas.getContext("2d");
-        this.body.onclick = this.draw;
+        this.x = 0;
+        this.y = 0;
+        this.body.addEventListener("click", this.draw.bind(this));
+        this.toolbar = toolbar;
+        this.rectButton = toolbar.querySelector("#rect");
+        this.rectButton.addEventListener("click", this.changeStatusRect.bind(this));
+        this.arcButton = toolbar.querySelector("#arc");
+        this.arcButton.addEventListener("click", this.changeStatusArc.bind(this));
+
+        this.currentTool = "rect";
     }
 
     updateCanvasContent(src) {
@@ -31,12 +40,37 @@ class CanvasView extends Observable {
         let canv = document.getElementsByTagName("canvas")[0],
             context = canv.getContext("2d"),
             pos = getMousePos(canv, e),
-            posx = pos.x,
-            posy = pos.y;
-        context.fillStyle = CONFIG.COLOR_LIST[Math.floor(Math.random() * CONFIG.COLOR_LIST.length)];
-        context.beginPath();
-        context.arc(posx, posy, 2, 0, 2 * Math.PI);
-        context.fill();
+            posX = pos.x,
+            posY = pos.y,
+            randomColor = CONFIG.COLOR_LIST[Math.floor(Math.random() * CONFIG.COLOR_LIST.length)];
+        console.log(this.currentTool);
+        if(this.currentTool === undefined){
+            this.currentTool = "rect";
+        }
+        if(this.currentTool === "arc"){
+            context.fillStyle = randomColor;
+            context.beginPath();
+            context.arc(posX, posY, 2, 0, 2 * Math.PI);
+            context.fill();
+        } else if(this.currentTool === "rect" && ((this.x === undefined && this.y === undefined) || (this.x === 0 && this.y === 0))){
+            this.x = posX;
+            this.y = posY;
+        } else if(this.currentTool === "rect" && this.x !== 0 && this.y !== 0){
+            context.lineWidth = "2";
+            context.strokeStyle = randomColor;
+            context.strokeRect(this.x, this.y, posX - this.x , posY - this.y);
+            this.x = 0;
+            this.y = 0;
+        }
+        //TODO: give color code to auto activated comment
+    }
+
+    changeStatusRect(){
+        this.currentTool = "rect";
+    }
+
+    changeStatusArc(){
+        this.currentTool = "arc";
     }
 }
 
