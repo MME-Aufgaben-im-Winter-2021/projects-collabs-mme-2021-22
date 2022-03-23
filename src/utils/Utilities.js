@@ -17,6 +17,12 @@ function checkUrlValid(url) {
     return pattern.test(url);
 }
 
-export { createElementFromHTML, checkUrlValid };
+function generateRandomRGBString() {
+    // https://stackoverflow.com/a/5365036
+    // eslint-disable-next-line no-magic-numbers
+    return "#" + ((1 << 24) * Math.random() | 0).toString(16);
+}
+
+export { createElementFromHTML, checkUrlValid, generateRandomRGBString };
 
 export default createElementFromHTML;

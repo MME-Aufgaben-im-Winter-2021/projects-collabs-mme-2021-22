@@ -30,10 +30,13 @@
 }
 
 .hidden {
-    display: none !important;
+    display: none;
 }
 
 body {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
     background-color: var(--background-gray);
     font-family: 'Space Grotesk', sans-serif;
     margin: 0;
@@ -61,10 +64,38 @@ body {
     border-style: solid;
     border-radius: 10px;
     border-color: var(--base-dark);
+
+    cursor: pointer;
 }
 
+.round-button:active {
+    box-shadow: #D6D6E7 0 3px 7px inset;
+    transform: translateX(2px);
+  }
+
 /* navbar with dropdown menu: code from https://www.w3schools.com/howto/howto_js_dropdown_sidenav.asp */
+.collabs-logo-container {
+    display: flex;
+    flex-direction: row;
+    align-content: center;
+
+    width: 100%;
+    padding: .25em;
+}
+
+.collabs-name {
+    font-weight: bold;
+    width: 50%;
+}
+
+.collabs-logo {
+    width: 50%;
+    margin: .25em .5em;
+}
+
 .dropdown-menu {
+    align-self: flex-start;
+
     display: flex;
     flex-direction: column;
 
@@ -96,14 +127,18 @@ body {
     outline: none;
 }
 
-.navbar:hover {
+.dropdown-menu:hover {
     color: #f1f1f1;
+}
+
+.login-button {
+    display: none;
 }
 
 /* Add an active class to the active dropdown button */
 .active {
-    background-color: green;
-    color: white;
+    color: var(--snow);
+    background-color: var(--base-color);
 }
 
 /* .dropdown-list is not visible when loading the dropdown menu */
@@ -119,32 +154,42 @@ body {
 
 /* parent div container for frame list, screenshot, comment list and ui elements*/
 .container {
-    display: flex;
-    flex-direction: column;
+    align-self: center;
+    align-content: center;
 
-    margin: 2vh 0 2vh 9vw;
-    width: 90vw;
-}
-
-/* frame list */
-.frame-list {
-    width: 10vw;
-    padding: 0 15px;
-
-    overflow: scroll;
-    overflow-x: hidden;
-}
-
-/* website screenshot*/
-
-.container {
     display: flex;
     flex-direction: column;
 
     width: 80vw;
+    margin: 2vh 0;
+
     background-color: var(--background-gray);
 }
 
+/* frame list */
+.frame-list-container {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+
+    border-top: solid;
+    border-color: var(--base-dark);
+}
+
+.frame-list {
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+
+    width: 78vw;
+    height: 10em;
+    margin: 1em;
+
+    overflow: scroll;
+    overflow-y: hidden;
+}
+
+/* website screenshot*/
 .screenshot-container {
     display: flex;
     flex-direction: row;
@@ -177,11 +222,12 @@ body {
 
     display: flex;
     flex-flow: column;
-    justify-content: space-between;
 
     padding: 10px;
-    width: 78vw;
-    height: 30vh;
+
+
+    width: 10vw;
+    height: calc(80vw * 0.56 * 0.8);
 
     background-color: var(--background-gray);
 }
@@ -190,17 +236,13 @@ body {
     align-self: center;
 
     display: flex;
-    flex-direction: column;
 
-    max-height: 25vh;
+    max-height: calc((80vw * 0.56 * 0.8) - 2em);
     width: 100%;
     padding: 2px;
 
     overflow: scroll;
     overflow-x: hidden;
-
-    border-top: solid;
-    border-color: var(--base-dark);
 }
 
 .comment-controls {
@@ -222,8 +264,9 @@ body {
 .input-comment {
     align-self: baseline;
 
-    width: 70vw;
+    width: 70%;
     height: 2em;
+    margin-right: 5px;
 
     vertical-align: bottom;
 }
@@ -236,7 +279,7 @@ body {
     text-align: center;
 
     height: 2em;
-    width: 7vw;
+    width: 30%;
     padding: 1px;
 
     color: var(--snow);
@@ -253,13 +296,20 @@ body {
 
     padding: 10px;
 
-    background-color: var(--base-color);
+    border-bottom: solid;
+    border-color: var(--base-dark);
 }
 
 .input-url {
     align-self: flex-start;
+    width: 20vw;
+}
 
-    width: 30vw;
+.input-frame-name {
+    align-self: flex-start;
+    margin-right: 10px;
+    margin-left: 10px;
+    width: 8vw;
 }
 
 .upload-img-button {
@@ -276,7 +326,7 @@ body {
 
     margin-top: 4px;
     padding: 2px;
-    width: 99%;
+    width: 9.5em;
 
     background-color: var(--base-dark);
     color: var(--snow);
@@ -286,10 +336,11 @@ body {
     display: flex;
     flex-direction: column;
 
-    width: 100%;
-    font-size: large;
+    width: 9em;
+    font-size: medium;
     font-weight: bold;
 
+    margin: 4px;
     padding: 1px;
 
     background-color: var(--background-gray);
@@ -299,7 +350,8 @@ body {
     font-size: medium;
     word-break: break-all;
 
-    width: 90%;
+    width: 9em;
+    margin: 4px;
 }
 
 .user-interactions {
@@ -309,20 +361,32 @@ body {
     font-size: medium;
     text-align: center;
 
-    width: 10%;
+    width: 9em;
     height: 100%;
     margin: 4px;
+
+    color: var(--snow);
+    background-color: var(--background-gray);
 }
 
 .user-interactions button {
     font-size: medium;
+    color: var(--snow);
 
-    background-color: var(--base-dark);
+    margin: .1em;
+
+    background-color: var(--background-gray);
+    border-style: solid;
+    border-color: var(--background-gray);
+
 }
 
+.user-interactions span {
+    margin: .25em;
+}
 .comment-content {
     display: flex;
-    align-items: flex-end;
+    flex-direction: column;
 
     width: 100%;
     padding: 1px;
@@ -335,21 +399,156 @@ body {
 
 /* frame list item template*/
 .frame-list-item {
-    display: flex;
+    display: block;
     flex-direction: column;
 
+    float: left;
     align-self: center;
     text-align: center;
     color: var(--snow);
 
-    width: 100%;
+    width: 10em;
+    height: calc(10em * 0.56 + 2em);
     margin: 2px;
 }
 
-.frame-img {
-    align-self: center;
+.header {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+
     width: 100%;
-    height: calc(10vw * 0.56);
+}
+
+.frame-description {
+    align-content: center;
+    width: 90%;
+}
+.delete-button {
+    align-content: center;
+    width: 10%;
+    background-color: var(--ruby);
+}
+
+.frame-img {
+    display: block;
+    align-self: center;
+    width: 10em;
+    height: calc(10em * 0.56);
+}
+
+/* home screen template */
+.container-home {
+    align-self: center;
+
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+
+    width: 70vw;
+    height: 90vh;
+    margin: 2vh 0;
+
+
+    color: var(--snow);
+}
+
+.project-key-container {
+    display: flex;
+    flex-direction: column-reverse;
+    justify-content: space-between;
+
+    width: 80%;
+    padding: 2vh 2vw;
+    margin-top: 10vh;
+
+    align-self: center;
+}
+
+.enter-project-key {
+    align-self: center;
+
+    width: 100%;
+    margin-top: 2vh;
+}
+
+.container-home label {
+    align-self: center;
+
+    font-size: x-large;
+}
+
+/* project list item template */
+.project-list-item-container {
+    display: flex;
+    flex-direction: row;
+    align-content: space-between;
+
+    height: 5em;
+    margin: 1em 2em;
+    padding: 1em;
+
+    font-size: x-large;
+    font-weight: bold;
+    text-align: justify;
+
+    background-color: var(--base-dark);
+    color: var(--snow);
+
+    border: solid;
+    border-color: var(--base-dark);
+
+    border-right: solid;
+    border-right-color: var(--snow);
+}
+
+.project-title {
+    align-content: flex-start;
+
+    width: 80%;
+    height: 7em;
+    padding: 1em;
+}
+
+.project-preview-picture {
+    align-content: center;
+
+    height: 5em;
+}
+
+.button-tool {
+  align-items: center;
+  background-color: #FCFCFD;
+  border-radius: 4px;
+  border-width: 0;
+  box-shadow: rgba(45, 35, 66, 0.4) 0 2px 4px,rgba(45, 35, 66, 0.3) 0 7px 13px -3px,#D6D6E7 0 -3px 0 inset;
+  box-sizing: border-box;
+  color: #36395A;
+  cursor: pointer;
+  height: 3vw;
+  justify-content: center;
+  line-height: 1;
+  margin-top: 40px;
+  margin-left: 10px;
+  padding-left: 16px;
+  padding-right: 16px;
+  position: relative;
+  text-align: center;
+  transition: box-shadow .15s,transform .15s;
+  touch-action: manipulation;
+  white-space: nowrap;
+  will-change: box-shadow,transform;
+  font-size: 18px;
+}
+
+.button-tool:hover {
+  box-shadow: rgba(45, 35, 66, 0.4) 0 4px 8px, rgba(45, 35, 66, 0.3) 0 7px 13px -3px, #D6D6E7 0 -3px 0 inset;
+  transform: translateY(-2px);
+}
+
+.button-tool:active {
+  box-shadow: #D6D6E7 0 3px 7px inset;
+  transform: translateY(2px);
 }
 
 /* https://www.w3schools.com/howto/howto_css_custom_scrollbar.asp */

@@ -1,5 +1,5 @@
-import { Event, Observable } from "../utils/Observable.js";
-import createElementFromHTML from "../utils/Utilities.js";
+import { Event, Observable } from "../../utils/Observable.js";
+import createElementFromHTML from "../../utils/Utilities.js";
 
 let voted = false;
 
@@ -22,16 +22,18 @@ function setVotingButton(classNameButton, classNameCount, symbolActive, symbolIn
     });
 }
 
-function loadCommentTextContent(body, text) {
-    body.getElementsByClassName("username")[0].innerText = document.getElementsByClassName("user-display-name")[0].innerText;
+function loadCommentTextContent(body, text, author) {
+    body.getElementsByClassName("username")[0].innerText = author;
     body.getElementsByClassName("message")[0].innerText = text;
 }
 
 class Comment extends Observable {
 
-    constructor(discussion, text, color = "#277A8C", isReply = false) {
+    constructor(discussion, text, id, color = "#277A8C", author, isReply = false) {
         super();
         this.commentList = discussion;
+        this.id = id;
+        this.author = author;
         this.body = createElementFromHTML(document.getElementById("comment-field-template").innerHTML);
         this.text = text;
         this.isReply = isReply;
@@ -44,9 +46,12 @@ class Comment extends Observable {
 
     onLoad() {
         this.body.style.background = this.color;
-        loadCommentTextContent(this.body, this.text);
+        loadCommentTextContent(this.body, this.text, this.author);
         this.initButtons();
-        this.commentList.append(this.body);
+        // this.commentList.append(this.body);
+        // https://stackoverflow.com/a/618198
+        // insert newest comment at the top
+        this.commentList.insertBefore(this.body, this.commentList.firstChild);
     }
 
     initButtons() {
