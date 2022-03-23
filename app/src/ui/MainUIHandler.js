@@ -56,6 +56,7 @@ class MainUIHandler extends Observable {
         const siteBody = document.querySelector("body");
         this.navBarView.makeInvisible();
         siteBody.removeChild(document.querySelector(".container"));
+        siteBody.removeChild(this.toolbar);
         // this.canvasView = null;
         this.displayHomeScreen();
     }
@@ -76,6 +77,7 @@ class MainUIHandler extends Observable {
         this.frameListView.addEventListener("frameListElementClicked", this.onFrameListElementClicked.bind(this));
         this.toolbar = createElementFromHTML(document.querySelector("#toolbar-template").innerHTML);
         this.canvasView = new CanvasView(this.container, this.toolbar);
+        this.toolbar.style.display = "none";
         this.container.style.display = "none";
         this.siteBody.appendChild(this.container);
         this.siteBody.appendChild(this.toolbar);
@@ -84,6 +86,7 @@ class MainUIHandler extends Observable {
     showProject(project) {
         this.homeScreenView.body.style.display = "none";
         this.container.style.display = "flex";
+        this.toolbar.style.display = "flex";
         this.nameNewProjectView.body.style.display = "none";
         this.frameListView.updateElements(project.frames); // update frame list
         this.screenshotContainerView.exchangeImage(project.getFirstScreenshot()); // show first screenshot
@@ -93,6 +96,7 @@ class MainUIHandler extends Observable {
     displayHomeScreen() {
         this.homeScreenView.body.style.display = "flex";
         this.container.style.display = "none";
+        this.toolbar.style.display = "none";
         this.nameNewProjectView.body.style.display = "none";
     }
 

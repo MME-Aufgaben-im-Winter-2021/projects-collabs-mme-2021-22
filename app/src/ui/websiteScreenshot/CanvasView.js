@@ -18,7 +18,7 @@ class CanvasView extends Observable {
         this.context = this.canvas.getContext("2d");
         this.x = 0;
         this.y = 0;
-        this.body.addEventListener("click", this.draw.bind(this));
+        this.canvas.addEventListener("click", this.draw.bind(this));
         this.toolbar = toolbar;
         this.rectButton = toolbar.querySelector("#rect");
         this.rectButton.addEventListener("click", this.changeStatusRect.bind(this));
@@ -43,7 +43,6 @@ class CanvasView extends Observable {
             posX = pos.x,
             posY = pos.y,
             randomColor = CONFIG.COLOR_LIST[Math.floor(Math.random() * CONFIG.COLOR_LIST.length)];
-        console.log(this.currentTool);
         if(this.currentTool === undefined){
             this.currentTool = "rect";
         }

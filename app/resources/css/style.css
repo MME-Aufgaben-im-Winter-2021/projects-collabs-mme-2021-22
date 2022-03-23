@@ -64,7 +64,14 @@ body {
     border-style: solid;
     border-radius: 10px;
     border-color: var(--base-dark);
+
+    cursor: pointer;
 }
+
+.round-button:active {
+    box-shadow: #D6D6E7 0 3px 7px inset;
+    transform: translateX(2px);
+  }
 
 /* navbar with dropdown menu: code from https://www.w3schools.com/howto/howto_js_dropdown_sidenav.asp */
 .collabs-logo-container {
@@ -257,9 +264,9 @@ body {
 .input-comment {
     align-self: baseline;
 
-    width: 9em;
+    width: 70%;
     height: 2em;
-    margin-right: 1em;
+    margin-right: 5px;
 
     vertical-align: bottom;
 }
@@ -272,7 +279,7 @@ body {
     text-align: center;
 
     height: 2em;
-    width: 4em;
+    width: 30%;
     padding: 1px;
 
     color: var(--snow);
@@ -301,6 +308,7 @@ body {
 .input-frame-name {
     align-self: flex-start;
     margin-right: 10px;
+    margin-left: 10px;
     width: 8vw;
 }
 
