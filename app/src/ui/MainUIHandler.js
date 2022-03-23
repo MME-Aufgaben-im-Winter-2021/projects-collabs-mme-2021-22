@@ -1,85 +1,147 @@
 /* eslint-env browser */
 
-// import { Event, Observable } from "../utils/Observable.js";
-import {Event, Observable} from "../utils/Observable.js";
+import { Event, Observable } from "../utils/Observable.js";
+import CONFIG from "../utils/Config.js";
 import createElementFromHTML from "../utils/Utilities.js";
-import LoginView from "./LoginView.js";
-import NavBarView from "./NavBarView.js";
-import ScreenshotContainerView from "./ScreenshotContainerView.js";
-import CommentSectionView from "./CommentSectionView.js";
-import UploadImgView from "./UploadImgView.js";
-import FrameListView from "./FrameListView.js";
-import CanvasView from "./CanvasView.js";
+import NavBarView from "./navbar/NavBarView.js";
+import ScreenshotContainerView from "./websiteScreenshot/ScreenshotContainerView.js";
+import CommentSectionView from "./commentSection/CommentSectionView.js";
+import UploadImgView from "./websiteScreenshot/UploadImgView.js";
+import FrameListView from "./frameList/FrameListView.js";
+import CanvasView from "./websiteScreenshot/CanvasView.js";
+import HomeScreenView from "./homeScreen/HomeScreenView.js";
+import NameNewProjectView from "./homeScreen/NameNewProjectView.js";
 
 class MainUIHandler extends Observable {
+
     constructor() {
         super();
-        // this.buildUIAfterLogin();
-    }
+        this.siteBody = document.querySelector("body");
 
-    // commented out the login procedure for easier debugging
-    displayLoginWindow() {
-        this.loginView = new LoginView();
-        const siteBody = document.querySelector("body");
-        this.loginView.addEventListener("userLoggedIn", this.onUserLoggedIn.bind(this));
-        siteBody.appendChild(this.loginView.body);
-    }
-
-    onUserLoggedIn() {
-        this.notifyAll(new Event("userLoggedIn"));
-    }
-
-    buildUIAfterLogin() {
-        const siteBody = document.querySelector("body"),
-            container = createElementFromHTML(document.querySelector("#container-template").innerHTML);
+        // create nav-bar
         this.navBarView = new NavBarView();
-        this.navBarView.addEventListener("projectsToolClicked", this.projectsToolClicked.bind(this));
         this.navBarView.addEventListener("userLoggedOut", this.performUserLogout.bind(this));
-        this.screenshotContainerView = new ScreenshotContainerView(container);
-        this.commentSectionView = new CommentSectionView(container);
-        this.commentSectionView.addEventListener("commentEntered", this.handleNewComment.bind(this));
-        this.uploadImgView = new UploadImgView(container);
-        this.uploadImgView.addEventListener("urlEntered", this.handleUrlEntered.bind(this));
-        this.frameListView = new FrameListView(container);
-        this.canvasView = new CanvasView(container);
-        siteBody.removeChild(document.querySelector(".login"));
-        siteBody.appendChild(this.navBarView.body);
-        siteBody.appendChild(container);
+        this.navBarView.addEventListener("projectSelected", this.onProjectSelected.bind(this));
+        this.navBarView.addEventListener("homeScreenClicked", this.displayHomeScreen.bind(this));
+        this.navBarView.addEventListener("createNewProject", this.displayCreateNewProjectScreen.bind(this));
+        this.navBarView.addEventListener("requestLogin", this.requestLogin.bind(this));
+        this.navBarView.addEventListener("anonymousUserLoggedOut", this.onAnonymousUserLoggedOut.bind(this));
+        this.navBarView.makeInvisible();
+        this.siteBody.appendChild(this.navBarView.body);
+
+        // create home screen
+        this.homeScreenView = new HomeScreenView();
+        this.homeScreenView.addEventListener("projectKeyEntered", this.onProjectKeyEntered.bind(this));
+        this.homeScreenView.body.style.display = "flex";
+        this.siteBody.appendChild(this.homeScreenView.body);
+
+        // create NameNewProjectView
+        this.nameNewProjectView = new NameNewProjectView();
+        this.nameNewProjectView.addEventListener("newProjectNameEntered", this.onNewProjectNameEntered.bind(this));
+        this.siteBody.appendChild(this.nameNewProjectView.body);
+        this.nameNewProjectView.body.style.display = "none";
     }
 
-    projectsToolClicked() {
-        console.log("projects clicked");
-    }
-
-    handleNewComment(event) {
-        console.log("new comment entered with content: " + event.data.commentText);
-        this.addComment(event.data.commentText);
-        this.notifyAll(new Event("newCommentEntered", { commentText: event.data.commentText }));
-    }
-
-    handleUrlEntered(event) {
-        console.log("new URL entered: " + event.data.url);
-        this.notifyAll(new Event("makeNewScreenshot", { url: event.data.url }));
-    }
-
-    addComment(text) {
-        this.commentSectionView.addComment(text);
-    }
-
-    performUserLogout() {
-        this.notifyAll(new Event("userLoggedOut"));
+    buildUIAfterLogin(displayName) {
+        this.navBarView.displayUserName(displayName);
+        if (displayName !== CONFIG.ANONYMOUS_USER_NAME) {
+            this.navBarView.makeVisible();
+        }
+        this.siteBody.appendChild(this.navBarView.body);
+        this.displayProject(displayName);
+        this.displayHomeScreen();
     }
 
     buildUIAfterLogout() {
         const siteBody = document.querySelector("body");
-        siteBody.removeChild(document.querySelector(".navbar"));
+        this.navBarView.makeInvisible();
         siteBody.removeChild(document.querySelector(".container"));
-        this.displayLoginWindow();
+        siteBody.removeChild(this.toolbar);
+        // this.canvasView = null;
+        this.displayHomeScreen();
     }
 
-    changeImage(sourceURL) {
-        this.screenshotContainerView.exchangeImage(sourceURL);
+    displayProject(displayName) {
+        this.container = createElementFromHTML(document.querySelector("#container-template").innerHTML);
+        this.screenshotContainerView = new ScreenshotContainerView(this.container);
+        this.commentSectionView = new CommentSectionView(this.container, displayName);
+        this.commentSectionView.addEventListener("newCommentEntered", this.onNewCommentEntered.bind(this));
+        this.uploadImgView = new UploadImgView(this.container);
+        this.uploadImgView.addEventListener("newUrlAndNameEntered", this.handleNewUrlAndNameEntered.bind(this));
+        this.uploadImgView.addEventListener("deleteFrame", this.deleteFrame.bind(this));
+        this.uploadImgView.addEventListener("shareProjectButtonClicked", this.onShareProjectButtonClicked.bind(this));
+        if (displayName === CONFIG.ANONYMOUS_USER_NAME) {
+            this.uploadImgView.body.style.display = "none";
+        }
+        this.frameListView = new FrameListView(this.container);
+        this.frameListView.addEventListener("frameListElementClicked", this.onFrameListElementClicked.bind(this));
+        this.toolbar = createElementFromHTML(document.querySelector("#toolbar-template").innerHTML);
+        this.canvasView = new CanvasView(this.container, this.toolbar);
+        this.toolbar.style.display = "none";
+        this.container.style.display = "none";
+        this.siteBody.appendChild(this.container);
+        this.siteBody.appendChild(this.toolbar);
     }
+
+    showProject(project) {
+        this.homeScreenView.body.style.display = "none";
+        this.container.style.display = "flex";
+        this.toolbar.style.display = "flex";
+        this.nameNewProjectView.body.style.display = "none";
+        this.frameListView.updateElements(project.frames); // update frame list
+        this.screenshotContainerView.exchangeImage(project.getFirstScreenshot()); // show first screenshot
+        this.notifyAll(new Event("frameListElementClicked", { id: project.getFirstID() })); // load comments as if first frame was clicked
+    }
+
+    displayHomeScreen() {
+        this.homeScreenView.body.style.display = "flex";
+        this.container.style.display = "none";
+        this.toolbar.style.display = "none";
+        this.nameNewProjectView.body.style.display = "none";
+    }
+
+    onNewProjectNameEntered(event) {
+        this.notifyAll(new Event("newProjectCreated", { newProjectName: event.data.newProjectName }));
+    }
+
+    displayCreateNewProjectScreen() {
+        this.homeScreenView.body.style.display = "none";
+        this.container.style.display = "none";
+        this.nameNewProjectView.body.style.display = "flex";
+    }
+
+    changeImage(sourceURL) { this.screenshotContainerView.exchangeImage(sourceURL); }
+
+    updateProjectList(projectArray) { this.navBarView.updateProjectList(projectArray); }
+
+    addComment(text) { this.commentSectionView.addComment(text); }
+
+    showComments(comments) { this.commentSectionView.showComments(comments); }
+
+    showNewComment(commentData) { this.commentSectionView.addComment(commentData.text, commentData.id, commentData.color, commentData.author); }
+
+    // functions notifying index.js
+    onProjectKeyEntered(event) {
+        this.notifyAll(new Event("projectKeyEntered", event.data));
+    }
+
+    requestLogin() { this.notifyAll(new Event("requestLogin")); }
+
+    onNewCommentEntered(event) { this.notifyAll(new Event("newCommentEntered", { commentText: event.data.commentText })); }
+
+    handleNewUrlAndNameEntered(event) { this.notifyAll(new Event("makeNewScreenshot", event.data)); }
+
+    performUserLogout() { this.notifyAll(new Event("userLoggedOut")); }
+
+    onShareProjectButtonClicked() { this.notifyAll(new Event("shareProjectButtonClicked")); }
+
+    deleteFrame() { this.notifyAll(new Event("deleteFrame")); }
+
+    onAnonymousUserLoggedOut() { this.notifyAll(new Event("anonymousUserLoggedOut")); }
+
+    onProjectSelected(event) { this.notifyAll(new Event("projectSelected", { id: event.data.id })); }
+
+    onFrameListElementClicked(event) { this.notifyAll(new Event("frameListElementClicked", { id: event.data.id })); }
 }
 
 export default MainUIHandler;
