@@ -19,8 +19,9 @@ class CommentSectionView extends Observable {
             this.color = "#000000"; //black for default answers without a marking
         }
         if (this.commentInputElement.value.trim() !== "" && this.commentInputElement.value.trim() !== null) { // do not accept empty strings as comment
-            this.notifyAll(new Event("newCommentEntered", { commentText: this.commentInputElement.value})); //TODO: give color
+            this.notifyAll(new Event("newCommentEntered", { commentText: this.commentInputElement.value, color: this.color})); //TODO: give color
             this.commentInputElement.value = "";
+            this.color = "#000000";
         } else {
             this.window.alert("You did not enter a valid input!");
         }
@@ -34,10 +35,11 @@ class CommentSectionView extends Observable {
 
     addReply(event) {
         if (this.commentInputElement.value.trim() !== "") { // do not accept empty strings as comment
-            this.notifyAll(new Event("newCommentEntered", { commentText: this.commentInputElement.value }));
+            this.notifyAll(new Event("newCommentEntered", { commentText: this.commentInputElement.value , color: this.color}));
             let reply = new Comment(this.discussion, this.commentInputElement.value, event.data.commentColor, event.data.isResponse);
             reply.onLoad();
             this.commentInputElement.value = "";
+            this.color = "#000000";
         }
     }
 

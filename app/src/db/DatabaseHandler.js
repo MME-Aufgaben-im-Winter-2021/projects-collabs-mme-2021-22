@@ -100,7 +100,7 @@ class DatabaseHandler extends Observable {
         }).then(() => console.log("success"));
     }
 
-    storeNewComment(commentText, projectID, frameID) {
+    storeNewComment(commentText, projectID, frameID, color) {
         const db = getDatabase(this.app),
             currentUser = getAuth(this.app).currentUser;
         let currentDisplayName = currentUser.displayName;
@@ -108,9 +108,9 @@ class DatabaseHandler extends Observable {
             currentDisplayName = CONFIG.ANONYMOUS_USER_NAME;
         }
         // eslint-disable-next-line one-var
-        const commentData = { //TODO: add color
+        const commentData = {
             author: currentDisplayName,
-            color: generateRandomRGBString(),
+            color: color,
             userID: currentUser.uid,
             text: commentText,
             rating: 0,

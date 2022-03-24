@@ -126,7 +126,7 @@ async function getScreenshot(url, frameName) {
 //getScreenshot("https://www.google.de/");
 
 function onNewCommentEntered(event) {
-    databaseHandler.storeNewComment(event.data.commentText, currentProject.id, currentFrame.id);
+    databaseHandler.storeNewComment(event.data.commentText, currentProject.id, currentFrame.id, event.data.color);
 }
 
 function deleteFrame() {

@@ -134,7 +134,7 @@ class MainUIHandler extends Observable {
 
     requestLogin() { this.notifyAll(new Event("requestLogin")); }
 
-    onNewCommentEntered(event) { this.notifyAll(new Event("newCommentEntered", { commentText: event.data.commentText })); }
+    onNewCommentEntered(event) { this.notifyAll(new Event("newCommentEntered", { commentText: event.data.commentText, color: event.data.color })); }
 
     handleNewUrlAndNameEntered(event) { this.notifyAll(new Event("makeNewScreenshot", event.data)); }
 
