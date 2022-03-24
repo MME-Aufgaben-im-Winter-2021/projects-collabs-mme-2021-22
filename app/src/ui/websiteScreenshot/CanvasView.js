@@ -1,5 +1,5 @@
-import Observable from "../../utils/Observable.js";
 import CONFIG from "../../utils/Config.js";
+import { Event, Observable } from "../../utils/Observable.js";
 
 // methods to draw circles on click from: https://stackoverflow.com/questions/20516311/drawing-a-circle-in-a-canvas-on-mouseclick
 function getMousePos(canvas, e) {
@@ -52,6 +52,7 @@ class CanvasView extends Observable {
             context.beginPath();
             context.arc(posX, posY, 2, 0, 2 * Math.PI);
             context.fill();
+            this.notifyAll(new Event("newMarking", {color: randomColor}));
         } else if(this.currentTool === "rect" && ((this.x === undefined && this.y === undefined) || (this.x === 0 && this.y === 0))){
             this.x = posX;
             this.y = posY;
@@ -61,8 +62,8 @@ class CanvasView extends Observable {
             context.strokeRect(this.x, this.y, posX - this.x , posY - this.y);
             this.x = 0;
             this.y = 0;
+            this.notifyAll(new Event("newMarking", {color: randomColor}));
         }
-        //TODO: give color code to auto activated comment
     }
 
     changeStatusRect(){

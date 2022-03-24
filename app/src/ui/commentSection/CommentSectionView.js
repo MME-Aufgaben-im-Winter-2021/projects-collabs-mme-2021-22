@@ -11,11 +11,15 @@ class CommentSectionView extends Observable {
         this.submitButton = container.querySelector(".comment-controls .submit");
         this.submitButton.addEventListener("click", this.onNewCommentEntered.bind(this));
         this.commentInputElement.addEventListener("change", this.onNewCommentEntered.bind(this));
+        this.color = "#000000"; //black for default answers without a marking
     }
 
     onNewCommentEntered() {
+        if (this.color === undefined){
+            this.color = "#000000"; //black for default answers without a marking
+        }
         if (this.commentInputElement.value.trim() !== "" && this.commentInputElement.value.trim() !== null) { // do not accept empty strings as comment
-            this.notifyAll(new Event("newCommentEntered", { commentText: this.commentInputElement.value }));
+            this.notifyAll(new Event("newCommentEntered", { commentText: this.commentInputElement.value})); //TODO: give color
             this.commentInputElement.value = "";
         } else {
             this.window.alert("You did not enter a valid input!");
@@ -43,6 +47,11 @@ class CommentSectionView extends Observable {
         for (const comment of comments) {
             this.addComment(comment.text, comment.id, comment.color, comment.author);
         }
+    }
+
+    activateInputField(event){
+        this.color = event.data.color;
+        this.commentInputElement.focus();
     }
 }
 

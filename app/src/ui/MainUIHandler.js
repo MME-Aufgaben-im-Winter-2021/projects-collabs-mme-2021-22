@@ -78,6 +78,7 @@ class MainUIHandler extends Observable {
         this.frameListView.addEventListener("frameListElementClicked", this.onFrameListElementClicked.bind(this));
         this.toolbar = createElementFromHTML(document.querySelector("#toolbar-template").innerHTML);
         this.canvasView = new CanvasView(this.container, this.toolbar);
+        this.canvasView.addEventListener("newMarking", this.newMarking.bind(this));
         this.toolbar.style.display = "none";
         this.container.style.display = "none";
         this.siteBody.appendChild(this.container);
@@ -148,6 +149,10 @@ class MainUIHandler extends Observable {
     onProjectSelected(event) { this.notifyAll(new Event("projectSelected", { id: event.data.id })); }
 
     onFrameListElementClicked(event) { this.notifyAll(new Event("frameListElementClicked", { id: event.data.id })); }
+
+    newMarking(event) {
+        this.commentSectionView.activateInputField(event);
+    }
 }
 
 export default MainUIHandler;
