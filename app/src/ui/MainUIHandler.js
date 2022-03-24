@@ -73,6 +73,7 @@ class MainUIHandler extends Observable {
         if (displayName === CONFIG.ANONYMOUS_USER_NAME) {
             this.uploadImgView.body.style.display = "none";
         }
+        this.canvas = this.container.querySelector("canvas");
         this.frameListView = new FrameListView(this.container);
         this.frameListView.addEventListener("frameListElementClicked", this.onFrameListElementClicked.bind(this));
         this.toolbar = createElementFromHTML(document.querySelector("#toolbar-template").innerHTML);
@@ -84,6 +85,9 @@ class MainUIHandler extends Observable {
     }
 
     showProject(project) {
+        this.context = this.canvas.getContext("2d");
+        this.context.clearRect(0,0, this.canvas.width, this.canvas.height);
+
         this.homeScreenView.body.style.display = "none";
         this.container.style.display = "flex";
         this.toolbar.style.display = "flex";
@@ -110,7 +114,9 @@ class MainUIHandler extends Observable {
         this.nameNewProjectView.body.style.display = "flex";
     }
 
-    changeImage(sourceURL) { this.screenshotContainerView.exchangeImage(sourceURL); }
+    changeImage(sourceURL) {
+        this.context.clearRect(0,0, this.canvas.width, this.canvas.height);
+        this.screenshotContainerView.exchangeImage(sourceURL); }
 
     updateProjectList(projectArray) { this.navBarView.updateProjectList(projectArray); }
 
