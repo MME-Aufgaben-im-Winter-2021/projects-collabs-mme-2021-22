@@ -19,6 +19,7 @@ const CONFIG = {
         "#4d65ae", "#fe18ab", "#ed3606", "#306bce", "#fb2d3b"],
     ANONYMOUS_USER_NAME: "Anonymous",
     KEY_LENGTH: 20,
+    ONE_SECOND_DELAY: 1000,
     PROJECT_LIST_PLACEHOLDER: [
         {
             name: "loading",

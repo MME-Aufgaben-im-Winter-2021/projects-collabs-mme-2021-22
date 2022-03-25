@@ -23,7 +23,7 @@ class CommentSectionView extends Observable {
             this.notifyAll(new Event("newCommentEntered", { commentText: this.commentInputElement.value, color: this.color}));
 
             if (this.canvasPNG !== undefined){
-                this.notifyAll(new Event("saveCanvas", {canvasPNG: this.canvasPNG}));
+                this.notifyAll(new Event("saveCanvas", {canvasPNG: this.canvasPNG})); //TODO: receive notification in db
             }
 
             this.commentInputElement.value = "";

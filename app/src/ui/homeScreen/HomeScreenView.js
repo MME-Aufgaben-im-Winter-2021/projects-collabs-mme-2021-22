@@ -15,12 +15,17 @@ class HomeScreenView extends Observable {
         this.projectKeyInputElement.value = this.projectKeyInputElement.value.trim();
         console.log(this.projectKeyInputElement.value.length);
         if (this.projectKeyInputElement.value.length !== CONFIG.KEY_LENGTH) {
-            // TODO: add shake Animation or whatever
-            return;
+            this.showError();
+        } else {
+            this.notifyAll(new Event("projectKeyEntered", { projectKey: this.projectKeyInputElement.value }));
+            this.projectKeyInputElement.value = "";
         }
-        this.notifyAll(new Event("projectKeyEntered", { projectKey: this.projectKeyInputElement.value }));
+    }
+
+    showError() {
+        this.projectKeyInputElement.classList.add("show-error-animation");
+        setTimeout(() => this.projectKeyInputElement.classList.remove("show-error-animation"), CONFIG.ONE_SECOND_DELAY);
         this.projectKeyInputElement.value = "";
-        // TODO: load project
     }
 }
 
