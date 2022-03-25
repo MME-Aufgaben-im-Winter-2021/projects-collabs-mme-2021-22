@@ -38,9 +38,7 @@ class CanvasView extends Observable {
     }
 
     draw(e) {
-        let canv = document.getElementsByTagName("canvas")[0],
-            context = canv.getContext("2d"),
-            pos = getMousePos(canv, e),
+            let pos = getMousePos(this.canvas, e),
             posX = pos.x,
             posY = pos.y,
             randomColor = CONFIG.COLOR_LIST[Math.floor(Math.random() * CONFIG.COLOR_LIST.length)];
@@ -48,22 +46,23 @@ class CanvasView extends Observable {
             this.currentTool = "rect";
         }
         if(this.currentTool === "arc"){
-            context.fillStyle = randomColor;
-            context.beginPath();
-            context.arc(posX, posY, 2, 0, 2 * Math.PI);
-            context.fill();
-            this.notifyAll(new Event("newMarking", {color: randomColor}));
+            this.context.fillStyle = randomColor;
+            this.context.beginPath();
+            this.context.arc(posX, posY, 2, 0, 2 * Math.PI);
+            this.context.fill();
+            this.notifyAll(new Event("newMarking", {color: randomColor, canvasPNG: this.getCanvasURL()}));
         } else if(this.currentTool === "rect" && ((this.x === undefined && this.y === undefined) || (this.x === 0 && this.y === 0))){
             this.x = posX;
             this.y = posY;
         } else if(this.currentTool === "rect" && this.x !== 0 && this.y !== 0){
-            context.lineWidth = "2";
-            context.strokeStyle = randomColor;
-            context.strokeRect(this.x, this.y, posX - this.x , posY - this.y);
+            this.context.lineWidth = "2";
+            this.context.strokeStyle = randomColor;
+            this.context.strokeRect(this.x, this.y, posX - this.x , posY - this.y);
             this.x = 0;
             this.y = 0;
-            this.notifyAll(new Event("newMarking", {color: randomColor}));
+            this.notifyAll(new Event("newMarking", {color: randomColor, canvasPNG: this.getCanvasURL()}));
         }
+        
     }
 
     changeStatusRect(){
@@ -72,6 +71,11 @@ class CanvasView extends Observable {
 
     changeStatusArc(){
         this.currentTool = "arc";
+    }
+
+    getCanvasURL(){
+        let dataURL = this.canvas.toDataURL();
+        return dataURL;
     }
 }
 

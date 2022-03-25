@@ -12,6 +12,7 @@ class CommentSectionView extends Observable {
         this.submitButton.addEventListener("click", this.onNewCommentEntered.bind(this));
         this.commentInputElement.addEventListener("change", this.onNewCommentEntered.bind(this));
         this.color = "#000000"; //black for default answers without a marking
+        this.canvasPNG = undefined;
     }
 
     onNewCommentEntered() {
@@ -19,9 +20,15 @@ class CommentSectionView extends Observable {
             this.color = "#000000"; //black for default answers without a marking
         }
         if (this.commentInputElement.value.trim() !== "" && this.commentInputElement.value.trim() !== null) { // do not accept empty strings as comment
-            this.notifyAll(new Event("newCommentEntered", { commentText: this.commentInputElement.value, color: this.color})); //TODO: give color
+            this.notifyAll(new Event("newCommentEntered", { commentText: this.commentInputElement.value, color: this.color}));
+
+            if (this.canvasPNG !== undefined){
+                this.notifyAll(new Event("saveCanvas", {canvasPNG: this.canvasPNG}));
+            }
+
             this.commentInputElement.value = "";
             this.color = "#000000";
+            this.canvasPNG = null;
         } else {
             this.window.alert("You did not enter a valid input!");
         }
@@ -53,6 +60,7 @@ class CommentSectionView extends Observable {
 
     activateInputField(event){
         this.color = event.data.color;
+        this.canvasPNG = event.data.canvasPNG;
         this.commentInputElement.focus();
     }
 }

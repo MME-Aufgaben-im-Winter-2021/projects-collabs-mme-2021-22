@@ -26,17 +26,6 @@ class FrameListElementView extends Observable {
     //simply deletes the html body of this, removing the frame off the list
     onDeleteButtonClicked() {
         this.frameList.removeChild(this.body);
-        this.refractureList();
-    }
-
-    //sets list items description new, according to their old one
-    refractureList() {
-        let j = 0,
-            items = this.frameList.getElementsByTagName("li");
-        for (let i = 0; i < items.length; i++) {
-            items[i].querySelector(".frame-description").innerHTML = j;
-            j++;
-        }
     }
 }
 
