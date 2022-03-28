@@ -117,7 +117,6 @@ async function getScreenshot(url, frameName) {
                 .then((base64url) => {
                     console.log("base64url:");
                     console.log(base64url);
-                    // TODO: implement custom title
                     addScreenshotToDatabase(base64url, frameName);
                 });
         });

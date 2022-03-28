@@ -333,6 +333,44 @@ class DatabaseHandler extends Observable {
             });
 
     }
+
+    deleteProject(projectID) {
+        const db = getDatabase(this.app),
+            currentUserID = getAuth(this.app).currentUser.uid;
+        get(ref(db, `projects/${projectID}/creator`))
+            .then((snapshot) => {
+                if (snapshot.exists() && snapshot.val() === currentUserID) {
+                    set(ref(db, `projects/${projectID}`), null) // setting value to null deletes the keys
+                        .then(() => {
+                            console.log("project sucessfully deleted by its author");
+                        })
+                        .catch((error) => console.log(error));
+                    // definetely not elegant and safe at all, but it works
+                    get(ref(db, "users"))
+                        .then((snapshot) => {
+                            if (snapshot.exists()) {
+                                snapshot.forEach((child) => { // store in array to allow sorting
+                                    if (child.child("projects").hasChild(projectID)) {
+                                        const userID = child.key;
+                                        set(ref(db, `users/${userID}/projects/${projectID}`), null)// setting value to null deletes the keys
+                                            .then(() => {
+                                                if (userID === currentUserID) {
+                                                    // TODO: add reloading UI after deleting project here, probably best is displaying the homescreen
+                                                }
+                                            }).catch((error) => {
+                                                console.error(error);
+                                            });
+                                    }
+                                });
+                            }
+                        }).catch((error) => {
+                            console.error(error);
+                        });
+                }
+            }).catch((error) => {
+                console.log(error);
+            });
+    }
 }
 
 export default DatabaseHandler;
