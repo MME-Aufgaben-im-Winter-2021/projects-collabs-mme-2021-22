@@ -127,8 +127,14 @@ class DatabaseHandler extends Observable {
         if (projectID === null) { // new project detected!
             // eslint-disable-next-line no-param-reassign
             projectID = this.generateNewKey("projects");
+            const currentUserID = getAuth(this.app).currentUser.uid;
             set(ref(db, `projects/${projectID}/name`), projectName)
                 .then(() => console.log("new name stored"))
+                .catch((error) => {
+                    console.error(error);
+                });
+            set(ref(db, `users/${currentUserID}/projects/${projectID}`), projectName)
+                .then(() => console.log("new project link stored"))
                 .catch((error) => {
                     console.error(error);
                 });
@@ -173,9 +179,37 @@ class DatabaseHandler extends Observable {
         return push(child(ref(db), path)).key;
     }
 
+    // getProjectList() {
+    //     const db = getDatabase(this.app);
+    //     get(ref(db, "projects"))
+    //         .then((snapshot) => {
+    //             if (snapshot.exists()) {
+    //                 console.log(snapshot);
+    //                 let result = [];
+    //                 snapshot.forEach((child) => {
+    //                     const projectID = child.key, // logs keys
+    //                         // https://stackoverflow.com/a/43586692
+    //                         projectName = snapshot.child(`${projectID}/name`).val(); // extracts every project's name
+    //                     // console.log(projectID);
+    //                     // console.log(projectName);
+    //                     result.push({
+    //                         name: projectName,
+    //                         id: projectID,
+    //                     });
+    //                 });
+    //                 this.notifyAll(new Event("projectListReady", result));
+    //             } else {
+    //                 console.log("No data available");
+    //             }
+    //         }).catch((error) => {
+    //             console.log(error);
+    //         });
+    // }
+
     getProjectList() {
-        const db = getDatabase(this.app);
-        get(ref(db, "projects"))
+        const db = getDatabase(this.app),
+            currentUserID = getAuth(this.app).currentUser.uid;
+        get(ref(db, `users/${currentUserID}/projects`))
             .then((snapshot) => {
                 if (snapshot.exists()) {
                     console.log(snapshot);
@@ -183,7 +217,7 @@ class DatabaseHandler extends Observable {
                     snapshot.forEach((child) => {
                         const projectID = child.key, // logs keys
                             // https://stackoverflow.com/a/43586692
-                            projectName = snapshot.child(`${projectID}/name`).val(); // extracts every project's name
+                            projectName = snapshot.child(`${projectID}`).val(); // extracts every project's name
                         // console.log(projectID);
                         // console.log(projectName);
                         result.push({
@@ -277,6 +311,27 @@ class DatabaseHandler extends Observable {
 
     userIsLoggedIn() {
         return getAuth(this.app).currentUser !== null;
+    }
+
+    linkProject(projectID) {
+        const db = getDatabase(this.app),
+            currentUserID = getAuth(this.app).currentUser.uid;
+        get(ref(db, `projects/${projectID}/name`))
+            .then((snapshot) => {
+                if (snapshot.exists()) {
+                    const projectName = snapshot.val();
+                    set(ref(db, `users/${currentUserID}/projects/${projectID}`), projectName)
+                        .then(() => {
+                            console.log("project sucessfully linked with current user");
+                            this.getProjectList();
+                            this.notifyAll(new Event("projectLinkedToUser", { id: projectID }));
+                        })
+                        .catch((error) => console.log(error));
+                }
+            }).catch((error) => {
+                console.log(error);
+            });
+
     }
 }
 

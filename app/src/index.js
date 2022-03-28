@@ -24,6 +24,7 @@ databaseHandler.addEventListener("userSignOutFailed", onUserLogoutFailed);
 databaseHandler.addEventListener("projectListReady", onProjectListReady);
 databaseHandler.addEventListener("newCommentStored", onNewCommentStored);
 databaseHandler.addEventListener("newFrameStored", onNewFrameStored);
+databaseHandler.addEventListener("projectLinkedToUser", onProjectSelected);
 mainUIHandler.addEventListener("userLoggedIn", onUserLoggedIn);
 mainUIHandler.addEventListener("requestLogin", onRequestLogin);
 mainUIHandler.addEventListener("userLoggedOut", onUserLoggedOut);
@@ -188,6 +189,8 @@ function onProjectKeyEntered(event) {
     console.log(databaseHandler.userIsLoggedIn());
     if (!databaseHandler.userIsLoggedIn()) {
         databaseHandler.loginAnonymously(event.data.projectKey);
+    } else {
+        databaseHandler.linkProject(event.data.projectKey);
     }
 }
 

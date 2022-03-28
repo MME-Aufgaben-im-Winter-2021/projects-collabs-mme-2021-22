@@ -13,7 +13,6 @@ class HomeScreenView extends Observable {
 
     onProjectKeyEntered() {
         this.projectKeyInputElement.value = this.projectKeyInputElement.value.trim();
-        console.log(this.projectKeyInputElement.value.length);
         if (this.projectKeyInputElement.value.length !== CONFIG.KEY_LENGTH) {
             this.showError();
         } else {
