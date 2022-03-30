@@ -8,8 +8,6 @@ class CommentSectionView extends Observable {
         super();
         this.discussion = container.querySelector(".discussion");
         this.commentInputElement = container.querySelector(".comment-controls .input-comment");
-        this.submitButton = container.querySelector(".comment-controls .submit");
-        this.submitButton.addEventListener("click", this.onNewCommentEntered.bind(this));
         this.commentInputElement.addEventListener("change", this.onNewCommentEntered.bind(this));
         this.color = "#000000"; //black for default answers without a marking
         this.canvasPNG = undefined;

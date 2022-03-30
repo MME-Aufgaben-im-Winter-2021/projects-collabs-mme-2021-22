@@ -253,9 +253,9 @@ body {
     justify-content: space-between;
 
     padding: 2px;
-    width: 100%;
+    width: 15em;
+    height: 2.2em;
 
-    background-color: var(--base-light);
     border-color: var(--base-light);
 
     border-style: solid;
@@ -264,28 +264,48 @@ body {
 .input-comment {
     align-self: baseline;
 
-    width: 70%;
     height: 2em;
+    width: 12em;
     margin-right: 5px;
 
     vertical-align: bottom;
 }
 
-.submit {
-    display: inline-block;
+.toolbar {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+
+    width: 4em;
+    height: 100%;
+}
+
+.button-tool {
     align-self: baseline;
-
-    font-weight: bold;
-    text-align: center;
-
+    background-color: #FCFCFD;
+    border-radius: 4px;
+    border-width: 0;
+    width: 45%;
     height: 2em;
-    width: 30%;
-    padding: 1px;
+    box-shadow: rgba(45, 35, 66, 0.4) 0 2px 4px,rgba(45, 35, 66, 0.3) 0 7px 13px -3px,#D6D6E7 0 -3px 0 inset;
+    color: #36395A;
+    cursor: pointer;
+    line-height: 1;
+    transition: box-shadow .15s,transform .15s;
+    touch-action: manipulation;
+    white-space: nowrap;
+    will-change: box-shadow,transform;
+    font-size: 18px;
+}
 
-    color: var(--snow);
-    background-color: var(--base-dark);
+.button-tool:hover {
+    box-shadow: rgba(45, 35, 66, 0.4) 0 4px 8px, rgba(45, 35, 66, 0.3) 0 7px 13px -3px, #D6D6E7 0 -3px 0 inset;
+    transform: translateY(-2px);
+}
 
-    border-radius: 25px;
+.button-tool:active {
+    box-shadow: #D6D6E7 0 3px 7px inset;
+    transform: translateY(2px);
 }
 
 /* add screenshot navbar */
@@ -326,7 +346,7 @@ body {
 
     margin-top: 4px;
     padding: 2px;
-    width: 9.5em;
+    width: 95%;
 
     background-color: var(--base-dark);
     color: var(--snow);
@@ -336,7 +356,6 @@ body {
     display: flex;
     flex-direction: column;
 
-    width: 9em;
     font-size: medium;
     font-weight: bold;
 
@@ -350,7 +369,6 @@ body {
     font-size: medium;
     word-break: break-all;
 
-    width: 9em;
     margin: 4px;
 }
 
@@ -361,7 +379,6 @@ body {
     font-size: medium;
     text-align: center;
 
-    width: 9em;
     height: 100%;
     margin: 4px;
 
@@ -514,85 +531,6 @@ body {
     align-content: center;
 
     height: 5em;
-}
-
-.button-tool {
-  align-items: center;
-  background-color: #FCFCFD;
-  border-radius: 4px;
-  border-width: 0;
-  box-shadow: rgba(45, 35, 66, 0.4) 0 2px 4px,rgba(45, 35, 66, 0.3) 0 7px 13px -3px,#D6D6E7 0 -3px 0 inset;
-  box-sizing: border-box;
-  color: #36395A;
-  cursor: pointer;
-  height: 3vw;
-  justify-content: center;
-  line-height: 1;
-  margin-top: 40px;
-  margin-left: 10px;
-  padding-left: 16px;
-  padding-right: 16px;
-  position: relative;
-  text-align: center;
-  transition: box-shadow .15s,transform .15s;
-  touch-action: manipulation;
-  white-space: nowrap;
-  will-change: box-shadow,transform;
-  font-size: 18px;
-}
-
-.button-tool:hover {
-  box-shadow: rgba(45, 35, 66, 0.4) 0 4px 8px, rgba(45, 35, 66, 0.3) 0 7px 13px -3px, #D6D6E7 0 -3px 0 inset;
-  transform: translateY(-2px);
-}
-
-.button-tool:active {
-  box-shadow: #D6D6E7 0 3px 7px inset;
-  transform: translateY(2px);
-}
-
-/* Animation from: https://codepen.io/biancadanforth/pen/BLYvqm */
-
-.show-error-animation {
-    background-color: var(--fuzzy-wuzzy);
-    animation: error-animation;
-    animation-duration: .5s;
-    animation-delay: 0.25s;
-}
-
-@keyframes error-animation {
-    0% {
-        transform: translateX(0px);
-        timing-function: ease-in;
-    }
-    37% {
-        transform: translateX(10px);
-        timing-function: ease-out;
-    }
-    55% {
-        transform: translateX(-10px);
-        timing-function: ease-in;
-    }
-    73% {
-        transform: translateX(8px);
-        timing-function: ease-out;
-    }
-    82% {
-        transform: translateX(-8px);
-        timing-function: ease-in;
-    }
-    91% {
-        transform: translateX(4px);
-        timing-function: ease-out;
-    }
-    96% {
-        transform: translateX(-4px);
-        timing-function: ease-in;
-    }
-    100% {
-        transform: translateX(0px);
-        timing-function: ease-in;
-    }
 }
 
 /* https://www.w3schools.com/howto/howto_css_custom_scrollbar.asp */
