@@ -171,6 +171,7 @@ function onNewFrameStored(event) {
     // TODO: reloading the whole poject after adding a new frame to the database is very data hungry.
     //       should be replaced if necessary and usefull
     console.log(event);
+    databaseHandler.getProjectList();
     onProjectSelected(event); // event must contain id in event.data.id
 }
 

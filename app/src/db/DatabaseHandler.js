@@ -137,6 +137,11 @@ class DatabaseHandler extends Observable {
                 .catch((error) => {
                     console.error(error);
                 });
+            set(ref(db, `projects/${projectID}/creator`), currentUserID)
+                .then(() => console.log("creator stored"))
+                .catch((error) => {
+                    console.error(error);
+                });
         }
         // eslint-disable-next-line one-var
         const newFrameKey = this.generateNewKey(`projects/${projectID}/frames`),
