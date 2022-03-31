@@ -100,6 +100,10 @@ class DatabaseHandler extends Observable {
     }
 
     storeNewComment(commentText, projectID, frameID, color) {
+        if (projectID === null) {
+            console.log("Cannot comment on empty Project");
+            return;
+        }
         const db = getDatabase(this.app),
             currentUser = getAuth(this.app).currentUser;
         let currentDisplayName = currentUser.displayName;
@@ -274,6 +278,9 @@ class DatabaseHandler extends Observable {
     loadComments(projectID, frameID) {
         const db = getDatabase(this.app);
         return new Promise((resolve, reject) => {
+            if (projectID === null) {
+                reject(new Error("Cannot load comments for unpublished project.\nIf you are just creating a new Project everything is fine and you can ignore this error."));
+            }
             get(ref(db, `projects/${projectID}/frames/${frameID}/comments`))
                 .then((snapshot) => {
                     if (snapshot.exists()) {
@@ -305,7 +312,7 @@ class DatabaseHandler extends Observable {
                         });
                         resolve(frameComments);
                     } else {
-                        reject(new Error("loading comments failed or no comments available"));
+                        reject(new Error("No comments available or loading failed."));
                     }
                 }).catch((error) => {
                     console.error(error);

@@ -61,6 +61,14 @@ class CommentSectionView extends Observable {
         this.canvasPNG = event.data.canvasPNG;
         this.commentInputElement.focus();
     }
+
+    disableCommenting() {
+        this.commentInputElement.disabled = true;
+    }
+
+    enableCommenting() {
+        this.commentInputElement.disabled = false;
+    }
 }
 
 export default CommentSectionView;

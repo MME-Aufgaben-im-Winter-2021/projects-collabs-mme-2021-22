@@ -89,7 +89,11 @@ class MainUIHandler extends Observable {
     showProject(project) {
         this.context = this.canvas.getContext("2d");
         this.context.clearRect(0, 0, this.canvas.width, this.canvas.height);
-
+        if (project.id === null) {
+            this.commentSectionView.disableCommenting();
+        } else {
+            this.commentSectionView.enableCommenting();
+        }
         this.homeScreenView.body.style.display = "none";
         this.container.style.display = "flex";
         this.toolbar.style.display = "flex";
