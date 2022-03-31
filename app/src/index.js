@@ -39,6 +39,9 @@ mainUIHandler.addEventListener("shareProjectButtonClicked", onShareProjectButton
 mainUIHandler.addEventListener("projectKeyEntered", onProjectKeyEntered);
 mainUIHandler.addEventListener("anonymousUserLoggedOut", onUserLoggedOut);
 mainUIHandler.addEventListener("saveCanvas", onSaveCanvas);
+mainUIHandler.addEventListener("commentUpvoted", handleCommentVote);
+mainUIHandler.addEventListener("commentUndoVote", handleCommentVote);
+mainUIHandler.addEventListener("commentDownvoted", handleCommentVote);
 
 function init() {
     if (isLoggedIn) {
@@ -149,7 +152,7 @@ async function onFrameListElementClicked(event) {
     mainUIHandler.changeImage(currentProject.getScreenshotByID(event.data.id));
     const comments = await databaseHandler.loadComments(currentProject.id, event.data.id)
         .catch((error) => console.log(error)); // loading comments failed or no comments available
-    // console.log(comments);
+    console.log(comments);
     currentFrame.id = event.data.id;
     // Sort comments by oldest timestamp
     // https://stackoverflow.com/a/7889040
@@ -201,6 +204,22 @@ function onCanvasLoaded(event) {
 
 function onSaveCanvas(event) {
     databaseHandler.storeCanvas(currentProject.id, currentFrame.id, event.data.canvasPNG);
+}
+
+function handleCommentVote(event) {
+    switch (event.type) {
+        case "commentUpvoted":
+            databaseHandler.setCommentVote(currentProject.id, currentFrame.id, event.data.commentID, CONFIG.UPVOTE_VALUE);
+            break;
+        case "commentUndoVote":
+            databaseHandler.setCommentVote(currentProject.id, currentFrame.id, event.data.commentID, null);
+            break;
+        case "commentDownvoted":
+            databaseHandler.setCommentVote(currentProject.id, currentFrame.id, event.data.commentID, CONFIG.DOWNVOTE_VALUE);
+            break;
+        default:
+            console.log("error handling comment votes");
+    }
 }
 
 init();

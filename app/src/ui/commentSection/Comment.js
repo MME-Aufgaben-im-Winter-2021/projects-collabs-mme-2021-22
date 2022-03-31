@@ -1,14 +1,9 @@
 import { Event, Observable } from "../../utils/Observable.js";
 import createElementFromHTML from "../../utils/Utilities.js";
 
-function loadCommentTextContent(body, text, author) {
-    body.getElementsByClassName("username")[0].innerText = author;
-    body.getElementsByClassName("message")[0].innerText = text;
-}
-
 class Comment extends Observable {
 
-    constructor(discussion, text, id, color = "#277A8C", author, isReply = false) {
+    constructor(discussion, text, id, color = "#277A8C", author, upvotes, downvotes, currentUserHasUpvoted, currentUserHasDownvoted, isReply = false) {
         super();
         this.commentList = discussion;
         this.id = id;
@@ -17,9 +12,10 @@ class Comment extends Observable {
         this.text = text;
         this.isReply = isReply;
         this.color = color;
-
-        this.isUpvoted = false;
-        this.isDownvoted = false;
+        this.upvotes = upvotes;
+        this.downvotes = downvotes;
+        this.isUpvoted = currentUserHasUpvoted;
+        this.isDownvoted = currentUserHasDownvoted;
     }
 
     reply() {
@@ -28,12 +24,21 @@ class Comment extends Observable {
 
     onLoad() {
         this.body.style.background = this.color;
-        loadCommentTextContent(this.body, this.text, this.author);
+        this.setContent(this.text, this.author, this.upvotes, this.downvotes);
         this.initButtons();
         // this.commentList.append(this.body);
         // https://stackoverflow.com/a/618198
         // insert newest comment at the top
         this.commentList.insertBefore(this.body, this.commentList.firstChild);
+    }
+
+    setContent(text, author, upvotes, downvotes) {
+        this.body.getElementsByClassName("username")[0].innerText = author;
+        this.body.getElementsByClassName("message")[0].innerText = text;
+        let upCount = this.body.querySelector(".upvote-count"),
+            downCount = this.body.querySelector(".downvote-count");
+        upCount.innerHTML = upvotes;
+        downCount.innerHTML = downvotes;
     }
 
     initButtons() {
@@ -50,6 +55,11 @@ class Comment extends Observable {
         */
         let upvote = this.body.querySelector(".upvote"),
             downvote = this.body.querySelector(".downvote");
+        if (this.isUpvoted) {
+            upvote.innerHTML = "▲";
+        } else if (this.isDownvoted) {
+            downvote.innerHTML = "▼";
+        }
         upvote.addEventListener("click", () => this.setVotingButton(upvote, this.body));
         downvote.addEventListener("click", () => this.setVotingButton(downvote, this.body));
     }
@@ -63,6 +73,8 @@ class Comment extends Observable {
             if (!this.isUpvoted) {
                 upCount.innerText = parseInt(upCount.innerText) + 1;
                 button.innerText = "▲";
+                console.log("upvote");
+                this.notifyAll(new Event("commentUpvoted", { commentID: this.id }));
                 this.isUpvoted = true;
                 if (this.isDownvoted) {
                     downCount.innerText = parseInt(downCount.innerText) - 1;
@@ -71,6 +83,8 @@ class Comment extends Observable {
                 }
             } else {
                 upCount.innerText = parseInt(upCount.innerText) - 1;
+                console.log("undo upvote");
+                this.notifyAll(new Event("commentUndoVote", { commentID: this.id }));
                 button.innerText = "△";
                 this.isUpvoted = false;
             }
@@ -78,6 +92,8 @@ class Comment extends Observable {
             if (!this.isDownvoted) {
                 downCount.innerText = parseInt(downCount.innerText) + 1;
                 button.innerText = "▼";
+                console.log("downvote");
+                this.notifyAll(new Event("commentDownvoted", { commentID: this.id }));
                 this.isDownvoted = true;
                 if (this.isUpvoted) {
                     upCount.innerText = parseInt(upCount.innerText) - 1;
@@ -87,6 +103,8 @@ class Comment extends Observable {
             } else {
                 downCount.innerText = parseInt(downCount.innerText) - 1;
                 button.innerText = "▽";
+                console.log("undo downvote");
+                this.notifyAll(new Event("commentUndoVote", { commentID: this.id }));
                 this.isDownvoted = false;
             }
         }

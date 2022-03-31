@@ -67,6 +67,9 @@ class MainUIHandler extends Observable {
         this.commentSectionView = new CommentSectionView(this.container, displayName);
         this.commentSectionView.addEventListener("newCommentEntered", this.onNewCommentEntered.bind(this));
         this.commentSectionView.addEventListener("saveCanvas", this.onSaveCanvas.bind(this));
+        this.commentSectionView.addEventListener("commentUpvoted", this.handleCommentVote.bind(this));
+        this.commentSectionView.addEventListener("commentUndoVote", this.handleCommentVote.bind(this));
+        this.commentSectionView.addEventListener("commentDownvoted", this.handleCommentVote.bind(this));
         this.uploadImgView = new UploadImgView(this.container);
         this.uploadImgView.addEventListener("newUrlAndNameEntered", this.handleNewUrlAndNameEntered.bind(this));
         this.uploadImgView.addEventListener("deleteFrame", this.deleteFrame.bind(this));
@@ -164,6 +167,22 @@ class MainUIHandler extends Observable {
 
     newMarking(event) {
         this.commentSectionView.activateInputField(event);
+    }
+
+    handleCommentVote(event) {
+        switch (event.type) {
+            case "commentUpvoted":
+                this.notifyAll(new Event("commentUpvoted", { commentID: event.data.commentID }));
+                break;
+            case "commentUndoVote":
+                this.notifyAll(new Event("commentUndoVote", { commentID: event.data.commentID }));
+                break;
+            case "commentDownvoted":
+                this.notifyAll(new Event("commentDownvoted", { commentID: event.data.commentID }));
+                break;
+            default:
+                console.log("error handling comment votes");
+        }
     }
 }
 

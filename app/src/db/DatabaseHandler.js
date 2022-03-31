@@ -276,7 +276,9 @@ class DatabaseHandler extends Observable {
     }
 
     loadComments(projectID, frameID) {
-        const db = getDatabase(this.app);
+        const db = getDatabase(this.app),
+            currentUserID = getAuth(this.app).currentUser.uid;;
+
         return new Promise((resolve, reject) => {
             if (projectID === null) {
                 reject(new Error("Cannot load comments for unpublished project.\nIf you are just creating a new Project everything is fine and you can ignore this error."));
@@ -290,11 +292,25 @@ class DatabaseHandler extends Observable {
                                 currentAuthorID = snapshot.child(`${currentCommentID}/author_id`).val(),
                                 currentAuthorName = snapshot.child(`${currentCommentID}/author`).val(),
                                 currentColor = snapshot.child(`${currentCommentID}/color`).val(),
-                                currentPosX = snapshot.child(`${currentCommentID}/pos_x`).val(),
-                                currentPosY = snapshot.child(`${currentCommentID}/pos_y`).val(),
-                                currentRating = snapshot.child(`${currentCommentID}/rating`).val(),
                                 currentText = snapshot.child(`${currentCommentID}/text`).val(),
-                                currentTimestamp = snapshot.child(`${currentCommentID}/timestamp`).val();
+                                currentTimestamp = snapshot.child(`${currentCommentID}/timestamp`).val(),
+                                currentUpvotes = 0,
+                                currentDownvotes = 0,
+                                currentUserHasUpvoted = false,
+                                currentUserHasDownvoted = false;
+                            snapshot.child(`${currentCommentID}/votes`).forEach((vote) => {
+                                if (vote.val() === CONFIG.DOWNVOTE_VALUE) {
+                                    currentDownvotes++;
+                                    if (vote.key === currentUserID) {
+                                        currentUserHasDownvoted = true;
+                                    }
+                                } else if (vote.val() === CONFIG.UPVOTE_VALUE) {
+                                    currentUpvotes++;
+                                    if (vote.key === currentUserID) {
+                                        currentUserHasUpvoted = true;
+                                    }
+                                }
+                            });
                             if (currentAuthorName === null) {
                                 currentAuthorName = CONFIG.ANONYMOUS_USER_NAME;
                             }
@@ -303,11 +319,12 @@ class DatabaseHandler extends Observable {
                                 authorID: currentAuthorID,
                                 author: currentAuthorName,
                                 color: currentColor,
-                                posX: currentPosX,
-                                posY: currentPosY,
-                                rating: currentRating,
                                 text: currentText,
                                 timestamp: currentTimestamp,
+                                upvotes: currentUpvotes,
+                                downvotes: currentDownvotes,
+                                currentUserHasUpvoted: currentUserHasUpvoted,
+                                currentUserHasDownvoted: currentUserHasDownvoted,
                             });
                         });
                         resolve(frameComments);
@@ -403,6 +420,17 @@ class DatabaseHandler extends Observable {
                 }
             }).catch((error) => {
                 console.log(error);
+            });
+    }
+
+    setCommentVote(projectID, frameID, commentID, value) {
+        const db = getDatabase(this.app),
+            currentUserID = getAuth(this.app).currentUser.uid;
+        set(ref(db, `projects/${projectID}/frames/${frameID}/comments/${commentID}/votes/${currentUserID}`), value)
+            .then(() => {
+                console.log(`stored your vote: ${value}`);
+            }).catch((error) => {
+                console.error(error);
             });
     }
 }

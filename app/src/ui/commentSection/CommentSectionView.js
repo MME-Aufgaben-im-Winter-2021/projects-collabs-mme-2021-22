@@ -32,10 +32,13 @@ class CommentSectionView extends Observable {
         }
     }
 
-    addComment(text, id, color, author) {
-        let comment = new Comment(this.discussion, text, id, color, author);
+    addComment(text, id, color, author, upvotes, downvotes, currentUserHasUpvoted, currentUserHasDownvoted) {
+        let comment = new Comment(this.discussion, text, id, color, author, upvotes, downvotes, currentUserHasUpvoted, currentUserHasDownvoted);
         comment.onLoad();
         comment.addEventListener("onReply", this.addReply.bind(this));
+        comment.addEventListener("commentUpvoted", this.handleCommentVote.bind(this));
+        comment.addEventListener("commentUndoVote", this.handleCommentVote.bind(this));
+        comment.addEventListener("commentDownvoted", this.handleCommentVote.bind(this));
     }
 
     addReply(event) {
@@ -52,7 +55,8 @@ class CommentSectionView extends Observable {
         this.discussion.innerHTML = "";
         if (comments === undefined) { return; } // if no comments availabla, do not show comments
         for (const comment of comments) {
-            this.addComment(comment.text, comment.id, comment.color, comment.author);
+            this.addComment(comment.text, comment.id, comment.color, comment.author, comment.upvotes,
+                comment.downvotes, comment.currentUserHasUpvoted, comment.currentUserHasDownvoted);
         }
     }
 
@@ -68,6 +72,22 @@ class CommentSectionView extends Observable {
 
     enableCommenting() {
         this.commentInputElement.disabled = false;
+    }
+
+    handleCommentVote(event) {
+        switch (event.type) {
+            case "commentUpvoted":
+                this.notifyAll(new Event("commentUpvoted", { commentID: event.data.commentID }));
+                break;
+            case "commentUndoVote":
+                this.notifyAll(new Event("commentUndoVote", { commentID: event.data.commentID }));
+                break;
+            case "commentDownvoted":
+                this.notifyAll(new Event("commentDownvoted", { commentID: event.data.commentID }));
+                break;
+            default:
+                console.log("error handling comment votes");
+        }
     }
 }
 
