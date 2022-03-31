@@ -53,7 +53,13 @@ class CommentSectionView extends Observable {
 
     showComments(comments) {
         this.discussion.innerHTML = "";
-        if (comments === undefined) { return; } // if no comments availabla, do not show comments
+        if (comments === undefined) { return; } // if no comments available, do not show comments
+        // sort comments
+        comments.sort(function (a, b) {
+            if (a.upvotes - a.downvotes > b.upvotes - b.downvotes) {return 1;}
+            if (a.upvotes - a.downvotes < b.upvotes - b.downvotes) {return -1;}
+            return 0;
+        });
         for (const comment of comments) {
             this.addComment(comment.text, comment.id, comment.color, comment.author, comment.upvotes,
                 comment.downvotes, comment.currentUserHasUpvoted, comment.currentUserHasDownvoted);

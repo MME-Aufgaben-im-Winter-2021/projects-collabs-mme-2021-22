@@ -253,8 +253,9 @@ body {
     justify-content: space-between;
 
     padding: 2px;
-    width: 15em;
+    width: 12vw;
     height: 2.2em;
+    margin: .2em;
 
     border-color: var(--base-light);
 
@@ -265,8 +266,7 @@ body {
     align-self: baseline;
 
     height: 2em;
-    width: 12em;
-    margin-right: 5px;
+    width: 6vw;
 
     vertical-align: bottom;
 }
@@ -275,8 +275,8 @@ body {
     display: flex;
     flex-direction: row;
     justify-content: space-between;
+    width: 4vw;
 
-    width: 4em;
     height: 100%;
 }
 
@@ -375,7 +375,7 @@ body {
 .user-interactions {
     display: flex;
     flex-direction: row;
-    justify-content: space-between;
+    justify-content: flex-end;
     font-size: medium;
     text-align: center;
 

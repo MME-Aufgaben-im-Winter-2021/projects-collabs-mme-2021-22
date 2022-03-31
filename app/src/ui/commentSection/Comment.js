@@ -3,7 +3,7 @@ import createElementFromHTML from "../../utils/Utilities.js";
 
 class Comment extends Observable {
 
-    constructor(discussion, text, id, color = "#277A8C", author, upvotes, downvotes, currentUserHasUpvoted, currentUserHasDownvoted, isReply = false) {
+    constructor(discussion, text, id, color = "#277A8C", author, upvotes = 0, downvotes = 0, currentUserHasUpvoted = false, currentUserHasDownvoted = false, isReply = false) {
         super();
         this.commentList = discussion;
         this.id = id;
