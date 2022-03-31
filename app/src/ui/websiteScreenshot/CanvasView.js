@@ -16,7 +16,7 @@ class CanvasView extends Observable {
         this.body = container;
         this.canvas = container.getElementsByTagName("canvas")[0];
         this.context = this.canvas.getContext("2d");
-        this.context.clearRect(0,0, this.canvas.width, this.canvas.height);
+        this.context.clearRect(0, 0, this.canvas.width, this.canvas.height);
         this.x = 0;
         this.y = 0;
         this.canvas.addEventListener("click", this.draw.bind(this));
@@ -38,44 +38,55 @@ class CanvasView extends Observable {
     }
 
     draw(e) {
-            let pos = getMousePos(this.canvas, e),
+        let pos = getMousePos(this.canvas, e),
             posX = pos.x,
             posY = pos.y,
             randomColor = CONFIG.COLOR_LIST[Math.floor(Math.random() * CONFIG.COLOR_LIST.length)];
-        if(this.currentTool === undefined){
+        if (this.currentTool === undefined) {
             this.currentTool = "rect";
         }
-        if(this.currentTool === "arc"){
+        if (this.currentTool === "arc") {
             this.context.fillStyle = randomColor;
             this.context.beginPath();
             this.context.arc(posX, posY, 2, 0, 2 * Math.PI);
             this.context.fill();
-            this.notifyAll(new Event("newMarking", {color: randomColor, canvasPNG: this.getCanvasURL()}));
-        } else if(this.currentTool === "rect" && ((this.x === undefined && this.y === undefined) || (this.x === 0 && this.y === 0))){
+            this.notifyAll(new Event("newMarking", {
+                color: randomColor,
+                canvasPNG: this.getCanvasURL(),
+            }));
+        } else if (this.currentTool === "rect" && ((this.x === undefined && this.y === undefined) || (this.x === 0 && this.y === 0))) {
             this.x = posX;
             this.y = posY;
-        } else if(this.currentTool === "rect" && this.x !== 0 && this.y !== 0){
+        } else if (this.currentTool === "rect" && this.x !== 0 && this.y !== 0) {
             this.context.lineWidth = "2";
             this.context.strokeStyle = randomColor;
-            this.context.strokeRect(this.x, this.y, posX - this.x , posY - this.y);
+            this.context.strokeRect(this.x, this.y, posX - this.x, posY - this.y);
             this.x = 0;
             this.y = 0;
-            this.notifyAll(new Event("newMarking", {color: randomColor, canvasPNG: this.getCanvasURL()}));
+            this.notifyAll(new Event("newMarking", { color: randomColor, canvasPNG: this.getCanvasURL() }));
         }
-        
+
     }
 
-    changeStatusRect(){
+    changeStatusRect() {
         this.currentTool = "rect";
     }
 
-    changeStatusArc(){
+    changeStatusArc() {
         this.currentTool = "arc";
     }
 
-    getCanvasURL(){
+    getCanvasURL() {
         let dataURL = this.canvas.toDataURL();
         return dataURL;
+    }
+
+    setCanvasImg(base64Image) {
+        var img = new Image();
+        img.src = base64Image;
+        img.onload = () => {
+            this.context.drawImage(img, 0, 0);
+        };
     }
 }
 

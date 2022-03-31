@@ -14,14 +14,14 @@ class CommentSectionView extends Observable {
     }
 
     onNewCommentEntered() {
-        if (this.color === undefined){
+        if (this.color === undefined) {
             this.color = "#000000"; //black for default answers without a marking
         }
         if (this.commentInputElement.value.trim() !== "" && this.commentInputElement.value.trim() !== null) { // do not accept empty strings as comment
-            this.notifyAll(new Event("newCommentEntered", { commentText: this.commentInputElement.value, color: this.color}));
+            this.notifyAll(new Event("newCommentEntered", { commentText: this.commentInputElement.value, color: this.color }));
 
-            if (this.canvasPNG !== undefined){
-                this.notifyAll(new Event("saveCanvas", {canvasPNG: this.canvasPNG})); //TODO: receive notification in db
+            if (this.canvasPNG !== undefined) {
+                this.notifyAll(new Event("saveCanvas", { canvasPNG: this.canvasPNG })); //TODO: receive notification in db
             }
 
             this.commentInputElement.value = "";
@@ -40,7 +40,7 @@ class CommentSectionView extends Observable {
 
     addReply(event) {
         if (this.commentInputElement.value.trim() !== "") { // do not accept empty strings as comment
-            this.notifyAll(new Event("newCommentEntered", { commentText: this.commentInputElement.value , color: this.color}));
+            this.notifyAll(new Event("newCommentEntered", { commentText: this.commentInputElement.value, color: this.color }));
             let reply = new Comment(this.discussion, this.commentInputElement.value, event.data.commentColor, event.data.isResponse);
             reply.onLoad();
             this.commentInputElement.value = "";
@@ -50,13 +50,13 @@ class CommentSectionView extends Observable {
 
     showComments(comments) {
         this.discussion.innerHTML = "";
-        if (comments === undefined) {return;} // if no comments availabla, do not show comments
+        if (comments === undefined) { return; } // if no comments availabla, do not show comments
         for (const comment of comments) {
             this.addComment(comment.text, comment.id, comment.color, comment.author);
         }
     }
 
-    activateInputField(event){
+    activateInputField(event) {
         this.color = event.data.color;
         this.canvasPNG = event.data.canvasPNG;
         this.commentInputElement.focus();

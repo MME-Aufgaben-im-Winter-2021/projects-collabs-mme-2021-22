@@ -25,6 +25,7 @@ databaseHandler.addEventListener("projectListReady", onProjectListReady);
 databaseHandler.addEventListener("newCommentStored", onNewCommentStored);
 databaseHandler.addEventListener("newFrameStored", onNewFrameStored);
 databaseHandler.addEventListener("projectLinkedToUser", onProjectSelected);
+databaseHandler.addEventListener("canvasLoaded", onCanvasLoaded);
 mainUIHandler.addEventListener("userLoggedIn", onUserLoggedIn);
 mainUIHandler.addEventListener("requestLogin", onRequestLogin);
 mainUIHandler.addEventListener("userLoggedOut", onUserLoggedOut);
@@ -34,10 +35,10 @@ mainUIHandler.addEventListener("deleteFrame", deleteFrame);
 mainUIHandler.addEventListener("projectSelected", onProjectSelected);
 mainUIHandler.addEventListener("newProjectCreated", onNewProjectCreated);
 mainUIHandler.addEventListener("frameListElementClicked", onFrameListElementClicked);
-mainUIHandler.addEventListener("frameListElementClicked", onFrameListElementClicked);
 mainUIHandler.addEventListener("shareProjectButtonClicked", onShareProjectButtonClicked);
 mainUIHandler.addEventListener("projectKeyEntered", onProjectKeyEntered);
 mainUIHandler.addEventListener("anonymousUserLoggedOut", onUserLoggedOut);
+mainUIHandler.addEventListener("saveCanvas", onSaveCanvas);
 
 function init() {
     if (isLoggedIn) {
@@ -138,17 +139,17 @@ function onProjectListReady(event) {
 }
 
 async function onProjectSelected(event) {
-    console.log(event);
     const projectData = await databaseHandler.loadProjectSnapshot(event.data.id);
     currentProject = new Project(projectData.name, event.data.id, projectData.frames);
     mainUIHandler.showProject(currentProject);
 }
 
 async function onFrameListElementClicked(event) {
+    databaseHandler.getCanvas(currentProject.id, event.data.id);
     mainUIHandler.changeImage(currentProject.getScreenshotByID(event.data.id));
     const comments = await databaseHandler.loadComments(currentProject.id, event.data.id)
         .catch((error) => console.log(error)); // loading comments failed or no comments available
-    console.log(comments);
+    // console.log(comments);
     currentFrame.id = event.data.id;
     // Sort comments by oldest timestamp
     // https://stackoverflow.com/a/7889040
@@ -191,6 +192,14 @@ function onProjectKeyEntered(event) {
     } else {
         databaseHandler.linkProject(event.data.projectKey);
     }
+}
+
+function onCanvasLoaded(event) {
+    mainUIHandler.showImageOnCanvas(event.data.canvasImageBase64);
+}
+
+function onSaveCanvas(event) {
+    databaseHandler.storeCanvas(currentProject.id, currentFrame.id, event.data.canvasPNG);
 }
 
 init();

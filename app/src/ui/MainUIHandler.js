@@ -66,6 +66,7 @@ class MainUIHandler extends Observable {
         this.screenshotContainerView = new ScreenshotContainerView(this.container);
         this.commentSectionView = new CommentSectionView(this.container, displayName);
         this.commentSectionView.addEventListener("newCommentEntered", this.onNewCommentEntered.bind(this));
+        this.commentSectionView.addEventListener("saveCanvas", this.onSaveCanvas.bind(this));
         this.uploadImgView = new UploadImgView(this.container);
         this.uploadImgView.addEventListener("newUrlAndNameEntered", this.handleNewUrlAndNameEntered.bind(this));
         this.uploadImgView.addEventListener("deleteFrame", this.deleteFrame.bind(this));
@@ -87,7 +88,7 @@ class MainUIHandler extends Observable {
 
     showProject(project) {
         this.context = this.canvas.getContext("2d");
-        this.context.clearRect(0,0, this.canvas.width, this.canvas.height);
+        this.context.clearRect(0, 0, this.canvas.width, this.canvas.height);
 
         this.homeScreenView.body.style.display = "none";
         this.container.style.display = "flex";
@@ -116,8 +117,9 @@ class MainUIHandler extends Observable {
     }
 
     changeImage(sourceURL) {
-        this.context.clearRect(0,0, this.canvas.width, this.canvas.height);
-        this.screenshotContainerView.exchangeImage(sourceURL); }
+        this.context.clearRect(0, 0, this.canvas.width, this.canvas.height);
+        this.screenshotContainerView.exchangeImage(sourceURL);
+    }
 
     updateProjectList(projectArray) { this.navBarView.updateProjectList(projectArray); }
 
@@ -127,6 +129,10 @@ class MainUIHandler extends Observable {
 
     showNewComment(commentData) { this.commentSectionView.addComment(commentData.text, commentData.id, commentData.color, commentData.author); }
 
+    showImageOnCanvas(base64Image) {
+        this.canvasView.setCanvasImg(base64Image);
+    }
+
     // functions notifying index.js
     onProjectKeyEntered(event) {
         this.notifyAll(new Event("projectKeyEntered", event.data));
@@ -135,6 +141,8 @@ class MainUIHandler extends Observable {
     requestLogin() { this.notifyAll(new Event("requestLogin")); }
 
     onNewCommentEntered(event) { this.notifyAll(new Event("newCommentEntered", { commentText: event.data.commentText, color: event.data.color })); }
+
+    onSaveCanvas(event) { this.notifyAll(new Event("saveCanvas", { canvasPNG: event.data.canvasPNG })); }
 
     handleNewUrlAndNameEntered(event) { this.notifyAll(new Event("makeNewScreenshot", event.data)); }
 

@@ -2,7 +2,6 @@
 
 import { Event, Observable } from "../utils/Observable.js";
 import CONFIG from "../utils/Config.js";
-import { generateRandomRGBString } from "../utils/Utilities.js";
 import { initializeApp } from "https://www.gstatic.com/firebasejs/9.6.7/firebase-app.js";
 import { getAuth, signInWithPopup, GoogleAuthProvider, signOut, signInAnonymously } from "https://www.gstatic.com/firebasejs/9.6.7/firebase-auth.js";
 import { getDatabase, ref, set, push, child, get } from "https://www.gstatic.com/firebasejs/9.6.7/firebase-database.js";
@@ -366,6 +365,29 @@ class DatabaseHandler extends Observable {
                         }).catch((error) => {
                             console.error(error);
                         });
+                }
+            }).catch((error) => {
+                console.log(error);
+            });
+    }
+
+    storeCanvas(projectID, frameID, canvasPNG) {
+        const db = getDatabase(this.app);
+        set(ref(db, `projects/${projectID}/frames/${frameID}/canvas_base64`), canvasPNG)// setting value to null deletes the keys
+            .then(() => {
+                console.log("canvas stored sucessfully");
+            }).catch((error) => {
+                console.error(error);
+            });
+    }
+
+    getCanvas(projectID, frameID) {
+        const db = getDatabase(this.app);
+        get(ref(db, `projects/${projectID}/frames/${frameID}/canvas_base64`))
+            .then((snapshot) => {
+                if (snapshot.exists()) {
+                    const canvasImage = snapshot.val();
+                    this.notifyAll(new Event("canvasLoaded", { canvasImageBase64: canvasImage }));
                 }
             }).catch((error) => {
                 console.log(error);

@@ -74,8 +74,8 @@ class Comment extends Observable {
                 button.innerText = "△";
                 this.isUpvoted = false;
             }
-        } else if(button === down) {
-            if(!this.isDownvoted) {
+        } else if (button === down) {
+            if (!this.isDownvoted) {
                 downCount.innerText = parseInt(downCount.innerText) + 1;
                 button.innerText = "▼";
                 this.isDownvoted = true;
