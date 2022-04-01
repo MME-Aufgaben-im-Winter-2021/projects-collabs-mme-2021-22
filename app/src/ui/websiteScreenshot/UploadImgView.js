@@ -11,6 +11,7 @@ class UploadImgView extends Observable {
         this.initViews(container);
     }
 
+    //initiates all elements and listeners
     initViews(container) {
         this.body = container.querySelector(".upload-img");
         this.urlInputElement = container.querySelector(".upload-img .input-url");
@@ -25,6 +26,7 @@ class UploadImgView extends Observable {
         this.shareProjectButton.addEventListener("click", this.onShareProjectButtonClicked.bind(this));
     }
 
+    //notifies listeners if URL is entered to load a img
     onURLEntered() {
         console.log("onURLEntered");
         this.urlInputElement.value = this.urlInputElement.value.trim();

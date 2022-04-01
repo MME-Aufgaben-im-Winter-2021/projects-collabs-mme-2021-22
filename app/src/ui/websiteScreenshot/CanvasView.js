@@ -10,6 +10,7 @@ function getMousePos(canvas, e) {
     };
 }
 
+
 class CanvasView extends Observable {
     constructor(container) {
         super();
@@ -28,14 +29,8 @@ class CanvasView extends Observable {
         this.currentTool = "rect";
     }
 
-    updateCanvasContent(src) {
-        let img = this.body.getElementsByClassName("screenshot")[0].src;
-        // TODO: save image
-        // TODO: replace the canvas with canvas from database
-        console.log(src, img);
-        this.context.rect(0, 0, this.canvas.width, this.canvas.height);
-    }
-
+    //draws circle or rect depending on chosen tool
+    //further notifies commentSectionView if something was marked with png and color of marking
     draw(e) {
         let pos = getMousePos(this.canvas, e),
             posX = pos.x,
@@ -67,19 +62,23 @@ class CanvasView extends Observable {
 
     }
 
+    //changes tool
     changeStatusRect() {
         this.currentTool = "rect";
     }
 
+    //changes tool
     changeStatusArc() {
         this.currentTool = "arc";
     }
 
+    //returns png/url of current canvas
     getCanvasURL() {
         let dataURL = this.canvas.toDataURL();
         return dataURL;
     }
 
+    //sets canvas according to saved db png
     setCanvasImg(base64Image) {
         var img = new Image();
         img.src = base64Image;

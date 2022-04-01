@@ -10,6 +10,7 @@ class NameNewProjectView extends Observable {
         this.newProjectNameInputElement.addEventListener("change", this.onProjectNameEntered.bind(this));
     }
 
+    //notifies that a new project was created/named
     onProjectNameEntered() {
         this.notifyAll(new Event("newProjectNameEntered", { newProjectName: this.newProjectNameInputElement.value }));
         this.newProjectNameInputElement.value = "";
