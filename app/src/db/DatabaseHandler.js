@@ -277,7 +277,7 @@ class DatabaseHandler extends Observable {
 
     loadComments(projectID, frameID) {
         const db = getDatabase(this.app),
-            currentUserID = getAuth(this.app).currentUser.uid;;
+            currentUserID = getAuth(this.app).currentUser.uid;
 
         return new Promise((resolve, reject) => {
             if (projectID === null) {
