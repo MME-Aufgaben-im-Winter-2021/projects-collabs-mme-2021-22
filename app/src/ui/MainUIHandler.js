@@ -71,7 +71,7 @@ class MainUIHandler extends Observable {
         this.commentSectionView.addEventListener("commentDownvoted", this.handleCommentVote.bind(this));
         this.uploadImgView = new UploadImgView(this.container);
         this.uploadImgView.addEventListener("newUrlAndNameEntered", this.handleNewUrlAndNameEntered.bind(this));
-        this.uploadImgView.addEventListener("deleteFrame", this.deleteFrame.bind(this));
+        this.uploadImgView.addEventListener("deleteProject", this.deleteProject.bind(this));
         this.uploadImgView.addEventListener("shareProjectButtonClicked", this.onShareProjectButtonClicked.bind(this));
         if (displayName === CONFIG.ANONYMOUS_USER_NAME) {
             this.uploadImgView.body.style.display = "none";
@@ -98,6 +98,7 @@ class MainUIHandler extends Observable {
         this.nameNewProjectView.body.style.display = "none";
         this.frameListView.updateElements(project.frames); // update frame list
         this.screenshotContainerView.exchangeImage(project.getFirstScreenshot()); // show first screenshot
+        this.uploadImgView.displaySelectedProjectTitle(project.name);
         this.notifyAll(new Event("frameListElementClicked", { id: project.getFirstID() })); // load comments as if first frame was clicked
     }
 
@@ -151,7 +152,7 @@ class MainUIHandler extends Observable {
 
     onShareProjectButtonClicked() { this.notifyAll(new Event("shareProjectButtonClicked")); }
 
-    deleteFrame() { this.notifyAll(new Event("deleteFrame")); }
+    deleteProject() { this.notifyAll(new Event("deleteProject")); }
 
     onAnonymousUserLoggedOut() { this.notifyAll(new Event("anonymousUserLoggedOut")); }
 

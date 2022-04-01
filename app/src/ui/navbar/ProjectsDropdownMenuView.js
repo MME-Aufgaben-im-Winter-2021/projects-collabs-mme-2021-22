@@ -34,7 +34,6 @@ class ProjectsDropdownMenuView extends Observable {
         this.projectListView.appendChild(projectListItemView.body);
     }
 
-
     //notifies which project in the dropdown was selected
     onProjectSelected(event) {
         console.log("selected project with id: " + event.data.id);

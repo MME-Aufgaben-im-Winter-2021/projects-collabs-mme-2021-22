@@ -338,6 +338,17 @@ body {
     text-align: center;
 }
 
+.project-name {
+    font-weight: bold;
+    text-align: center;
+    font-size: large;
+
+    margin: 0 20px;
+    width: 80%;
+
+    color: var(--snow);
+}
+
 /* comment template */
 .text-field {
     display: flex;

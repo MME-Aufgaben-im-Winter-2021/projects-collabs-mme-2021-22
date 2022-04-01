@@ -384,6 +384,7 @@ class DatabaseHandler extends Observable {
                                             .then(() => {
                                                 if (userID === currentUserID) {
                                                     // TODO: add reloading UI after deleting project here, probably best is displaying the homescreen
+                                                    this.notifyAll(new Event("projectSucessfullyDeleted"));
                                                 }
                                             }).catch((error) => {
                                                 console.error(error);
