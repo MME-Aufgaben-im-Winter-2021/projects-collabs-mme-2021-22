@@ -11,7 +11,7 @@ function getMousePos(canvas, e) {
 }
 
 class CanvasView extends Observable {
-    constructor(container, toolbar) {
+    constructor(container) {
         super();
         this.body = container;
         this.canvas = container.getElementsByTagName("canvas")[0];
@@ -20,10 +20,9 @@ class CanvasView extends Observable {
         this.x = 0;
         this.y = 0;
         this.canvas.addEventListener("click", this.draw.bind(this));
-        this.toolbar = toolbar;
-        this.rectButton = toolbar.querySelector("#rect");
+        this.rectButton = this.body.querySelector("#r");
         this.rectButton.addEventListener("click", this.changeStatusRect.bind(this));
-        this.arcButton = toolbar.querySelector("#arc");
+        this.arcButton = this.body.querySelector("#a");
         this.arcButton.addEventListener("click", this.changeStatusArc.bind(this));
 
         this.currentTool = "rect";
