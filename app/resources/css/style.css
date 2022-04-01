@@ -439,14 +439,8 @@ body {
 
 .frame-description {
     align-content: center;
-    width: 90%;
+    width: 100%;
 }
-.delete-button {
-    align-content: center;
-    width: 10%;
-    background-color: var(--ruby);
-}
-
 .frame-img {
     display: block;
     align-self: center;
