@@ -26,12 +26,13 @@ databaseHandler.addEventListener("newCommentStored", onNewCommentStored);
 databaseHandler.addEventListener("newFrameStored", onNewFrameStored);
 databaseHandler.addEventListener("projectLinkedToUser", onProjectSelected);
 databaseHandler.addEventListener("canvasLoaded", onCanvasLoaded);
+databaseHandler.addEventListener("projectSucessfullyDeleted", onProjectSucessfullyDeleted);
 mainUIHandler.addEventListener("userLoggedIn", onUserLoggedIn);
 mainUIHandler.addEventListener("requestLogin", onRequestLogin);
 mainUIHandler.addEventListener("userLoggedOut", onUserLoggedOut);
 mainUIHandler.addEventListener("makeNewScreenshot", makeNewScreenshot);
 mainUIHandler.addEventListener("newCommentEntered", onNewCommentEntered);
-mainUIHandler.addEventListener("deleteFrame", deleteFrame);
+mainUIHandler.addEventListener("deleteProject", deleteProject);
 mainUIHandler.addEventListener("projectSelected", onProjectSelected);
 mainUIHandler.addEventListener("newProjectCreated", onNewProjectCreated);
 mainUIHandler.addEventListener("frameListElementClicked", onFrameListElementClicked);
@@ -133,8 +134,14 @@ function onNewCommentEntered(event) {
     databaseHandler.storeNewComment(event.data.commentText, currentProject.id, currentFrame.id, event.data.color);
 }
 
-function deleteFrame() {
-    console.log("deleteFrame");
+function deleteProject() {
+    databaseHandler.deleteProject(currentProject.id);
+    currentProject = null;
+}
+
+function onProjectSucessfullyDeleted() {
+    mainUIHandler.displayHomeScreen();
+    databaseHandler.getProjectList();
 }
 
 function onProjectListReady(event) {
@@ -223,5 +230,3 @@ function handleCommentVote(event) {
 }
 
 init();
-
-// console.log(await getBase64FromUrl("http://localhost:5500/app/resources/css/test.png"));

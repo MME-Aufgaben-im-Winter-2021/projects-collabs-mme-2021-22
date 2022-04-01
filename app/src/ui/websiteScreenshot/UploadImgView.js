@@ -22,7 +22,7 @@ class UploadImgView extends Observable {
         this.urlInputElement.addEventListener("change", this.onURLEntered.bind(this));
         this.frameNameInputElement.addEventListener("change", this.onURLEntered.bind(this));
         this.uploadImgButton.addEventListener("click", this.onURLEntered.bind(this));
-        this.deleteImgButton.addEventListener("click", this.onDeleteImgButtonClicked.bind(this));
+        this.deleteImgButton.addEventListener("click", this.onDeleteButtonClicked.bind(this));
         this.shareProjectButton.addEventListener("click", this.onShareProjectButtonClicked.bind(this));
     }
 
@@ -45,9 +45,8 @@ class UploadImgView extends Observable {
     }
 
     //deletes current Picture in canvas
-    onDeleteImgButtonClicked() {
-        // this.notifyAll(new Event("urlEntered", { url: null }));
-        this.notifyAll(new Event("deleteFrame"));
+    onDeleteButtonClicked() {
+        this.notifyAll(new Event("deleteProject"));
     }
 
     //saves image to list
@@ -61,6 +60,10 @@ class UploadImgView extends Observable {
         if (items.length !== null && items.length !== this.sessionCounter) {
             this.sessionCounter = items.length;
         }
+    }
+
+    displaySelectedProjectTitle(projectName) {
+        this.body.querySelector(".project-name").innerText = projectName;
     }
 
 }
