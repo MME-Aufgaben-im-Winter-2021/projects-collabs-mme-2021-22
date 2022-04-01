@@ -2,7 +2,6 @@
 
 import { Event, Observable } from "../utils/Observable.js";
 import CONFIG from "../utils/Config.js";
-import { generateRandomRGBString } from "../utils/Utilities.js";
 import { initializeApp } from "https://www.gstatic.com/firebasejs/9.6.7/firebase-app.js";
 import { getAuth, signInWithPopup, GoogleAuthProvider, signOut, signInAnonymously } from "https://www.gstatic.com/firebasejs/9.6.7/firebase-auth.js";
 import { getDatabase, ref, set, push, child, get } from "https://www.gstatic.com/firebasejs/9.6.7/firebase-database.js";
@@ -100,7 +99,11 @@ class DatabaseHandler extends Observable {
         }).then(() => console.log("success"));
     }
 
-    storeNewComment(commentText, projectID, frameID) {
+    storeNewComment(commentText, projectID, frameID, color) {
+        if (projectID === null) {
+            console.log("Cannot comment on empty Project");
+            return;
+        }
         const db = getDatabase(this.app),
             currentUser = getAuth(this.app).currentUser;
         let currentDisplayName = currentUser.displayName;
@@ -108,9 +111,9 @@ class DatabaseHandler extends Observable {
             currentDisplayName = CONFIG.ANONYMOUS_USER_NAME;
         }
         // eslint-disable-next-line one-var
-        const commentData = { //TODO: add color
+        const commentData = {
             author: currentDisplayName,
-            color: generateRandomRGBString(),
+            color: color,
             userID: currentUser.uid,
             text: commentText,
             rating: 0,
@@ -127,8 +130,19 @@ class DatabaseHandler extends Observable {
         if (projectID === null) { // new project detected!
             // eslint-disable-next-line no-param-reassign
             projectID = this.generateNewKey("projects");
+            const currentUserID = getAuth(this.app).currentUser.uid;
             set(ref(db, `projects/${projectID}/name`), projectName)
                 .then(() => console.log("new name stored"))
+                .catch((error) => {
+                    console.error(error);
+                });
+            set(ref(db, `users/${currentUserID}/projects/${projectID}`), projectName)
+                .then(() => console.log("new project link stored"))
+                .catch((error) => {
+                    console.error(error);
+                });
+            set(ref(db, `projects/${projectID}/creator`), currentUserID)
+                .then(() => console.log("creator stored"))
                 .catch((error) => {
                     console.error(error);
                 });
@@ -173,9 +187,37 @@ class DatabaseHandler extends Observable {
         return push(child(ref(db), path)).key;
     }
 
+    // getProjectList() {
+    //     const db = getDatabase(this.app);
+    //     get(ref(db, "projects"))
+    //         .then((snapshot) => {
+    //             if (snapshot.exists()) {
+    //                 console.log(snapshot);
+    //                 let result = [];
+    //                 snapshot.forEach((child) => {
+    //                     const projectID = child.key, // logs keys
+    //                         // https://stackoverflow.com/a/43586692
+    //                         projectName = snapshot.child(`${projectID}/name`).val(); // extracts every project's name
+    //                     // console.log(projectID);
+    //                     // console.log(projectName);
+    //                     result.push({
+    //                         name: projectName,
+    //                         id: projectID,
+    //                     });
+    //                 });
+    //                 this.notifyAll(new Event("projectListReady", result));
+    //             } else {
+    //                 console.log("No data available");
+    //             }
+    //         }).catch((error) => {
+    //             console.log(error);
+    //         });
+    // }
+
     getProjectList() {
-        const db = getDatabase(this.app);
-        get(ref(db, "projects"))
+        const db = getDatabase(this.app),
+            currentUserID = getAuth(this.app).currentUser.uid;
+        get(ref(db, `users/${currentUserID}/projects`))
             .then((snapshot) => {
                 if (snapshot.exists()) {
                     console.log(snapshot);
@@ -183,7 +225,7 @@ class DatabaseHandler extends Observable {
                     snapshot.forEach((child) => {
                         const projectID = child.key, // logs keys
                             // https://stackoverflow.com/a/43586692
-                            projectName = snapshot.child(`${projectID}/name`).val(); // extracts every project's name
+                            projectName = snapshot.child(`${projectID}`).val(); // extracts every project's name
                         // console.log(projectID);
                         // console.log(projectName);
                         result.push({
@@ -234,8 +276,13 @@ class DatabaseHandler extends Observable {
     }
 
     loadComments(projectID, frameID) {
-        const db = getDatabase(this.app);
+        const db = getDatabase(this.app),
+            currentUserID = getAuth(this.app).currentUser.uid;;
+
         return new Promise((resolve, reject) => {
+            if (projectID === null) {
+                reject(new Error("Cannot load comments for unpublished project.\nIf you are just creating a new Project everything is fine and you can ignore this error."));
+            }
             get(ref(db, `projects/${projectID}/frames/${frameID}/comments`))
                 .then((snapshot) => {
                     if (snapshot.exists()) {
@@ -245,11 +292,25 @@ class DatabaseHandler extends Observable {
                                 currentAuthorID = snapshot.child(`${currentCommentID}/author_id`).val(),
                                 currentAuthorName = snapshot.child(`${currentCommentID}/author`).val(),
                                 currentColor = snapshot.child(`${currentCommentID}/color`).val(),
-                                currentPosX = snapshot.child(`${currentCommentID}/pos_x`).val(),
-                                currentPosY = snapshot.child(`${currentCommentID}/pos_y`).val(),
-                                currentRating = snapshot.child(`${currentCommentID}/rating`).val(),
                                 currentText = snapshot.child(`${currentCommentID}/text`).val(),
-                                currentTimestamp = snapshot.child(`${currentCommentID}/timestamp`).val();
+                                currentTimestamp = snapshot.child(`${currentCommentID}/timestamp`).val(),
+                                currentUpvotes = 0,
+                                currentDownvotes = 0,
+                                currentUserHasUpvoted = false,
+                                currentUserHasDownvoted = false;
+                            snapshot.child(`${currentCommentID}/votes`).forEach((vote) => {
+                                if (vote.val() === CONFIG.DOWNVOTE_VALUE) {
+                                    currentDownvotes++;
+                                    if (vote.key === currentUserID) {
+                                        currentUserHasDownvoted = true;
+                                    }
+                                } else if (vote.val() === CONFIG.UPVOTE_VALUE) {
+                                    currentUpvotes++;
+                                    if (vote.key === currentUserID) {
+                                        currentUserHasUpvoted = true;
+                                    }
+                                }
+                            });
                             if (currentAuthorName === null) {
                                 currentAuthorName = CONFIG.ANONYMOUS_USER_NAME;
                             }
@@ -258,16 +319,17 @@ class DatabaseHandler extends Observable {
                                 authorID: currentAuthorID,
                                 author: currentAuthorName,
                                 color: currentColor,
-                                posX: currentPosX,
-                                posY: currentPosY,
-                                rating: currentRating,
                                 text: currentText,
                                 timestamp: currentTimestamp,
+                                upvotes: currentUpvotes,
+                                downvotes: currentDownvotes,
+                                currentUserHasUpvoted: currentUserHasUpvoted,
+                                currentUserHasDownvoted: currentUserHasDownvoted,
                             });
                         });
                         resolve(frameComments);
                     } else {
-                        reject(new Error("loading comments failed or no comments available"));
+                        reject(new Error("No comments available or loading failed."));
                     }
                 }).catch((error) => {
                     console.error(error);
@@ -277,6 +339,99 @@ class DatabaseHandler extends Observable {
 
     userIsLoggedIn() {
         return getAuth(this.app).currentUser !== null;
+    }
+
+    linkProject(projectID) {
+        const db = getDatabase(this.app),
+            currentUserID = getAuth(this.app).currentUser.uid;
+        get(ref(db, `projects/${projectID}/name`))
+            .then((snapshot) => {
+                if (snapshot.exists()) {
+                    const projectName = snapshot.val();
+                    set(ref(db, `users/${currentUserID}/projects/${projectID}`), projectName)
+                        .then(() => {
+                            console.log("project sucessfully linked with current user");
+                            this.getProjectList();
+                            this.notifyAll(new Event("projectLinkedToUser", { id: projectID }));
+                        })
+                        .catch((error) => console.log(error));
+                }
+            }).catch((error) => {
+                console.log(error);
+            });
+
+    }
+
+    deleteProject(projectID) {
+        const db = getDatabase(this.app),
+            currentUserID = getAuth(this.app).currentUser.uid;
+        get(ref(db, `projects/${projectID}/creator`))
+            .then((snapshot) => {
+                if (snapshot.exists() && snapshot.val() === currentUserID) {
+                    set(ref(db, `projects/${projectID}`), null) // setting value to null deletes the keys
+                        .then(() => {
+                            console.log("project sucessfully deleted by its author");
+                        })
+                        .catch((error) => console.log(error));
+                    // definetely not elegant and safe at all, but it works
+                    get(ref(db, "users"))
+                        .then((snapshot) => {
+                            if (snapshot.exists()) {
+                                snapshot.forEach((child) => { // store in array to allow sorting
+                                    if (child.child("projects").hasChild(projectID)) {
+                                        const userID = child.key;
+                                        set(ref(db, `users/${userID}/projects/${projectID}`), null)// setting value to null deletes the keys
+                                            .then(() => {
+                                                if (userID === currentUserID) {
+                                                    // TODO: add reloading UI after deleting project here, probably best is displaying the homescreen
+                                                }
+                                            }).catch((error) => {
+                                                console.error(error);
+                                            });
+                                    }
+                                });
+                            }
+                        }).catch((error) => {
+                            console.error(error);
+                        });
+                }
+            }).catch((error) => {
+                console.log(error);
+            });
+    }
+
+    storeCanvas(projectID, frameID, canvasPNG) {
+        const db = getDatabase(this.app);
+        set(ref(db, `projects/${projectID}/frames/${frameID}/canvas_base64`), canvasPNG)// setting value to null deletes the keys
+            .then(() => {
+                console.log("canvas stored sucessfully");
+            }).catch((error) => {
+                console.error(error);
+            });
+    }
+
+    getCanvas(projectID, frameID) {
+        const db = getDatabase(this.app);
+        get(ref(db, `projects/${projectID}/frames/${frameID}/canvas_base64`))
+            .then((snapshot) => {
+                if (snapshot.exists()) {
+                    const canvasImage = snapshot.val();
+                    this.notifyAll(new Event("canvasLoaded", { canvasImageBase64: canvasImage }));
+                }
+            }).catch((error) => {
+                console.log(error);
+            });
+    }
+
+    setCommentVote(projectID, frameID, commentID, value) {
+        const db = getDatabase(this.app),
+            currentUserID = getAuth(this.app).currentUser.uid;
+        set(ref(db, `projects/${projectID}/frames/${frameID}/comments/${commentID}/votes/${currentUserID}`), value)
+            .then(() => {
+                console.log(`stored your vote: ${value}`);
+            }).catch((error) => {
+                console.error(error);
+            });
     }
 }
 

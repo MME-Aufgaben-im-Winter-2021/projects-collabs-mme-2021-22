@@ -24,6 +24,8 @@ databaseHandler.addEventListener("userSignOutFailed", onUserLogoutFailed);
 databaseHandler.addEventListener("projectListReady", onProjectListReady);
 databaseHandler.addEventListener("newCommentStored", onNewCommentStored);
 databaseHandler.addEventListener("newFrameStored", onNewFrameStored);
+databaseHandler.addEventListener("projectLinkedToUser", onProjectSelected);
+databaseHandler.addEventListener("canvasLoaded", onCanvasLoaded);
 mainUIHandler.addEventListener("userLoggedIn", onUserLoggedIn);
 mainUIHandler.addEventListener("requestLogin", onRequestLogin);
 mainUIHandler.addEventListener("userLoggedOut", onUserLoggedOut);
@@ -33,10 +35,13 @@ mainUIHandler.addEventListener("deleteFrame", deleteFrame);
 mainUIHandler.addEventListener("projectSelected", onProjectSelected);
 mainUIHandler.addEventListener("newProjectCreated", onNewProjectCreated);
 mainUIHandler.addEventListener("frameListElementClicked", onFrameListElementClicked);
-mainUIHandler.addEventListener("frameListElementClicked", onFrameListElementClicked);
 mainUIHandler.addEventListener("shareProjectButtonClicked", onShareProjectButtonClicked);
 mainUIHandler.addEventListener("projectKeyEntered", onProjectKeyEntered);
 mainUIHandler.addEventListener("anonymousUserLoggedOut", onUserLoggedOut);
+mainUIHandler.addEventListener("saveCanvas", onSaveCanvas);
+mainUIHandler.addEventListener("commentUpvoted", handleCommentVote);
+mainUIHandler.addEventListener("commentUndoVote", handleCommentVote);
+mainUIHandler.addEventListener("commentDownvoted", handleCommentVote);
 
 function init() {
     if (isLoggedIn) {
@@ -116,7 +121,6 @@ async function getScreenshot(url, frameName) {
                 .then((base64url) => {
                     console.log("base64url:");
                     console.log(base64url);
-                    // TODO: implement custom title
                     addScreenshotToDatabase(base64url, frameName);
                 });
         });
@@ -126,7 +130,7 @@ async function getScreenshot(url, frameName) {
 //getScreenshot("https://www.google.de/");
 
 function onNewCommentEntered(event) {
-    databaseHandler.storeNewComment(event.data.commentText, currentProject.id, currentFrame.id);
+    databaseHandler.storeNewComment(event.data.commentText, currentProject.id, currentFrame.id, event.data.color);
 }
 
 function deleteFrame() {
@@ -138,13 +142,13 @@ function onProjectListReady(event) {
 }
 
 async function onProjectSelected(event) {
-    console.log(event);
     const projectData = await databaseHandler.loadProjectSnapshot(event.data.id);
     currentProject = new Project(projectData.name, event.data.id, projectData.frames);
     mainUIHandler.showProject(currentProject);
 }
 
 async function onFrameListElementClicked(event) {
+    databaseHandler.getCanvas(currentProject.id, event.data.id);
     mainUIHandler.changeImage(currentProject.getScreenshotByID(event.data.id));
     const comments = await databaseHandler.loadComments(currentProject.id, event.data.id)
         .catch((error) => console.log(error)); // loading comments failed or no comments available
@@ -170,6 +174,7 @@ function onNewFrameStored(event) {
     // TODO: reloading the whole poject after adding a new frame to the database is very data hungry.
     //       should be replaced if necessary and usefull
     console.log(event);
+    databaseHandler.getProjectList();
     onProjectSelected(event); // event must contain id in event.data.id
 }
 
@@ -188,6 +193,32 @@ function onProjectKeyEntered(event) {
     console.log(databaseHandler.userIsLoggedIn());
     if (!databaseHandler.userIsLoggedIn()) {
         databaseHandler.loginAnonymously(event.data.projectKey);
+    } else {
+        databaseHandler.linkProject(event.data.projectKey);
+    }
+}
+
+function onCanvasLoaded(event) {
+    mainUIHandler.showImageOnCanvas(event.data.canvasImageBase64);
+}
+
+function onSaveCanvas(event) {
+    databaseHandler.storeCanvas(currentProject.id, currentFrame.id, event.data.canvasPNG);
+}
+
+function handleCommentVote(event) {
+    switch (event.type) {
+        case "commentUpvoted":
+            databaseHandler.setCommentVote(currentProject.id, currentFrame.id, event.data.commentID, CONFIG.UPVOTE_VALUE);
+            break;
+        case "commentUndoVote":
+            databaseHandler.setCommentVote(currentProject.id, currentFrame.id, event.data.commentID, null);
+            break;
+        case "commentDownvoted":
+            databaseHandler.setCommentVote(currentProject.id, currentFrame.id, event.data.commentID, CONFIG.DOWNVOTE_VALUE);
+            break;
+        default:
+            console.log("error handling comment votes");
     }
 }
 

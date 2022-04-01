@@ -3,7 +3,11 @@
 Die aktuelle _Release_-Version dieses Projekts kann unter: https://collabs.software-engineering.education aufgerufen werden.
 
 ```
-Beschreiben Sie hier in einem kurzen Absatz Ihrer Anwendung bzw. die Ziele Ihres Projekts
+Mit diesem Projekt soll die Möglichkeit gegeben werden, seine eigene Website hochzuladen und zum Diskurs zu stellen.
+User können der Projektbesprechung per Key beitreten und mit Kommentar und Markierung auf Details aufmerksam machen.
+Die besten/wichtigsten Hinweise können up- und downvoted werden, um dem Creator Relevanz jener zu vermitteln.
+Anonyme oder öffentliche Profile können genutzt werden, abhängig davon ob man eingeloggt ist oder nicht.
+Jedoch kann ein neues Projekt nur mit einem öffentlichen Profil erstellt werden.
 ```
 
 In diesem Repository finden Sie eine Vorlage für die Entwicklung Ihrer Anwendung im MME-Kurs. Das Repository gibt eine grobe Struktur für Ihre Arbeit vor. Dort wo nötig, können Sie von diesen Vorgaben abweichen. Besprechen Sie Änderungen, insbesondere solche am _Deployment-Workflow_ aber im Vorfeld mit uns. 

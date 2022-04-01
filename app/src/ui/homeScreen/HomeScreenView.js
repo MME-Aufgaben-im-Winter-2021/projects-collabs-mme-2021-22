@@ -4,6 +4,7 @@ import CONFIG from "../../utils/Config.js";
 
 class HomeScreenView extends Observable {
 
+    //initiates homescreen and sets its listeners
     constructor() {
         super();
         this.body = createElementFromHTML(document.querySelector("#home-screen-template").innerHTML);
@@ -11,16 +12,22 @@ class HomeScreenView extends Observable {
         this.projectKeyInputElement.addEventListener("change", this.onProjectKeyEntered.bind(this));
     }
 
+    //handles key event - if project key is right or wrong
     onProjectKeyEntered() {
         this.projectKeyInputElement.value = this.projectKeyInputElement.value.trim();
-        console.log(this.projectKeyInputElement.value.length);
         if (this.projectKeyInputElement.value.length !== CONFIG.KEY_LENGTH) {
-            // TODO: add shake Animation or whatever
-            return;
+            this.showError();
+        } else {
+            this.notifyAll(new Event("projectKeyEntered", { projectKey: this.projectKeyInputElement.value }));
+            this.projectKeyInputElement.value = "";
         }
-        this.notifyAll(new Event("projectKeyEntered", { projectKey: this.projectKeyInputElement.value }));
+    }
+
+    //shows error animation in case a wrong project key was entered
+    showError() {
+        this.projectKeyInputElement.classList.add("show-error-animation");
+        setTimeout(() => this.projectKeyInputElement.classList.remove("show-error-animation"), CONFIG.ONE_SECOND_DELAY);
         this.projectKeyInputElement.value = "";
-        // TODO: load project
     }
 }
 
