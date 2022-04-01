@@ -12,8 +12,6 @@ class FrameListElementView extends Observable {
         this.liCount = this.frameList.querySelectorAll("li").length;
         this.body.querySelector(".frame-description").innerHTML = this.title;
         this.description = this.body.querySelector(".frame-description");
-        this.deleteButton = this.body.querySelector(".delete-button");
-        this.deleteButton.addEventListener("click", this.onDeleteButtonClicked.bind(this));
         this.imageElement = this.body.querySelector("img.frame-img");
         this.imageElement.src = base64Image;
         this.imageElement.addEventListener("click", this.onImageClicked.bind(this));
@@ -21,22 +19,6 @@ class FrameListElementView extends Observable {
 
     onImageClicked() {
         this.notifyAll(new Event("frameListElementClicked", { id: this.id }));
-    }
-
-    //simply deletes the html body of this, removing the frame off the list
-    onDeleteButtonClicked() {
-        this.frameList.removeChild(this.body);
-        this.refractureList();
-    }
-
-    //sets list items description new, according to their old one
-    refractureList() {
-        let j = 0,
-            items = this.frameList.getElementsByTagName("li");
-        for (let i = 0; i < items.length; i++) {
-            items[i].querySelector(".frame-description").innerHTML = j;
-            j++;
-        }
     }
 }
 

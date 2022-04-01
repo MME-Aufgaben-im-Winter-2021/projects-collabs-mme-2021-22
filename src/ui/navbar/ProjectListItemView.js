@@ -13,8 +13,8 @@ class ProjectListItemView extends Observable {
         this.body.addEventListener("click", this.onProjectClicked.bind(this));
     }
 
+    //notifies which project was selected
     onProjectClicked() {
-        // pass project data
         this.notifyAll(new Event("projectSelected", { id: this.id }));
     }
 }

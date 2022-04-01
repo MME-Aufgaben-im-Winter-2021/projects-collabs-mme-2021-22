@@ -7,6 +7,7 @@ import CONFIG from "../../utils/Config.js";
 
 class NavBarView extends Observable {
 
+    //initiates all elements and listeners in the navbar
     constructor() {
         super();
         this.body = createElementFromHTML(document.querySelector("#navbar-template").innerHTML);
@@ -23,6 +24,7 @@ class NavBarView extends Observable {
         this.projectsDropdownMenuView.addEventListener("projectSelected", this.onProjectSelected.bind(this));
     }
 
+    //case homescreen is clicked
     onHomeScreenClicked() {
         if (this.userName === CONFIG.ANONYMOUS_USER_NAME) {
             this.loginButton.style.display = "block";
@@ -32,27 +34,32 @@ class NavBarView extends Observable {
         }
     }
 
+    //notifies if login button is clicked
     onLoginButtonClicked() {
         this.notifyAll(new Event("requestLogin"));
     }
 
+    //notifies if logout button is clicked
     onLogoutButtonClicked() {
         this.notifyAll(new Event("userLoggedOut"));
     }
 
+    //updates project array
     updateProjectList(projectArray) {
         this.projectsDropdownMenuView.updateProjectList(projectArray);
     }
 
+    //notifies if a project is selected
     onProjectSelected(event) {
         this.notifyAll(new Event("projectSelected", { id: event.data.id, displayName: this.userDisplayName.innerText.toString() }));
     }
 
+    //case new project is clicked
     onNewProjectClicked() {
         this.notifyAll(new Event("createNewProject"));
-        // TODO: create new project
     }
 
+    //displays the username in the navbar
     displayUserName(userName) {
         this.userName = userName;
         this.userDisplayName.innerHTML = this.userName;
@@ -61,6 +68,7 @@ class NavBarView extends Observable {
         }
     }
 
+    //makes navbar parts visible if needed
     makeVisible() {
         this.projectsDropdownMenuView.dropdownButton.style.display = "flex";
         this.userDisplayName.style.display = "block";
@@ -69,6 +77,7 @@ class NavBarView extends Observable {
         this.loginButton.style.display = "none";
     }
 
+    //makes navbar parts invisible if needed
     makeInvisible() {
         this.projectsDropdownMenuView.dropdownButton.style.display = "none";
         this.projectsDropdownMenuView.projectListView.style.display = "none";

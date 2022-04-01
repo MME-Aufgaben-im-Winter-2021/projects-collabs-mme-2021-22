@@ -56,7 +56,6 @@ class MainUIHandler extends Observable {
         const siteBody = document.querySelector("body");
         this.navBarView.makeInvisible();
         siteBody.removeChild(document.querySelector(".container"));
-        siteBody.removeChild(this.toolbar);
         // this.canvasView = null;
         this.displayHomeScreen();
     }
@@ -66,6 +65,10 @@ class MainUIHandler extends Observable {
         this.screenshotContainerView = new ScreenshotContainerView(this.container);
         this.commentSectionView = new CommentSectionView(this.container, displayName);
         this.commentSectionView.addEventListener("newCommentEntered", this.onNewCommentEntered.bind(this));
+        this.commentSectionView.addEventListener("saveCanvas", this.onSaveCanvas.bind(this));
+        this.commentSectionView.addEventListener("commentUpvoted", this.handleCommentVote.bind(this));
+        this.commentSectionView.addEventListener("commentUndoVote", this.handleCommentVote.bind(this));
+        this.commentSectionView.addEventListener("commentDownvoted", this.handleCommentVote.bind(this));
         this.uploadImgView = new UploadImgView(this.container);
         this.uploadImgView.addEventListener("newUrlAndNameEntered", this.handleNewUrlAndNameEntered.bind(this));
         this.uploadImgView.addEventListener("deleteFrame", this.deleteFrame.bind(this));
@@ -73,20 +76,25 @@ class MainUIHandler extends Observable {
         if (displayName === CONFIG.ANONYMOUS_USER_NAME) {
             this.uploadImgView.body.style.display = "none";
         }
+        this.canvas = this.container.querySelector("canvas");
         this.frameListView = new FrameListView(this.container);
         this.frameListView.addEventListener("frameListElementClicked", this.onFrameListElementClicked.bind(this));
-        this.toolbar = createElementFromHTML(document.querySelector("#toolbar-template").innerHTML);
-        this.canvasView = new CanvasView(this.container, this.toolbar);
-        this.toolbar.style.display = "none";
+        this.canvasView = new CanvasView(this.container);
+        this.canvasView.addEventListener("newMarking", this.newMarking.bind(this));
         this.container.style.display = "none";
         this.siteBody.appendChild(this.container);
-        this.siteBody.appendChild(this.toolbar);
     }
 
     showProject(project) {
+        this.context = this.canvas.getContext("2d");
+        this.context.clearRect(0, 0, this.canvas.width, this.canvas.height);
+        if (project.id === null) {
+            this.commentSectionView.disableCommenting();
+        } else {
+            this.commentSectionView.enableCommenting();
+        }
         this.homeScreenView.body.style.display = "none";
         this.container.style.display = "flex";
-        this.toolbar.style.display = "flex";
         this.nameNewProjectView.body.style.display = "none";
         this.frameListView.updateElements(project.frames); // update frame list
         this.screenshotContainerView.exchangeImage(project.getFirstScreenshot()); // show first screenshot
@@ -96,7 +104,6 @@ class MainUIHandler extends Observable {
     displayHomeScreen() {
         this.homeScreenView.body.style.display = "flex";
         this.container.style.display = "none";
-        this.toolbar.style.display = "none";
         this.nameNewProjectView.body.style.display = "none";
     }
 
@@ -110,7 +117,10 @@ class MainUIHandler extends Observable {
         this.nameNewProjectView.body.style.display = "flex";
     }
 
-    changeImage(sourceURL) { this.screenshotContainerView.exchangeImage(sourceURL); }
+    changeImage(sourceURL) {
+        this.context.clearRect(0, 0, this.canvas.width, this.canvas.height);
+        this.screenshotContainerView.exchangeImage(sourceURL);
+    }
 
     updateProjectList(projectArray) { this.navBarView.updateProjectList(projectArray); }
 
@@ -120,6 +130,10 @@ class MainUIHandler extends Observable {
 
     showNewComment(commentData) { this.commentSectionView.addComment(commentData.text, commentData.id, commentData.color, commentData.author); }
 
+    showImageOnCanvas(base64Image) {
+        this.canvasView.setCanvasImg(base64Image);
+    }
+
     // functions notifying index.js
     onProjectKeyEntered(event) {
         this.notifyAll(new Event("projectKeyEntered", event.data));
@@ -127,7 +141,9 @@ class MainUIHandler extends Observable {
 
     requestLogin() { this.notifyAll(new Event("requestLogin")); }
 
-    onNewCommentEntered(event) { this.notifyAll(new Event("newCommentEntered", { commentText: event.data.commentText })); }
+    onNewCommentEntered(event) { this.notifyAll(new Event("newCommentEntered", { commentText: event.data.commentText, color: event.data.color })); }
+
+    onSaveCanvas(event) { this.notifyAll(new Event("saveCanvas", { canvasPNG: event.data.canvasPNG })); }
 
     handleNewUrlAndNameEntered(event) { this.notifyAll(new Event("makeNewScreenshot", event.data)); }
 
@@ -142,6 +158,26 @@ class MainUIHandler extends Observable {
     onProjectSelected(event) { this.notifyAll(new Event("projectSelected", { id: event.data.id })); }
 
     onFrameListElementClicked(event) { this.notifyAll(new Event("frameListElementClicked", { id: event.data.id })); }
+
+    newMarking(event) {
+        this.commentSectionView.activateInputField(event);
+    }
+
+    handleCommentVote(event) {
+        switch (event.type) {
+            case "commentUpvoted":
+                this.notifyAll(new Event("commentUpvoted", { commentID: event.data.commentID }));
+                break;
+            case "commentUndoVote":
+                this.notifyAll(new Event("commentUndoVote", { commentID: event.data.commentID }));
+                break;
+            case "commentDownvoted":
+                this.notifyAll(new Event("commentDownvoted", { commentID: event.data.commentID }));
+                break;
+            default:
+                console.log("error handling comment votes");
+        }
+    }
 }
 
 export default MainUIHandler;

@@ -25,6 +25,7 @@ class FrameListView extends Observable {
             this.addFrame(frame.id, frame.title, frame.imageBase64);
         }
     }
+
 }
 
 export default FrameListView;

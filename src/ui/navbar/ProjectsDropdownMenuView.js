@@ -5,6 +5,7 @@ import ProjectListItemView from "./ProjectListItemView.js";
 
 class ProjectsDropdownMenuView extends Observable {
 
+    //initiates all elements and their listeners
     constructor(navBarBody) {
         super();
         this.body = navBarBody.querySelector(".dropdown-menu");
@@ -16,6 +17,7 @@ class ProjectsDropdownMenuView extends Observable {
         this.displayName = this.body.querySelector(".user-display-name").innerHTML;
     }
 
+    //case dropdown button was clicked - show or hide dropdown
     onDropdownButtonClicked() { // opens listing of projects
         this.dropdownButton.classList.toggle("active");
         if (this.projectListView.style.display === "block") {
@@ -25,33 +27,26 @@ class ProjectsDropdownMenuView extends Observable {
         }
     }
 
+    //adds projectListView
     addProjectToProjectListView(name, id) {
         const projectListItemView = new ProjectListItemView(name, id);
         projectListItemView.addEventListener("projectSelected", this.onProjectSelected.bind(this));
         this.projectListView.appendChild(projectListItemView.body);
     }
 
+
+    //notifies which project in the dropdown was selected
     onProjectSelected(event) {
-        // TODO: Update Project list after adding new Project
         console.log("selected project with id: " + event.data.id);
         this.notifyAll(new Event("projectSelected", { id: event.data.id }));
     }
 
+    //updates the project list to see if a new project should be listed
     updateProjectList(projectArray) {
         this.projectListView.innerHTML = ""; // deletes everything from list before updating
         for (const project of projectArray) {
             this.addProjectToProjectListView(project.name, project.id);
         }
-    }
-
-    loadNewProject() {
-        /* TODO: 
-        let body = document.querySelector("body");
-        for (let i = 0; i < elementsToDeleteLength; i++) {
-            body.removeChild(body.lastChild);
-        }
-        this.mainUIHandler.buildUIAfterLogin(this.displayName);*/
-        //this.window.location.reload();
     }
 }
 
