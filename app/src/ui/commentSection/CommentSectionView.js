@@ -13,6 +13,7 @@ class CommentSectionView extends Observable {
         this.canvasPNG = undefined;
     }
 
+    //case new comment is entered, top classes and db gets notified with needed data
     onNewCommentEntered() {
         if (this.color === undefined) {
             this.color = "#000000"; //black for default answers without a marking
@@ -21,7 +22,7 @@ class CommentSectionView extends Observable {
             this.notifyAll(new Event("newCommentEntered", { commentText: this.commentInputElement.value, color: this.color }));
 
             if (this.canvasPNG !== undefined) {
-                this.notifyAll(new Event("saveCanvas", { canvasPNG: this.canvasPNG })); //TODO: receive notification in db
+                this.notifyAll(new Event("saveCanvas", { canvasPNG: this.canvasPNG }));
             }
 
             this.commentInputElement.value = "";
@@ -32,6 +33,7 @@ class CommentSectionView extends Observable {
         }
     }
 
+    //adds a comment with voting listeners
     addComment(text, id, color, author, upvotes, downvotes, currentUserHasUpvoted, currentUserHasDownvoted) {
         let comment = new Comment(this.discussion, text, id, color, author, upvotes, downvotes, currentUserHasUpvoted, currentUserHasDownvoted);
         comment.onLoad();
@@ -51,6 +53,7 @@ class CommentSectionView extends Observable {
         }
     }
 
+    //adds comment and sorts them by votes 
     showComments(comments) {
         this.discussion.innerHTML = "";
         if (comments === undefined) { return; } // if no comments available, do not show comments
@@ -66,20 +69,24 @@ class CommentSectionView extends Observable {
         }
     }
 
+    //automatically activates input field after a marking on canvas
     activateInputField(event) {
         this.color = event.data.color;
         this.canvasPNG = event.data.canvasPNG;
         this.commentInputElement.focus();
     }
 
+    //disables the input field
     disableCommenting() {
         this.commentInputElement.disabled = true;
     }
 
+    //enables the input field
     enableCommenting() {
         this.commentInputElement.disabled = false;
     }
 
+    //handles case of vote 
     handleCommentVote(event) {
         switch (event.type) {
             case "commentUpvoted":

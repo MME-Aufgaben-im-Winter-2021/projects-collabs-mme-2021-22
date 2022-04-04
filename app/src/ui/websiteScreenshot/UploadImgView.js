@@ -28,11 +28,9 @@ class UploadImgView extends Observable {
 
     //notifies listeners if URL is entered to load a img
     onURLEntered() {
-        console.log("onURLEntered");
         this.urlInputElement.value = this.urlInputElement.value.trim();
         this.frameNameInputElement.value = this.frameNameInputElement.value.trim();
         // don't do anything if nothing is entered && must be valid URL
-        console.log(checkUrlValid(this.urlInputElement.value));
         if (this.urlInputElement.value !== "" && this.frameNameInputElement.value !== "" && checkUrlValid(this.urlInputElement.value)) {
             this.notifyAll(new Event("newUrlAndNameEntered", {
                 url: this.urlInputElement.value,
@@ -40,11 +38,10 @@ class UploadImgView extends Observable {
             }));
             this.urlInputElement.value = "";
             this.frameNameInputElement.value = "";
-            console.log("valid URL entered");
         }
     }
 
-    //deletes current Picture in canvas
+    //deletes whole project, can only be done by creator
     onDeleteButtonClicked() {
         this.notifyAll(new Event("deleteProject"));
     }
@@ -54,14 +51,7 @@ class UploadImgView extends Observable {
         this.notifyAll(new Event("shareProjectButtonClicked"));
     }
 
-    checkIfCounterHasChanged() {
-        let frameList = document.querySelector(".frame-list"),
-            items = frameList.getElementsByTagName("li");
-        if (items.length !== null && items.length !== this.sessionCounter) {
-            this.sessionCounter = items.length;
-        }
-    }
-
+    //displays project title
     displaySelectedProjectTitle(projectName) {
         this.body.querySelector(".project-name").innerText = projectName;
     }
