@@ -20,7 +20,10 @@
     --background-black: #0d0d0d;
     --background-light: #f5f4f0;
 
-    --element-width: 100%
+    --element-width: 100%;
+
+    --notification-error: #940c00;
+    --notification-success: #09db56;
 }
 
 .attachment-full {
@@ -56,7 +59,8 @@ body {
     text-align: center;
 
     margin: 0 20px;
-    width: 100%;
+    width: 3vw;
+    height: 3vh;
 
     background-color: var(--base-dark);
     color: var(--snow);
@@ -312,38 +316,46 @@ body {
 .upload-img {
     display: flex;
     flex-direction: row;
-    justify-content: space-between;
 
     padding: 10px;
+    height: 5vh;
 
     border-bottom: solid;
     border-color: var(--base-dark);
 }
 
-.input-url {
-    align-self: flex-start;
-    width: 20vw;
+.button-container {
+    display: flex;
+    flex-direction: row;
+    width: 14vw;
 }
 
-.input-frame-name {
-    align-self: flex-start;
-    margin-right: 10px;
-    margin-left: 10px;
-    width: 8vw;
+.input-container {
+    display: flex;
+    flex-direction: row;
 }
 
-.upload-img-button {
-    align-self: flex-end;
+.input-label-container {
+    justify-content: center;
+}
 
-    text-align: center;
+.input-label {
+    color: var(--snow);
+    width: 10vw;
+}
+
+.url-in {
+    height: 2vh;
+    width: 10vw;
 }
 
 .project-name {
     font-weight: bold;
     text-align: center;
-    font-size: small;
+    font-size: x-large;
 
     margin: 0 0.5vw;
+    height: 100%;
     width: 80%;
 
     color: var(--snow);

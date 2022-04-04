@@ -11,13 +11,13 @@ import FrameListView from "./frameList/FrameListView.js";
 import CanvasView from "./websiteScreenshot/CanvasView.js";
 import HomeScreenView from "./homeScreen/HomeScreenView.js";
 import NameNewProjectView from "./homeScreen/NameNewProjectView.js";
+import Notification from "../utils/Notification.js";
 
 class MainUIHandler extends Observable {
 
     constructor() {
         super();
         this.siteBody = document.querySelector("body");
-
         // create nav-bar
         this.navBarView = new NavBarView();
         this.navBarView.addEventListener("userLoggedOut", this.performUserLogout.bind(this));
@@ -64,12 +64,14 @@ class MainUIHandler extends Observable {
         this.container = createElementFromHTML(document.querySelector("#container-template").innerHTML);
         this.screenshotContainerView = new ScreenshotContainerView(this.container);
         this.commentSectionView = new CommentSectionView(this.container, displayName);
+        this.commentSectionView.addEventListener("notification", this.displayNotification.bind(this));
         this.commentSectionView.addEventListener("newCommentEntered", this.onNewCommentEntered.bind(this));
         this.commentSectionView.addEventListener("saveCanvas", this.onSaveCanvas.bind(this));
         this.commentSectionView.addEventListener("commentUpvoted", this.handleCommentVote.bind(this));
         this.commentSectionView.addEventListener("commentUndoVote", this.handleCommentVote.bind(this));
         this.commentSectionView.addEventListener("commentDownvoted", this.handleCommentVote.bind(this));
         this.uploadImgView = new UploadImgView(this.container);
+        this.uploadImgView.addEventListener("notification", this.displayNotification.bind(this));
         this.uploadImgView.addEventListener("newUrlAndNameEntered", this.handleNewUrlAndNameEntered.bind(this));
         this.uploadImgView.addEventListener("deleteProject", this.deleteProject.bind(this));
         this.uploadImgView.addEventListener("shareProjectButtonClicked", this.onShareProjectButtonClicked.bind(this));
@@ -109,9 +111,12 @@ class MainUIHandler extends Observable {
         this.nameNewProjectView.body.style.display = "none";
     }
 
-    onNewProjectNameEntered(event) {
-        this.notifyAll(new Event("newProjectCreated", { newProjectName: event.data.newProjectName }));
+    // TODO: implement notifications where necessary
+    displayNotification(event) {
+        let notification = new Notification(event.text, event.error);
+        notification.displayNotification(this.siteBody);
     }
+
 
     displayCreateNewProjectScreen() {
         this.homeScreenView.body.style.display = "none";
@@ -132,14 +137,12 @@ class MainUIHandler extends Observable {
 
     showNewComment(commentData) { this.commentSectionView.addComment(commentData.text, commentData.id, commentData.color, commentData.author); }
 
-    showImageOnCanvas(base64Image) {
-        this.canvasView.setCanvasImg(base64Image);
-    }
+    showImageOnCanvas(base64Image) {this.canvasView.setCanvasImg(base64Image);}
 
     // functions notifying index.js
-    onProjectKeyEntered(event) {
-        this.notifyAll(new Event("projectKeyEntered", event.data));
-    }
+    onNewProjectNameEntered(event) {this.notifyAll(new Event("newProjectCreated", { newProjectName: event.data.newProjectName }));}
+
+    onProjectKeyEntered(event) { this.notifyAll(new Event("projectKeyEntered", event.data));}
 
     requestLogin() { this.notifyAll(new Event("requestLogin")); }
 
