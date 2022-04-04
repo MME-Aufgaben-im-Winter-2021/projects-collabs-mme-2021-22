@@ -32,6 +32,7 @@ class UploadImgView extends Observable {
         this.frameNameInputElement.value = this.frameNameInputElement.value.trim();
         // don't do anything if nothing is entered && must be valid URL
         if (this.urlInputElement.value !== "" && this.frameNameInputElement.value !== "" && checkUrlValid(this.urlInputElement.value)) {
+            this.uploadImgButton.innerHTML = "<div class=\"lds-dual-ring\"><div>"; // add loading animation
             this.notifyAll(new Event("newUrlAndNameEntered", {
                 url: this.urlInputElement.value,
                 frameName: this.frameNameInputElement.value,
@@ -56,6 +57,10 @@ class UploadImgView extends Observable {
         this.body.querySelector(".project-name").innerText = projectName;
     }
 
+    // removes loading animation from upload button
+    disableLoadingAnimation() {
+        this.uploadImgButton.innerHTML = "upload";
+    }
 }
 
 export default UploadImgView;

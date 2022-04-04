@@ -99,6 +99,7 @@ class MainUIHandler extends Observable {
         this.frameListView.updateElements(project.frames); // update frame list
         this.screenshotContainerView.exchangeImage(project.getFirstScreenshot()); // show first screenshot
         this.uploadImgView.displaySelectedProjectTitle(project.name);
+        this.uploadImgView.disableLoadingAnimation();
         this.notifyAll(new Event("frameListElementClicked", { id: project.getFirstID() })); // load comments as if first frame was clicked
     }
 
