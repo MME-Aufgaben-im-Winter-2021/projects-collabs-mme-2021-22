@@ -114,7 +114,7 @@ body {
 }
 
 .dropdown-menu span, .dropdown-button, .dropdown-list {
-    padding: 6px 8px 6px 16px;
+    padding: 0.5vw 1vw 0.5vw 0.5vw;
     text-decoration: none;
     font-size: medium;
     color: #818181;
@@ -341,9 +341,9 @@ body {
 .project-name {
     font-weight: bold;
     text-align: center;
-    font-size: large;
+    font-size: small;
 
-    margin: 0 20px;
+    margin: 0 0.5vw;
     width: 80%;
 
     color: var(--snow);
