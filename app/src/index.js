@@ -135,8 +135,10 @@ function onNewCommentEntered(event) {
 }
 
 function deleteProject() {
-    databaseHandler.deleteProject(currentProject.id);
-    currentProject = null;
+    if (currentFrame.id !== null) { // not yet created projects cannot be deleted
+        databaseHandler.deleteProject(currentProject.id);
+        currentProject = null;
+    }
 }
 
 function onProjectSucessfullyDeleted() {
