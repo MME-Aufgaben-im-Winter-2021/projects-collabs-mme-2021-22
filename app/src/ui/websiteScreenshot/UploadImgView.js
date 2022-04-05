@@ -59,7 +59,7 @@ class UploadImgView extends Observable {
 
     // removes loading animation from upload button
     disableLoadingAnimation() {
-        this.uploadImgButton.innerHTML = "upload";
+        this.uploadImgButton.innerHTML = "<img src=\"resources/icons/upload-file-svgrepo-com.svg\"/>";
     }
 }
 
