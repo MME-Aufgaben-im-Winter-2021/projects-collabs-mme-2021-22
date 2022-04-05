@@ -117,7 +117,6 @@ class MainUIHandler extends Observable {
         notification.displayNotification(this.siteBody);
     }
 
-
     displayCreateNewProjectScreen() {
         this.homeScreenView.body.style.display = "none";
         this.container.style.display = "none";
@@ -137,12 +136,12 @@ class MainUIHandler extends Observable {
 
     showNewComment(commentData) { this.commentSectionView.addComment(commentData.text, commentData.id, commentData.color, commentData.author); }
 
-    showImageOnCanvas(base64Image) {this.canvasView.setCanvasImg(base64Image);}
+    showImageOnCanvas(base64Image) { this.canvasView.setCanvasImg(base64Image); }
 
     // functions notifying index.js
-    onNewProjectNameEntered(event) {this.notifyAll(new Event("newProjectCreated", { newProjectName: event.data.newProjectName }));}
+    onNewProjectNameEntered(event) { this.notifyAll(new Event("newProjectCreated", { newProjectName: event.data.newProjectName })); }
 
-    onProjectKeyEntered(event) { this.notifyAll(new Event("projectKeyEntered", event.data));}
+    onProjectKeyEntered(event) { this.notifyAll(new Event("projectKeyEntered", event.data)); }
 
     requestLogin() { this.notifyAll(new Event("requestLogin")); }
 

@@ -15,9 +15,9 @@ class Notification {
     displayNotification(body) {
         let notification = this.body;
         body.appendChild(notification);
-        setTimeout(function () {
+        setTimeout(function() {
             body.removeChild(notification);
-        }, CONFIG.NOTIFICAION_DURATION);
+        }, CONFIG.NOTIFICATION_DURATION);
     }
 }
 
