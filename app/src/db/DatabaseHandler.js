@@ -12,6 +12,7 @@ class DatabaseHandler extends Observable {
         this.app = initializeApp(CONFIG.FIREBASE_CONFIG);
     }
 
+    // used to identify users without login, that use a project key
     loginAnonymously(projectKey) {
         let auth = getAuth(this.app);
         signInAnonymously(auth)
@@ -31,6 +32,8 @@ class DatabaseHandler extends Observable {
             });
     }
 
+    // User Authentication with Google via Popup
+    // https://firebase.google.com/docs/auth/web/google-signin#handle_the_sign-in_flow_with_the_firebase_sdk
     performSignInWithPopup() {
         const provider = new GoogleAuthProvider(),
             auth = getAuth(this.app);
@@ -63,6 +66,7 @@ class DatabaseHandler extends Observable {
             });
     }
 
+    // It is necessary to store all users explicitly, to also store which project each user is allowed to access.
     checkUserHasProfile(userID, displayName) {
         const db = getDatabase(this.app);
         get(ref(db, `users/${userID}`))
@@ -77,6 +81,8 @@ class DatabaseHandler extends Observable {
             });
     }
 
+    // Does what the name says: Logs out the current user.
+    // https://firebase.google.com/docs/auth/web/google-signin#next_steps
     logout() {
         const auth = getAuth(this.app);
         signOut(auth).then(() => {
@@ -90,16 +96,9 @@ class DatabaseHandler extends Observable {
         });
     }
 
-    writeToDatabase() {
-        const db = getDatabase(this.app);
-        set(ref(db, "test/test_id"), {
-            test1: "test2",
-            test3: "test4",
-            test5: "test6",
-        }).then(() => console.log("success"));
-    }
-
+    // Stores a new comment.
     storeNewComment(commentText, projectID, frameID, color) {
+        // Projects that have no frames yet during the creation process cannot be commented
         if (projectID === null) {
             console.log("Cannot comment on empty Project");
             return;
@@ -107,6 +106,7 @@ class DatabaseHandler extends Observable {
         const db = getDatabase(this.app),
             currentUser = getAuth(this.app).currentUser;
         let currentDisplayName = currentUser.displayName;
+        // Anonymous users are all displayed as "Anonymous"
         if (currentDisplayName === null) {
             currentDisplayName = CONFIG.ANONYMOUS_USER_NAME;
         }
@@ -116,17 +116,17 @@ class DatabaseHandler extends Observable {
             color: color,
             userID: currentUser.uid,
             text: commentText,
-            rating: 0,
-            timestamp: new Date().getTime(),
+            timestamp: new Date().getTime(), // useful for sorting by newest
         },
             newCommentKey = this.generateNewKey(`projects/${projectID}/frames/${frameID}/comments`);
         set(ref(db, `projects/${projectID}/frames/${frameID}/comments/${newCommentKey}`), commentData)
+            // new comment will be displayed by the UI when storing was successful 
             .then(() => this.notifyAll(new Event("newCommentStored", commentData)));
     }
 
+    // Stores a new Screenshot.
     storeNewScreenshot(projectID, frameBase64, frameTitle, projectName) {
         const db = getDatabase(this.app);
-        // TODO: Update Project list after adding new Project
         if (projectID === null) { // new project detected!
             // eslint-disable-next-line no-param-reassign
             projectID = this.generateNewKey("projects");
@@ -165,61 +165,20 @@ class DatabaseHandler extends Observable {
             });
     }
 
-    readData() {
-        // https://firebase.google.com/docs/database/web/read-and-write?authuser=0#read_data_once
-        console.log("readData");
-        const db = getDatabase(this.app);
-        get(ref(db, "projects"))
-            .then((snapshot) => {
-                if (snapshot.exists()) {
-                    console.log(snapshot);
-                    snapshot.forEach((child) => console.log(child.key)); // logs keys
-                } else {
-                    console.log("No data available");
-                }
-            }).catch((error) => {
-                console.log(error);
-            });
-    }
-
+    // Generates a new key inside the given path.
     generateNewKey(path) {
         const db = getDatabase(this.app);
         return push(child(ref(db), path)).key;
     }
 
-    // getProjectList() {
-    //     const db = getDatabase(this.app);
-    //     get(ref(db, "projects"))
-    //         .then((snapshot) => {
-    //             if (snapshot.exists()) {
-    //                 console.log(snapshot);
-    //                 let result = [];
-    //                 snapshot.forEach((child) => {
-    //                     const projectID = child.key, // logs keys
-    //                         // https://stackoverflow.com/a/43586692
-    //                         projectName = snapshot.child(`${projectID}/name`).val(); // extracts every project's name
-    //                     // console.log(projectID);
-    //                     // console.log(projectName);
-    //                     result.push({
-    //                         name: projectName,
-    //                         id: projectID,
-    //                     });
-    //                 });
-    //                 this.notifyAll(new Event("projectListReady", result));
-    //             } else {
-    //                 console.log("No data available");
-    //             }
-    //         }).catch((error) => {
-    //             console.log(error);
-    //         });
-    // }
-
+    // Loads the projects that are accessible for the current user and notifies the UI when done.
+    // https://firebase.google.com/docs/database/web/read-and-write#read_data
     getProjectList() {
         const db = getDatabase(this.app),
             currentUserID = getAuth(this.app).currentUser.uid;
         get(ref(db, `users/${currentUserID}/projects`))
             .then((snapshot) => {
-                if (snapshot.exists()) {
+                if (snapshot.exists()) { // if no projects are associated to the user, we can stop here
                     console.log(snapshot);
                     let result = [];
                     snapshot.forEach((child) => {
@@ -233,6 +192,7 @@ class DatabaseHandler extends Observable {
                             id: projectID,
                         });
                     });
+                    // hand over project list to the UI
                     this.notifyAll(new Event("projectListReady", result));
                 } else {
                     console.log("No data available");
@@ -242,11 +202,14 @@ class DatabaseHandler extends Observable {
             });
     }
 
+    // Loads a certain project's data from the database and prepares it to be displayed in the UI.
+    // Returns a Promise.
     loadProjectSnapshot(projectID) {
         const db = getDatabase(this.app);
         return new Promise((resolve, reject) => {
             get(ref(db, `projects/${projectID}`))
                 .then((snapshot) => {
+                    // if project not available, e.g. because the key is wrong, we can stop the execution here
                     if (snapshot.exists()) {
                         const projectName = snapshot.child("name").val();
                         let projectFrames = [];
@@ -262,6 +225,7 @@ class DatabaseHandler extends Observable {
                                 imageBase64: currentFrameImageBase64,
                             });
                         });
+                        // resolve Promise when all data is processed
                         resolve({
                             name: projectName,
                             frames: projectFrames,
@@ -275,10 +239,11 @@ class DatabaseHandler extends Observable {
         });
     }
 
+    // Loads Comments for a certain frame in a project and prepares them to be displayed in the UI.
+    // Returns a Promise.
     loadComments(projectID, frameID) {
         const db = getDatabase(this.app),
             currentUserID = getAuth(this.app).currentUser.uid;
-
         return new Promise((resolve, reject) => {
             if (projectID === null) {
                 reject(new Error("Cannot load comments for unpublished project.\nIf you are just creating a new Project everything is fine and you can ignore this error."));
@@ -287,7 +252,7 @@ class DatabaseHandler extends Observable {
                 .then((snapshot) => {
                     if (snapshot.exists()) {
                         let frameComments = [];
-                        snapshot.forEach((child) => { // store in array to allow sorting
+                        snapshot.forEach((child) => { // store in array to allow sorting the comments
                             let currentCommentID = child.key,
                                 currentAuthorID = snapshot.child(`${currentCommentID}/author_id`).val(),
                                 currentAuthorName = snapshot.child(`${currentCommentID}/author`).val(),
@@ -314,7 +279,7 @@ class DatabaseHandler extends Observable {
                             if (currentAuthorName === null) {
                                 currentAuthorName = CONFIG.ANONYMOUS_USER_NAME;
                             }
-                            frameComments.push({
+                            frameComments.push({ // add each comment to the list
                                 id: currentCommentID,
                                 authorID: currentAuthorID,
                                 author: currentAuthorName,
@@ -327,6 +292,7 @@ class DatabaseHandler extends Observable {
                                 currentUserHasDownvoted: currentUserHasDownvoted,
                             });
                         });
+                        // resolve Promise when all comments are processed
                         resolve(frameComments);
                     } else {
                         reject(new Error("No comments available or loading failed."));
@@ -337,10 +303,12 @@ class DatabaseHandler extends Observable {
         });
     }
 
+    // Returns true, if a user is currently authenticated in any way.
     userIsLoggedIn() {
         return getAuth(this.app).currentUser !== null;
     }
 
+    // All projects that are associated to a user are stored.
     linkProject(projectID) {
         const db = getDatabase(this.app),
             currentUserID = getAuth(this.app).currentUser.uid;
@@ -362,48 +330,57 @@ class DatabaseHandler extends Observable {
 
     }
 
+    // Allows a user to delete a project he created
     deleteProject(projectID) {
         const db = getDatabase(this.app),
             currentUserID = getAuth(this.app).currentUser.uid;
         get(ref(db, `projects/${projectID}/creator`))
             .then((snapshot) => {
-                if (snapshot.exists() && snapshot.val() === currentUserID) {
-                    set(ref(db, `projects/${projectID}`), null) // setting value to null deletes the keys
-                        .then(() => {
-                            console.log("project sucessfully deleted by its author");
-                        })
-                        .catch((error) => console.log(error));
-                    // definetely not elegant and safe at all, but it works
-                    get(ref(db, "users"))
-                        .then((snapshot) => {
-                            if (snapshot.exists()) {
-                                snapshot.forEach((child) => { // store in array to allow sorting
-                                    if (child.child("projects").hasChild(projectID)) {
-                                        const userID = child.key;
-                                        set(ref(db, `users/${userID}/projects/${projectID}`), null)// setting value to null deletes the keys
-                                            .then(() => {
-                                                if (userID === currentUserID) {
-                                                    // TODO: add reloading UI after deleting project here, probably best is displaying the homescreen
-                                                    this.notifyAll(new Event("projectSucessfullyDeleted"));
-                                                }
-                                            }).catch((error) => {
-                                                console.error(error);
-                                            });
-                                    }
-                                });
-                            }
-                        }).catch((error) => {
-                            console.error(error);
-                        });
+                // Creator musst be the currently logged in user. only the project's creator can delete a project.
+                if (snapshot.exists()) {
+                    if (snapshot.val() === currentUserID) {
+                        set(ref(db, `projects/${projectID}`), null) // setting value to null deletes the keys
+                            .then(() => {
+                                console.log("project sucessfully deleted by its author");
+                            })
+                            .catch((error) => console.log(error));
+                        // definetely not elegant and safe at all, but it works
+                        // Deletes all associations with the Project from all users in database.
+                        get(ref(db, "users"))
+                            .then((snapshot) => {
+                                if (snapshot.exists()) {
+                                    snapshot.forEach((child) => {
+                                        if (child.child("projects").hasChild(projectID)) {
+                                            const userID = child.key;
+                                            set(ref(db, `users/${userID}/projects/${projectID}`), null) // setting value to null deletes the keys
+                                                .then(() => {
+                                                    if (userID === currentUserID) {
+                                                        // TODO: add reloading UI after deleting project here, probably best is displaying the homescreen
+                                                        this.notifyAll(new Event("projectSucessfullyDeleted"));
+                                                    }
+                                                }).catch((error) => {
+                                                    console.error(error);
+                                                });
+                                        }
+                                    });
+                                }
+                            }).catch((error) => {
+                                console.error(error);
+                            });
+                    } else {
+                        // Notify the user that he is not allowed to delete the current project because he is not the owner.
+                        this.notifyAll(new Event("currentUserCannotDeleteCurrentProject"));
+                    }
                 }
             }).catch((error) => {
                 console.log(error);
             });
     }
 
+    // Stores the canvas content associated with a frame in the database.
     storeCanvas(projectID, frameID, canvasPNG) {
         const db = getDatabase(this.app);
-        set(ref(db, `projects/${projectID}/frames/${frameID}/canvas_base64`), canvasPNG)// setting value to null deletes the keys
+        set(ref(db, `projects/${projectID}/frames/${frameID}/canvas_base64`), canvasPNG) // setting value to null deletes the keys
             .then(() => {
                 console.log("canvas stored sucessfully");
             }).catch((error) => {
@@ -411,6 +388,7 @@ class DatabaseHandler extends Observable {
             });
     }
 
+    // Loads the current content of the Canvas from the database.
     getCanvas(projectID, frameID) {
         const db = getDatabase(this.app);
         get(ref(db, `projects/${projectID}/frames/${frameID}/canvas_base64`))
@@ -424,6 +402,8 @@ class DatabaseHandler extends Observable {
             });
     }
 
+    // Adds the user's up or downvote to the database. The trick is, that each vote is stored separately per user. 
+    // By this no user can vote twice and votes can be retracted by setting the vote value to null.
     setCommentVote(projectID, frameID, commentID, value) {
         const db = getDatabase(this.app),
             currentUserID = getAuth(this.app).currentUser.uid;

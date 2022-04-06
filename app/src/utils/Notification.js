@@ -2,7 +2,7 @@ import createElementFromHTML from "./Utilities.js";
 import CONFIG from "./Config.js";
 
 class Notification {
-    constructor(notificationText, isError = false) {
+    constructor(notificationText, isError) {
         this.body = createElementFromHTML(document.querySelector("#notification-template").innerHTML);
         if (isError) {
             this.body.querySelector(".icon").src = "resources/icons/error-svgrepo-com.svg";
@@ -12,13 +12,17 @@ class Notification {
         this.body.querySelector(".text").innerText = notificationText;
     }
 
-    displayNotification(body) {
-        let notification = this.body;
-        body.appendChild(notification);
-        setTimeout(function() {
-            body.removeChild(notification);
+    displayNotification() {
+        document.body.appendChild(this.body);
+        setTimeout(() => {
+            document.body.removeChild(this.body);
         }, CONFIG.NOTIFICATION_DURATION);
     }
 }
 
-export default Notification;
+function createNotification(text, isErrorNotification = false) {
+    const notification = new Notification(text, isErrorNotification);
+    notification.displayNotification();
+}
+
+export { createNotification };
