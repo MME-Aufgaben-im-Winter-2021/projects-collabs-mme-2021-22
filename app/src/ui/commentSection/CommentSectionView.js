@@ -1,7 +1,5 @@
 /* eslint-env browser */
 
-import CONFIG from "../../utils/Config.js";
-import { createNotification } from "../../utils/Notification.js";
 import { Event, Observable } from "../../utils/Observable.js";
 import Comment from "./Comment.js";
 
@@ -31,7 +29,7 @@ class CommentSectionView extends Observable {
             this.color = "#000000";
             this.canvasPNG = null;
         } else {
-            createNotification(CONFIG.NOTIFICATION_COMMENT_IS_EMPTY, true);
+            this.window.alert("You did not enter a valid input!");
         }
     }
 

@@ -1,7 +1,6 @@
 /* eslint-env browser */
 
 import { Event, Observable } from "../utils/Observable.js";
-import { createNotification } from "../utils/Notification.js";
 import CONFIG from "../utils/Config.js";
 import createElementFromHTML from "../utils/Utilities.js";
 import NavBarView from "./navbar/NavBarView.js";
@@ -12,6 +11,7 @@ import FrameListView from "./frameList/FrameListView.js";
 import CanvasView from "./websiteScreenshot/CanvasView.js";
 import HomeScreenView from "./homeScreen/HomeScreenView.js";
 import NameNewProjectView from "./homeScreen/NameNewProjectView.js";
+import Notification from "../utils/Notification.js";
 
 class MainUIHandler extends Observable {
 
@@ -64,12 +64,14 @@ class MainUIHandler extends Observable {
         this.container = createElementFromHTML(document.querySelector("#container-template").innerHTML);
         this.screenshotContainerView = new ScreenshotContainerView(this.container);
         this.commentSectionView = new CommentSectionView(this.container, displayName);
+        this.commentSectionView.addEventListener("notification", this.displayNotification.bind(this));
         this.commentSectionView.addEventListener("newCommentEntered", this.onNewCommentEntered.bind(this));
         this.commentSectionView.addEventListener("saveCanvas", this.onSaveCanvas.bind(this));
         this.commentSectionView.addEventListener("commentUpvoted", this.handleCommentVote.bind(this));
         this.commentSectionView.addEventListener("commentUndoVote", this.handleCommentVote.bind(this));
         this.commentSectionView.addEventListener("commentDownvoted", this.handleCommentVote.bind(this));
         this.uploadImgView = new UploadImgView(this.container);
+        this.uploadImgView.addEventListener("notification", this.displayNotification.bind(this));
         this.uploadImgView.addEventListener("newUrlAndNameEntered", this.handleNewUrlAndNameEntered.bind(this));
         this.uploadImgView.addEventListener("deleteProject", this.deleteProject.bind(this));
         this.uploadImgView.addEventListener("shareProjectButtonClicked", this.onShareProjectButtonClicked.bind(this));
@@ -109,6 +111,12 @@ class MainUIHandler extends Observable {
         this.nameNewProjectView.body.style.display = "none";
     }
 
+    // TODO: implement notifications where necessary
+    displayNotification(event) {
+        let notification = new Notification(event.text, event.error);
+        notification.displayNotification(this.siteBody);
+    }
+
     displayCreateNewProjectScreen() {
         this.homeScreenView.body.style.display = "none";
         this.container.style.display = "none";
@@ -119,12 +127,6 @@ class MainUIHandler extends Observable {
         this.context.clearRect(0, 0, this.canvas.width, this.canvas.height);
         this.screenshotContainerView.exchangeImage(sourceURL);
     }
-
-    notifyProjectNotFound() { createNotification(CONFIG.NOTIFICATION_WRONG_PROJECT_KEY, true); }
-
-    notifyProjectDeleted() { createNotification(CONFIG.NOTIFICATION_PROJECT_SUCCESSFULLY_DELETED); }
-
-    notifyDeleteNotPossible() { createNotification(CONFIG.NOTIFICATION_PROJECT_NOT_DELETED, true); }
 
     updateProjectList(projectArray) { this.navBarView.updateProjectList(projectArray); }
 

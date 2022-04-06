@@ -2,8 +2,6 @@
 
 import { Event, Observable } from "../../utils/Observable.js";
 import { checkUrlValid } from "../../utils/Utilities.js";
-import { createNotification } from "../../utils/Notification.js";
-import CONFIG from "../../utils/Config.js";
 
 //only important during the session
 class UploadImgView extends Observable {
@@ -21,6 +19,8 @@ class UploadImgView extends Observable {
         this.uploadImgButton = container.querySelector(".upload-img .upload-img-button");
         this.deleteImgButton = container.querySelector(".upload-img .delete");
         this.shareProjectButton = container.querySelector(".upload-img .share");
+        this.urlInputElement.addEventListener("change", this.onURLEntered.bind(this));
+        this.frameNameInputElement.addEventListener("change", this.onURLEntered.bind(this));
         this.uploadImgButton.addEventListener("click", this.onURLEntered.bind(this));
         this.deleteImgButton.addEventListener("click", this.onDeleteButtonClicked.bind(this));
         this.shareProjectButton.addEventListener("click", this.onShareProjectButtonClicked.bind(this));
@@ -39,8 +39,6 @@ class UploadImgView extends Observable {
             }));
             this.urlInputElement.value = "";
             this.frameNameInputElement.value = "";
-        } else {
-            createNotification(CONFIG.NOTIFICATION_ERROR_URL, true);
         }
     }
 
@@ -52,7 +50,6 @@ class UploadImgView extends Observable {
     //saves image to list
     onShareProjectButtonClicked() {
         this.notifyAll(new Event("shareProjectButtonClicked"));
-        createNotification(CONFIG.NOTIFICATION_COPIED_TO_CLIPBOARD);
     }
 
     //displays project title
@@ -62,7 +59,7 @@ class UploadImgView extends Observable {
 
     // removes loading animation from upload button
     disableLoadingAnimation() {
-        this.uploadImgButton.innerHTML = "<img src=\"resources/icons/upload-file-svgrepo-com.svg\"/>";
+        this.uploadImgButton.innerHTML = "upload";
     }
 }
 
