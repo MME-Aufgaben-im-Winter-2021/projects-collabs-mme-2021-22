@@ -65,6 +65,7 @@ class NavBarView extends Observable {
         this.userDisplayName.innerHTML = this.userName;
         if (this.userName === CONFIG.ANONYMOUS_USER_NAME) {
             this.loginButton.style.display = "none";
+            this.homeScreenButton.style.display = "block"; // basically used as "logout" button for anonymous users
         }
     }
 
@@ -75,6 +76,7 @@ class NavBarView extends Observable {
         this.logoutButton.style.display = "block";
         this.newProject.style.display = "block";
         this.loginButton.style.display = "none";
+        this.homeScreenButton.style.display = "block";
     }
 
     //makes navbar parts invisible if needed
@@ -87,6 +89,7 @@ class NavBarView extends Observable {
         this.userDisplayName.style.display = "none";
         this.logoutButton.style.display = "none";
         this.newProject.style.display = "none";
+        this.homeScreenButton.style.display = "none";
         this.loginButton.style.display = "block";
     }
 

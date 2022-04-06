@@ -6,6 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Collabs</title>
     <link rel="stylesheet" href="./resources/css/style.css">
+    <link rel="stylesheet" href="./resources/css/notifications.css">
     <link rel="icon" href="./resources/icons/collabstab.png">
 </head>
 
@@ -20,10 +21,6 @@
         <div class="comment-content">
             <span class="message"></span>
             <div class="user-interactions">
-                <!-- rem,obe
-                <button class="reply">↵</button>
-                <span class="reply-count">0</span>
-                -->
                 <button class="upvote">△</button>
                 <span class="upvote-count">0</span>
                 <button class="downvote">▽</button>
@@ -105,16 +102,27 @@
 <template id="container-template">
     <div class="container border">
         <div class="upload-img">
-            <label>
-                <input type="text" class="input-frame-name" placeholder="frame name">
-            </label>
-            <label>
-                <input type="text" class="input-url" placeholder="insert new url">
-            </label>
-            <span class="round-button upload-img-button">upload</span> <!-- upload-img icon -->
-            <span class="round-button delete">delete project</span> <!-- delete icon only usable by project creator-->
-            <span class="round-button share">share project key</span> <!-- share/copy project code icon -->
-            <span class="project-name">project name</span>
+            <div class="input-container">
+                <div class="input-label-container">
+                    <label class="input-label" for="input-frame-name">new frame name</label>
+                    <input type="text" id="input-frame-name" class="input-frame-name url-in" placeholder="insert new frame name">
+                </div>
+                <div class="input-label-container">
+                    <label class="input-label" for="input-url">new url</label>
+                    <input  type="text" id="input-url" class="input-url url-in" placeholder="insert new url">
+                </div>
+            </div>
+            <span class="project-name"></span>
+            <div class="button-container">
+                <!-- upload icon from: https://www.svgrepo.com/svg/5500/upload-file -->
+                <div class="round-button upload-img-button"><img src="resources/icons/upload-file-svgrepo-com.svg"/></div>
+                <!-- delete icon from: https://www.svgrepo.com/svg/162728/delete-->
+                <div class="round-button delete"><img src="resources/icons/delete-svgrepo-com.svg"/></div>
+                <!-- share icon from: https://www.svgrepo.com/svg/93192/share -->
+                <div class="round-button share"><img src="resources/icons/share-svgrepo-com.svg"/></div>
+
+            </div>
+
         </div>
         <div class="screenshot-container">
             <div class="website-picture">
@@ -143,6 +151,15 @@
                 <!-- different screenshots of the website get added here -->
             </ul>
         </div>
+    </div>
+</template>
+
+<template id="notification-template">
+    <div class="notification-body success">
+        <!-- success icon from: https://www.svgrepo.com/svg/13679/success -->
+        <!-- error icon from: https://www.svgrepo.com/svg/348341/error -->
+        <img class="icon" src="./resources/icons/success-svgrepo-com.svg" alt="ic"/>
+        <p class="text">text</p>
     </div>
 </template>
 
