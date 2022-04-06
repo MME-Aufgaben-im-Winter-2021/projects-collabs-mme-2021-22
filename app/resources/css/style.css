@@ -72,6 +72,11 @@ body {
     cursor: pointer;
 }
 
+.round-button img {
+    width: 100%;
+    height: 100%;
+}
+
 .round-button:active {
     box-shadow: #D6D6E7 0 3px 7px inset;
     transform: translateX(2px);

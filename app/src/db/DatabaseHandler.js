@@ -112,12 +112,12 @@ class DatabaseHandler extends Observable {
         }
         // eslint-disable-next-line one-var
         const commentData = {
-                author: currentDisplayName,
-                color: color,
-                userID: currentUser.uid,
-                text: commentText,
-                timestamp: new Date().getTime(), // useful for sorting by newest
-            },
+            author: currentDisplayName,
+            color: color,
+            userID: currentUser.uid,
+            text: commentText,
+            timestamp: new Date().getTime(), // useful for sorting by newest
+        },
             newCommentKey = this.generateNewKey(`projects/${projectID}/frames/${frameID}/comments`);
         set(ref(db, `projects/${projectID}/frames/${frameID}/comments/${newCommentKey}`), commentData)
             // new comment will be displayed by the UI when storing was successful 
@@ -303,10 +303,12 @@ class DatabaseHandler extends Observable {
         });
     }
 
+    // Returns true, if a user is currently authenticated in any way.
     userIsLoggedIn() {
         return getAuth(this.app).currentUser !== null;
     }
 
+    // All projects that are associated to a user are stored.
     linkProject(projectID) {
         const db = getDatabase(this.app),
             currentUserID = getAuth(this.app).currentUser.uid;
@@ -328,45 +330,54 @@ class DatabaseHandler extends Observable {
 
     }
 
+    // Allows a user to delete a project he created
     deleteProject(projectID) {
         const db = getDatabase(this.app),
             currentUserID = getAuth(this.app).currentUser.uid;
         get(ref(db, `projects/${projectID}/creator`))
             .then((snapshot) => {
-                if (snapshot.exists() && snapshot.val() === currentUserID) {
-                    set(ref(db, `projects/${projectID}`), null) // setting value to null deletes the keys
-                        .then(() => {
-                            console.log("project sucessfully deleted by its author");
-                        })
-                        .catch((error) => console.log(error));
-                    // definetely not elegant and safe at all, but it works
-                    get(ref(db, "users"))
-                        .then((snapshot) => {
-                            if (snapshot.exists()) {
-                                snapshot.forEach((child) => { // store in array to allow sorting
-                                    if (child.child("projects").hasChild(projectID)) {
-                                        const userID = child.key;
-                                        set(ref(db, `users/${userID}/projects/${projectID}`), null) // setting value to null deletes the keys
-                                            .then(() => {
-                                                if (userID === currentUserID) {
-                                                    // TODO: add reloading UI after deleting project here, probably best is displaying the homescreen
-                                                    this.notifyAll(new Event("projectSucessfullyDeleted"));
-                                                }
-                                            }).catch((error) => {
-                                                console.error(error);
-                                            });
-                                    }
-                                });
-                            }
-                        }).catch((error) => {
-                            console.error(error);
-                        });
+                // Creator musst be the currently logged in user. only the project's creator can delete a project.
+                if (snapshot.exists()) {
+                    if (snapshot.val() === currentUserID) {
+                        set(ref(db, `projects/${projectID}`), null) // setting value to null deletes the keys
+                            .then(() => {
+                                console.log("project sucessfully deleted by its author");
+                            })
+                            .catch((error) => console.log(error));
+                        // definetely not elegant and safe at all, but it works
+                        // Deletes all associations with the Project from all users in database.
+                        get(ref(db, "users"))
+                            .then((snapshot) => {
+                                if (snapshot.exists()) {
+                                    snapshot.forEach((child) => {
+                                        if (child.child("projects").hasChild(projectID)) {
+                                            const userID = child.key;
+                                            set(ref(db, `users/${userID}/projects/${projectID}`), null) // setting value to null deletes the keys
+                                                .then(() => {
+                                                    if (userID === currentUserID) {
+                                                        // TODO: add reloading UI after deleting project here, probably best is displaying the homescreen
+                                                        this.notifyAll(new Event("projectSucessfullyDeleted"));
+                                                    }
+                                                }).catch((error) => {
+                                                    console.error(error);
+                                                });
+                                        }
+                                    });
+                                }
+                            }).catch((error) => {
+                                console.error(error);
+                            });
+                    } else {
+                        // Notify the user that he is not allowed to delete the current project because he is not the owner.
+                        this.notifyAll(new Event("currentUserCannotDeleteCurrentProject"));
+                    }
                 }
             }).catch((error) => {
                 console.log(error);
             });
     }
 
+    // Stores the canvas content associated with a frame in the database.
     storeCanvas(projectID, frameID, canvasPNG) {
         const db = getDatabase(this.app);
         set(ref(db, `projects/${projectID}/frames/${frameID}/canvas_base64`), canvasPNG) // setting value to null deletes the keys
@@ -377,6 +388,7 @@ class DatabaseHandler extends Observable {
             });
     }
 
+    // Loads the current content of the Canvas from the database.
     getCanvas(projectID, frameID) {
         const db = getDatabase(this.app);
         get(ref(db, `projects/${projectID}/frames/${frameID}/canvas_base64`))
@@ -390,6 +402,8 @@ class DatabaseHandler extends Observable {
             });
     }
 
+    // Adds the user's up or downvote to the database. The trick is, that each vote is stored separately per user. 
+    // By this no user can vote twice and votes can be retracted by setting the vote value to null.
     setCommentVote(projectID, frameID, commentID, value) {
         const db = getDatabase(this.app),
             currentUserID = getAuth(this.app).currentUser.uid;

@@ -27,6 +27,7 @@ databaseHandler.addEventListener("newFrameStored", onNewFrameStored);
 databaseHandler.addEventListener("projectLinkedToUser", onProjectSelected);
 databaseHandler.addEventListener("canvasLoaded", onCanvasLoaded);
 databaseHandler.addEventListener("projectSucessfullyDeleted", onProjectSucessfullyDeleted);
+databaseHandler.addEventListener("currentUserCannotDeleteCurrentProject", onCurrentUserCannotDeleteCurrentProject);
 mainUIHandler.addEventListener("userLoggedIn", onUserLoggedIn);
 mainUIHandler.addEventListener("requestLogin", onRequestLogin);
 mainUIHandler.addEventListener("userLoggedOut", onUserLoggedOut);
@@ -50,12 +51,13 @@ function init() {
     }
 }
 
+// called when the user clicks the login button
 function onRequestLogin() {
     databaseHandler.performSignInWithPopup();
 }
 
+// called when the login was successful
 function onUserLoggedIn(event) {
-    console.log("User logged in");
     isLoggedIn = true;
     mainUIHandler.buildUIAfterLogin(event.data.user.displayName);
     mainUIHandler.updateProjectList(CONFIG.PROJECT_LIST_PLACEHOLDER);
@@ -63,7 +65,6 @@ function onUserLoggedIn(event) {
 }
 
 function onAnonymousUserLoggedIn(event) {
-    console.log("Anonymous User logged in");
     mainUIHandler.buildUIAfterLogin(CONFIG.ANONYMOUS_USER_NAME);
     mainUIHandler.updateProjectList(CONFIG.PROJECT_LIST_PLACEHOLDER);
     databaseHandler.getProjectList();
@@ -128,22 +129,29 @@ async function getScreenshot(url, frameName) {
     // .then(data => screenshot = data);
 }
 
-//getScreenshot("https://www.google.de/");
-
+// called when the user enters a new comment
 function onNewCommentEntered(event) {
     databaseHandler.storeNewComment(event.data.commentText, currentProject.id, currentFrame.id, event.data.color);
 }
 
+// called when the user wants to delete the current project
 function deleteProject() {
     if (currentFrame.id !== null) { // not yet created projects cannot be deleted
         databaseHandler.deleteProject(currentProject.id);
-        currentProject = null;
     }
 }
 
+// called when a project is deleted sucessfully
 function onProjectSucessfullyDeleted() {
+    currentProject = null;
     mainUIHandler.displayHomeScreen();
     databaseHandler.getProjectList();
+    mainUIHandler.notifyProjectDeleted();
+}
+
+function onCurrentUserCannotDeleteCurrentProject() {
+    // inform user that he is not allowed to delete the current project
+    mainUIHandler.notifyDeleteNotPossible(); 
 }
 
 function onProjectListReady(event) {
@@ -151,7 +159,16 @@ function onProjectListReady(event) {
 }
 
 async function onProjectSelected(event) {
-    const projectData = await databaseHandler.loadProjectSnapshot(event.data.id);
+    let projectData;
+    try {
+        projectData = await databaseHandler.loadProjectSnapshot(event.data.id);
+    } catch (error) {
+        console.log(error);
+        mainUIHandler.notifyProjectNotFound(); // show error feedback to the user
+        databaseHandler.logout(); // make sure no user is logged in
+        return; // function can end here
+    }
+    // display project in UI
     currentProject = new Project(projectData.name, event.data.id, projectData.frames);
     mainUIHandler.showProject(currentProject);
 }
