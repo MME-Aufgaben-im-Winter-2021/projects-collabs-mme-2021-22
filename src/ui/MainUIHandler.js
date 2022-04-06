@@ -1,6 +1,7 @@
 /* eslint-env browser */
 
 import { Event, Observable } from "../utils/Observable.js";
+import { createNotification } from "../utils/Notification.js";
 import CONFIG from "../utils/Config.js";
 import createElementFromHTML from "../utils/Utilities.js";
 import NavBarView from "./navbar/NavBarView.js";
@@ -17,7 +18,6 @@ class MainUIHandler extends Observable {
     constructor() {
         super();
         this.siteBody = document.querySelector("body");
-
         // create nav-bar
         this.navBarView = new NavBarView();
         this.navBarView.addEventListener("userLoggedOut", this.performUserLogout.bind(this));
@@ -99,6 +99,7 @@ class MainUIHandler extends Observable {
         this.frameListView.updateElements(project.frames); // update frame list
         this.screenshotContainerView.exchangeImage(project.getFirstScreenshot()); // show first screenshot
         this.uploadImgView.displaySelectedProjectTitle(project.name);
+        this.uploadImgView.disableLoadingAnimation();
         this.notifyAll(new Event("frameListElementClicked", { id: project.getFirstID() })); // load comments as if first frame was clicked
     }
 
@@ -106,10 +107,6 @@ class MainUIHandler extends Observable {
         this.homeScreenView.body.style.display = "flex";
         this.container.style.display = "none";
         this.nameNewProjectView.body.style.display = "none";
-    }
-
-    onNewProjectNameEntered(event) {
-        this.notifyAll(new Event("newProjectCreated", { newProjectName: event.data.newProjectName }));
     }
 
     displayCreateNewProjectScreen() {
@@ -123,6 +120,12 @@ class MainUIHandler extends Observable {
         this.screenshotContainerView.exchangeImage(sourceURL);
     }
 
+    notifyProjectNotFound() { createNotification(CONFIG.NOTIFICATION_WRONG_PROJECT_KEY, true); }
+
+    notifyProjectDeleted() { createNotification(CONFIG.NOTIFICATION_PROJECT_SUCCESSFULLY_DELETED); }
+
+    notifyDeleteNotPossible() { createNotification(CONFIG.NOTIFICATION_PROJECT_NOT_DELETED, true); }
+
     updateProjectList(projectArray) { this.navBarView.updateProjectList(projectArray); }
 
     addComment(text) { this.commentSectionView.addComment(text); }
@@ -131,14 +134,12 @@ class MainUIHandler extends Observable {
 
     showNewComment(commentData) { this.commentSectionView.addComment(commentData.text, commentData.id, commentData.color, commentData.author); }
 
-    showImageOnCanvas(base64Image) {
-        this.canvasView.setCanvasImg(base64Image);
-    }
+    showImageOnCanvas(base64Image) { this.canvasView.setCanvasImg(base64Image); }
 
     // functions notifying index.js
-    onProjectKeyEntered(event) {
-        this.notifyAll(new Event("projectKeyEntered", event.data));
-    }
+    onNewProjectNameEntered(event) { this.notifyAll(new Event("newProjectCreated", { newProjectName: event.data.newProjectName })); }
+
+    onProjectKeyEntered(event) { this.notifyAll(new Event("projectKeyEntered", event.data)); }
 
     requestLogin() { this.notifyAll(new Event("requestLogin")); }
 

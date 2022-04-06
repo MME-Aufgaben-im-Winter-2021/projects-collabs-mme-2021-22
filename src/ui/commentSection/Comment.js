@@ -22,16 +22,15 @@ class Comment extends Observable {
         this.notifyAll(new Event("onReply", { isResponse: true, commentColor: this.color }));
     }
 
+    //loads style and content an buttons in commentSectionView
     onLoad() {
         this.body.style.background = this.color;
         this.setContent(this.text, this.author, this.upvotes, this.downvotes);
         this.initButtons();
-        // this.commentList.append(this.body);
-        // https://stackoverflow.com/a/618198
-        // insert newest comment at the top
         this.commentList.insertBefore(this.body, this.commentList.firstChild);
     }
 
+    //sets content
     setContent(text, author, upvotes, downvotes) {
         this.body.getElementsByClassName("username")[0].innerText = author;
         this.body.getElementsByClassName("message")[0].innerText = text;
@@ -41,18 +40,8 @@ class Comment extends Observable {
         downCount.innerHTML = downvotes;
     }
 
+    //initates comment buttons
     initButtons() {
-        /*
-        TODO: implement reply function -> until it is implemented, we will forget about this option
-        this.replyButton = this.body.getElementsByClassName("reply")[0];
-        if (this.isReply) {
-            this.body.style.width = "70vw";
-            this.body.style.marginLeft = "50px";
-            this.replyButton.classList.add("hidden");
-        } else {
-            this.replyButton.addEventListener("click", this.reply.bind(this));
-        }
-        */
         let upvote = this.body.querySelector(".upvote"),
             downvote = this.body.querySelector(".downvote");
         if (this.isUpvoted) {
@@ -64,6 +53,7 @@ class Comment extends Observable {
         downvote.addEventListener("click", () => this.setVotingButton(downvote, this.body));
     }
 
+    //checks what is voted for and handles new voting input
     setVotingButton(button, body) {
         let up = body.querySelector(".upvote"),
             upCount = body.querySelector(".upvote-count"),
@@ -73,7 +63,6 @@ class Comment extends Observable {
             if (!this.isUpvoted) {
                 upCount.innerText = parseInt(upCount.innerText) + 1;
                 button.innerText = "▲";
-                console.log("upvote");
                 this.notifyAll(new Event("commentUpvoted", { commentID: this.id }));
                 this.isUpvoted = true;
                 if (this.isDownvoted) {
@@ -83,7 +72,6 @@ class Comment extends Observable {
                 }
             } else {
                 upCount.innerText = parseInt(upCount.innerText) - 1;
-                console.log("undo upvote");
                 this.notifyAll(new Event("commentUndoVote", { commentID: this.id }));
                 button.innerText = "△";
                 this.isUpvoted = false;
@@ -92,7 +80,6 @@ class Comment extends Observable {
             if (!this.isDownvoted) {
                 downCount.innerText = parseInt(downCount.innerText) + 1;
                 button.innerText = "▼";
-                console.log("downvote");
                 this.notifyAll(new Event("commentDownvoted", { commentID: this.id }));
                 this.isDownvoted = true;
                 if (this.isUpvoted) {
@@ -103,7 +90,6 @@ class Comment extends Observable {
             } else {
                 downCount.innerText = parseInt(downCount.innerText) - 1;
                 button.innerText = "▽";
-                console.log("undo downvote");
                 this.notifyAll(new Event("commentUndoVote", { commentID: this.id }));
                 this.isDownvoted = false;
             }

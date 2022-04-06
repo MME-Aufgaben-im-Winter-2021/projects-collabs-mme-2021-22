@@ -17,6 +17,7 @@ class FrameListElementView extends Observable {
         this.imageElement.addEventListener("click", this.onImageClicked.bind(this));
     }
 
+    //notifies if click on frame image
     onImageClicked() {
         this.notifyAll(new Event("frameListElementClicked", { id: this.id }));
     }
