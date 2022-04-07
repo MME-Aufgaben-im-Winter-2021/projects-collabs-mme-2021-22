@@ -87,6 +87,7 @@ body {
     display: flex;
     flex-direction: row;
     align-content: center;
+    background-color: white;
 
     width: 100%;
     padding: .25em;
@@ -94,7 +95,10 @@ body {
 
 .collabs-name {
     font-weight: bold;
+    color: black;
     width: 50%;
+    padding-top: 0.6vw;
+    cursor:default;
 }
 
 .collabs-logo {
@@ -124,9 +128,9 @@ body {
 
 .dropdown-menu span, .dropdown-button, .dropdown-list {
     padding: 0.5vw 1vw 0.5vw 0.5vw;
-    text-decoration: none;
+    text-decoration: underline;
     font-size: medium;
-    color: #818181;
+    color: #ffffff;
     display: block;
     border: none;
     background: none;

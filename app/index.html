@@ -79,22 +79,22 @@
     <div class="navbar">
         <div class="dropdown-menu">
             <div class="collabs-logo-container">
-                <span class="collabs-name">Collabs</span>
+                <div class="collabs-name">Collabs</div>
                 <img class="collabs-logo" src="./resources/icons/collabs.png" alt="logo">
             </div>
-            <span class="user-display-name">username</span>
-            <span class="logout-button">logout</span>
-            <span class="login-button" style="display: none">login</span>
-            <span class="home-screen">home screen</span>
+            <span class="user-display-name">Username</span>
+            <span class="logout-button">Logout</span>
+            <span class="login-button" style="display: none">Login</span>
+            <span class="home-screen">Home Screen</span>
             <button class="dropdown-button">
-                projects
+                Projects
                 <i class="fa fa-caret-down"></i>
             </button>
             <!-- has class hidden by default; remove on click on dropdown arrow -->
             <ul class="dropdown-list">
                 <!-- the projects in the database are displayed here -->
             </ul>
-            <span class="new-project">new project</span>
+            <span class="new-project">New Project</span>
         </div>
     </div>
 </template>
@@ -115,11 +115,11 @@
             <span class="project-name"></span>
             <div class="button-container">
                 <!-- upload icon from: https://www.svgrepo.com/svg/5500/upload-file -->
-                <div class="round-button upload-img-button"><img src="resources/icons/upload-file-svgrepo-com.svg"/></div>
+                <div class="round-button upload-img-button" title="Upload to the frame list!"><img src="resources/icons/upload-file-svgrepo-com.svg"/></div>
                 <!-- delete icon from: https://www.svgrepo.com/svg/162728/delete-->
-                <div class="round-button delete"><img src="resources/icons/delete-svgrepo-com.svg"/></div>
+                <div class="round-button delete" title="Delete the whole project! (Only by Creator)"><img src="resources/icons/delete-svgrepo-com.svg"/></div>
                 <!-- share icon from: https://www.svgrepo.com/svg/93192/share -->
-                <div class="round-button share"><img src="resources/icons/share-svgrepo-com.svg"/></div>
+                <div class="round-button share" title="Copy project code to clipboard!"><img src="resources/icons/share-svgrepo-com.svg"/></div>
 
             </div>
 
@@ -140,8 +140,8 @@
                         <input type="text" class="input-comment" placeholder="comment">
                     </label>
                     <div class="toolbar">
-                        <button id="r" class="button-tool">&#x25A2;</button>
-                        <button id="a" class="button-tool">&#x25EF;</button>
+                        <button id="r" class="button-tool" title="Rectangle tool">&#x25A2;</button>
+                        <button id="a" class="button-tool" title="Circle tool">&#x25EF;</button>
                     </div>
                 </div>
             </div>
