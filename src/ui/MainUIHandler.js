@@ -18,7 +18,7 @@ class MainUIHandler extends Observable {
     constructor() {
         super();
         this.siteBody = document.querySelector("body");
-        // create nav-bar
+        // init nav-bar
         this.navBarView = new NavBarView();
         this.navBarView.addEventListener("userLoggedOut", this.performUserLogout.bind(this));
         this.navBarView.addEventListener("projectSelected", this.onProjectSelected.bind(this));
@@ -29,13 +29,13 @@ class MainUIHandler extends Observable {
         this.navBarView.makeInvisible();
         this.siteBody.appendChild(this.navBarView.body);
 
-        // create home screen
+        // init home screen
         this.homeScreenView = new HomeScreenView();
         this.homeScreenView.addEventListener("projectKeyEntered", this.onProjectKeyEntered.bind(this));
         this.homeScreenView.body.style.display = "flex";
         this.siteBody.appendChild(this.homeScreenView.body);
 
-        // create NameNewProjectView
+        // init NameNewProjectView
         this.nameNewProjectView = new NameNewProjectView();
         this.nameNewProjectView.addEventListener("newProjectNameEntered", this.onNewProjectNameEntered.bind(this));
         this.siteBody.appendChild(this.nameNewProjectView.body);
@@ -48,7 +48,7 @@ class MainUIHandler extends Observable {
             this.navBarView.makeVisible();
         }
         this.siteBody.appendChild(this.navBarView.body);
-        this.displayProject(displayName);
+        this.initUIElements(displayName);
         this.displayHomeScreen();
     }
 
@@ -56,11 +56,11 @@ class MainUIHandler extends Observable {
         const siteBody = document.querySelector("body");
         this.navBarView.makeInvisible();
         siteBody.removeChild(document.querySelector(".container"));
-        // this.canvasView = null;
         this.displayHomeScreen();
     }
 
-    displayProject(displayName) {
+    // displays project stuff vor the first time
+    initUIElements(displayName) {
         this.container = createElementFromHTML(document.querySelector("#container-template").innerHTML);
         this.screenshotContainerView = new ScreenshotContainerView(this.container);
         this.commentSectionView = new CommentSectionView(this.container, displayName);
@@ -103,18 +103,21 @@ class MainUIHandler extends Observable {
         this.notifyAll(new Event("frameListElementClicked", { id: project.getFirstID() })); // load comments as if first frame was clicked
     }
 
+    // hides unnecessary elements and makes relevant stuff appear
     displayHomeScreen() {
         this.homeScreenView.body.style.display = "flex";
         this.container.style.display = "none";
         this.nameNewProjectView.body.style.display = "none";
     }
 
+    // hides unnecessary elements and makes relevant stuff appear
     displayCreateNewProjectScreen() {
         this.homeScreenView.body.style.display = "none";
         this.container.style.display = "none";
         this.nameNewProjectView.body.style.display = "flex";
     }
 
+    // hides unnecessary elements and makes relevant stuff appear
     changeImage(sourceURL) {
         this.context.clearRect(0, 0, this.canvas.width, this.canvas.height);
         this.screenshotContainerView.exchangeImage(sourceURL);
