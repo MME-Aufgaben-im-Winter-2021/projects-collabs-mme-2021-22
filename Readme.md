@@ -1,13 +1,31 @@
-# Template für die MME-Projekte
 
-Die aktuelle _Release_-Version dieses Projekts kann unter: https://collabs.software-engineering.education aufgerufen werden.
-
+# Collabs
+Die aktuelle _Release_-Version dieses Projekts kann unter https://collabs.software-engineering.education aufgerufen werden.
 ```
-Mit diesem Projekt soll die Möglichkeit gegeben werden, seine eigene Website hochzuladen und zum Diskurs zu stellen.
-User können der Projektbesprechung per Key beitreten und mit Kommentar und Markierung auf Details aufmerksam machen.
-Die besten/wichtigsten Hinweise können up- und downvoted werden, um dem Creator Relevanz jener zu vermitteln.
-Anonyme oder öffentliche Profile können genutzt werden, abhängig davon ob man eingeloggt ist oder nicht.
-Jedoch kann ein neues Projekt nur mit einem öffentlichen Profil erstellt werden.
+Unsere Webapp bietet die Möglichkeit, einen Screenshot einer Webseite über Eingabe der URL hochzuladen und zum Diskurs zu stellen. Benutzer können der Projektbesprechung per Key beitreten und mit Kommentar und Markierung auf Details aufmerksam machen. Die besten/wichtigsten Hinweise können up- und downvoted werden, um dem Creator Relevanz jener zu vermitteln.
+```
+## Screenshots
+### Startseite
+Hier kann sich der Benutzer entweder einloggen oder einen zuvor erhaltenen Projekt Schlüssel eingeben und Anonym bleiben.
+![Startseite](https://github.com/MME-Aufgaben-im-Winter-2021/projects-collabs-mme-2021-22/blob/main/screenshots/1.png)
+
+### Ansicht nach Login
+Hier kann der eingeloggte Benutzer auf seine Projekte zugreifen oder einen Projekt Key eingeben, um ein Projekt mit seinem Account zu verknüpfen.
+![Post Login](https://github.com/MME-Aufgaben-im-Winter-2021/projects-collabs-mme-2021-22/blob/main/screenshots/2.png)
+
+### Projektansicht
+Hier auf die Inhalte eines Projekts zugegriffen werden. Kommentare erscheinen in der Farbe der verknüpften Markierung auf dem Screenshot oder sind schwarz, wenn sie den Screenshot im allgemeinen kommentieren. Oben links können neue Screenshots erstellt werden. Oben links sind von links nach rechts die Buttons zum Upload, Löschen des Projekts (kann nur der Ersteller des Projekts) und teilen des Projekt Keys.
+![Projekt](https://github.com/MME-Aufgaben-im-Winter-2021/projects-collabs-mme-2021-22/blob/main/screenshots/3.png)
+
+### Neues Projekt
+Eingeloggte Benutzer können neue Projekte anlegen.
+![Neues Projekt](https://github.com/MME-Aufgaben-im-Winter-2021/projects-collabs-mme-2021-22/blob/main/screenshots/4.png)
+
+
+# Template für die MME-Projekte
+Die aktuelle _Release_-Version dieses Projekts kann unter: https://collabs.software-engineering.education aufgerufen werden.
+```
+Beschreiben Sie hier in einem kurzen Absatz Ihrer Anwendung bzw. die Ziele Ihres Projekts
 ```
 
 In diesem Repository finden Sie eine Vorlage für die Entwicklung Ihrer Anwendung im MME-Kurs. Das Repository gibt eine grobe Struktur für Ihre Arbeit vor. Dort wo nötig, können Sie von diesen Vorgaben abweichen. Besprechen Sie Änderungen, insbesondere solche am _Deployment-Workflow_ aber im Vorfeld mit uns. 
